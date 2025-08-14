@@ -1,34 +1,22 @@
 <script>
 import api from './services/api';
-
+import Login from './components/Login.vue';
+import Register from './components/Register.vue';
 export default {
-  name: 'App',
-  data() {
-    return {
-      usuarios: [],
-    };
-  },
-  mounted() {
-    // Quando o componente carregar, vamos buscar os usuários
-    api.get('usuarios/')
-      .then(response => {
-        this.usuarios = response.data;
-      })
-      .catch(error => {
-        console.error("Erro ao buscar usuários:", error);
-      });
+  components: {
+    Login,
+    Register
   }
 }
+
 </script>
 
 <template>
-  <div>
-    <h1>Lista de Usuários</h1>
-    <ul>
-      <li v-for="user in usuarios" :key="user.id">
-        {{ user.username }} - {{ user.email }}
-      </li>
-    </ul>
-  </div>
+ <Login/>
+ <Register/>
+
+
+
 </template>
+
 
