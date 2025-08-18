@@ -1,9 +1,8 @@
 <script setup>
 import { useAuth } from '@/composables/auth'
 const { register } = useAuth()
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 
-const errormessage = ref(``)
 
 const nome = ref(``)
 const email = ref(``)
@@ -13,11 +12,11 @@ const foto_perfil = ref(``)
 
 const handleRegister = async () => {
  try{
-  await register(nome.value, email.value, password.value, biografia.value, foto_perfil.value)
+  await register(nome.value, email.value, password.value, biografia.value)
   alert(`registro realizado com sucesso`)
  }
  catch(error){
-  errormessage.value = error.response?.data.detail
+  alert(JSON.stringify(error.response?.data))
  }
 }
 </script>
@@ -35,14 +34,16 @@ const handleRegister = async () => {
     </div>
 
     <div>
+      <label>Senha</label>
+      <input v-model="password" type="password" />
+    </div>
+
+    <div>
       <label>Biografia:</label>
       <textarea v-model="biografia"></textarea>
     </div>
 
-    <div>
-      <label>Foto de Perfil (URL):</label>
-      <input v-model="foto_perfil" type="text" />
-    </div>
+
 
     <button type="submit">Registrar</button>
   </form>

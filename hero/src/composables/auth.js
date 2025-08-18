@@ -33,19 +33,24 @@ export function useAuth(){
     })
     user.value = res.data[0]
   }
-  const register = async (nome, email,password, biografia, foto_perfil ) => {
-  try{
-   await axios.post(`${API}api/usuarios/`, nome, email, password, biografia, foto_perfil)
-   const res = await axios.post(`${API}/token/`, { email, password } )
-      accessToken.value = res.data.access
-      localStorage.setItem('access_token', accessToken.value)
+ const register = async (nome, email, password, biografia) => {
+  try {
+    await axios.post(`${API}api/registrar/`, {
+      nome,
+      email,
+      password,
+      biografia
+    })
 
-      user.value = { nome, email }
-      return user.value
+    // depois de registrar, tenta logar
+    const res = await axios.post(`${API}token/`, { email, password })
+    accessToken.value = res.data.access
+    localStorage.setItem('access_token', accessToken.value)
 
-  }
-  catch(error){
-    console.log(`erro no registro: ${error.response?.data}`)
+    user.value = { nome, email }
+    return user.value
+  } catch (error) {
+    console.log("erro no registro:", error.response?.data)
     throw error
   }
 }
