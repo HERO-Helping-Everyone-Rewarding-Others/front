@@ -1,40 +1,50 @@
-<script>
-export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      message: ''
-    }
-  },
-  methods: {
-    async register() {
-      const res = await fetch('http://127.0.0.1:8000/api/register/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password
-        })
-      })
-      const data = await res.json()
-      if (res.ok) {
-        this.message = 'Usuário criado! Token: ' + data.token
-      } else {
-        this.message = data.error
-      }
-    }
-  }
+<script setup>
+import { useAuth } from '@/composables/auth'
+const { register } = useAuth()
+import { ref } from 'vue'
+
+
+const nome = ref(``)
+const email = ref(``)
+const password = ref(``)
+const biografia = ref(``)
+const foto_perfil = ref(``)
+
+const handleRegister = async () => {
+ try{
+  await register(nome.value, email.value, password.value, biografia.value)
+  alert(`registro realizado com sucesso`)
+ }
+ catch(error){
+  alert(JSON.stringify(error.response?.data))
+ }
 }
 </script>
+
 <template>
-  <div>
-    <h2>Registrar</h2>
-    <input v-model="username" placeholder="Usuário" />
-    <input v-model="password" type="password" placeholder="Senha" />
-    <button @click="register">Criar conta</button>
-    <p>{{ message }}</p>
-  </div>
+  <form @submit.prevent="handleRegister">
+    <div>
+      <label>Nome:</label>
+      <input v-model="nome" type="text" />
+    </div>
+
+    <div>
+      <label>Email:</label>
+      <input v-model="email" type="email" />
+    </div>
+
+    <div>
+      <label>Senha</label>
+      <input v-model="password" type="password" />
+    </div>
+
+    <div>
+      <label>Biografia:</label>
+      <textarea v-model="biografia"></textarea>
+    </div>
+
+
+
+    <button type="submit">Registrar</button>
+  </form>
 </template>
-
-
