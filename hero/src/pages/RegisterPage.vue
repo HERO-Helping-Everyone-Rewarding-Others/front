@@ -8,7 +8,6 @@ const nome = ref(``)
 const email = ref(``)
 const password = ref(``)
 const biografia = ref(``)
-const foto_perfil = ref(``)
 
 const handleRegister = async () => {
  try{
@@ -43,8 +42,11 @@ const handleRegister = async () => {
       <textarea v-model="biografia"></textarea>
     </div>
 
+    <router-link to="/login"><button>Voltar ao login</button></router-link>
+
 
 
     <button type="submit">Registrar</button>
+
   </form>
 </template>

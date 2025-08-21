@@ -29,12 +29,14 @@ const handleLogin = async () => {
           placeholder="Password"
           v-model="password"
         />
-        <button
+         <button
           type="submit"
 
         >
           Logar
         </button>
       </form>
+      <router-link to="/"><button> Voltar a pagina anterior</button></router-link>
+      <router-link to="/register"><button>Não tem conta? Crie aqui</button> </router-link>
 </template>
 
