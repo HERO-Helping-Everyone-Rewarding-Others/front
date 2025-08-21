@@ -20,10 +20,9 @@ export default {
 <HeaderComponent/> 
 
 
-<FooterComponent/>
+
  </body>
-
-
+  <FooterComponent/>
 </template>
 
 

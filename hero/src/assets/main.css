@@ -10,3 +10,8 @@ html {
 body {
   font-family: "Nata Sans", sans-serif;   
 }
+html, body {
+  height: 100%;   /* garante altura total */
+  margin: 0;      /* remove margens */
+  padding: 0;     /* remove paddings */
+}

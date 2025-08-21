@@ -89,7 +89,7 @@
         width: 4vw;
         height: 4vw;
         color: rgb(185, 181, 181);
-        margin: 0 0 0.7vw 0;
+        margin: 0.7vw 0 0.7vw 0;
     }
     .button-user:hover, .sidebar-button:hover {
          background-color: #f3f2f2;
