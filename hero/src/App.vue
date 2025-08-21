@@ -17,12 +17,12 @@ export default {
 
 <template>
  <body>
-<HeaderComponent/> 
 
 
+<Login />
 
  </body>
-  <FooterComponent/>
+
 </template>
 
 
