@@ -10,19 +10,28 @@ export default {
     Register,
     HeaderComponent,
     FooterComponent
+
   }
 }
 
 </script>
 
 <template>
+ <Login/>
+ <Register/>
  <body>
 <HeaderComponent/> 
 
 
 
  </body>
-  <FooterComponent/>
+<FooterComponent/>
+
 </template>
+<style scoped>
+  template{
+    display: ;
+  }
+</style>
 
 
