@@ -24,8 +24,8 @@
         </ul>
         <div class="user">
             <div class="user-demo">
-                <p>Usuário demo</p>
-                <p id="pontos">120 pontos</p>
+                <p id="user-negrito">Usuário demo</p>
+                <p>120 pontos</p>
             </div>
             <button class="button-user">
                 <span class="mdi mdi-account-circle-outline user"></span>
@@ -42,6 +42,8 @@
         box-shadow: 0 5px 6px -4px rgba(17, 17, 17, 0.3);
         font-size: 1rem;
         height: 13%;
+        background: linear-gradient(135deg, #f6d365 0, #942785 50%, #1b2353 100%);
+        color: wheat;
     }
     header nav {
         display: flex;
@@ -50,6 +52,7 @@
         width: 100%;
         padding: 0 4rem;
         box-sizing: border-box;
+        color: wheat;
     }
     header img {
         height: 40px;
@@ -67,17 +70,20 @@
     header nav ul li a {
         padding: 10px 20px;
         text-decoration: none;
-        color: rgb(110, 109, 107);
         border-radius: 10px;
         text-align: center;
+        color: rgb(250, 249, 246);
+        transition: 0.2s;
+        font-weight: 600;
     }
    header nav ul li {
         list-style: none;
     }
     nav a:active,
+    nav a:hover,
     nav a:focus {
-        color: rgb(24, 66, 36);
-        background: #eff0f1;
+        color: rgb(250, 249, 246);
+        background:rgb(250, 249, 246, 0.2);
     }
     button {
         background-color: transparent;
@@ -88,12 +94,13 @@
         font-size: 2rem;
         width: 4vw;
         height: 4vw;
-        color: rgb(185, 181, 181);
+        color: #faf9f6;
         margin: 0.7vw 0 0.7vw 0;
+        transition: 0.2s;
     }
     .button-user:hover, .sidebar-button:hover {
-         background-color: #f3f2f2;
-         color: rgb(95, 93, 93);
+         background-color: rgb(243, 242, 242, 0.5);
+         color: #ffffff;
     }
     header nav div.user {
         display: flex;
@@ -107,14 +114,16 @@
     }
     .user-demo p {
         margin: 0;
+        color: #faf9f6;
     }
-    #pontos {
-        color: rgb(110, 109, 107);
+    #user-negrito {
+        font-weight: 600;
     }
     button.exit-button {
-        background-color: rgb(228, 225, 221);
+        background:rgb(250, 249, 246, 0.5);
         padding: 10px 15px;
         font-size: 1rem;
-        margin: 0 0 0.7vw 0;
+        margin: 0.7vw 0 0.7vw 0;
+        color: #ffffff;
     }
 </style>
