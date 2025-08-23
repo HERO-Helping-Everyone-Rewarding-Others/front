@@ -103,7 +103,7 @@ const handleLogin = async () => {
   }
   .box1 ul li {
     list-style: none;
-    border: 1px solid rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255, 0.5);
     box-shadow: 1px 1px 10px 5px rgba(17, 17, 17, 0.2);
     width: auto;
     text-align: center;
