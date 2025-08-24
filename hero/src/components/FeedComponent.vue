@@ -1,3 +1,4 @@
+<!-- src/components/FeedComponent.vue -->
 <script setup>
 import { posts } from "../store/posts"
 import Post from "./PostComponent.vue"
@@ -7,17 +8,12 @@ import Post from "./PostComponent.vue"
   <div>
     <Post
       v-for="(p, i) in posts"
-      :key="i"
+      :key="p.id || p._localUid || (p._localUid = `${Date.now()}-${i}`)"
       :post="p"
     />
   </div>
 </template>
 
 <style scoped>
-
-  div{
-    margin:5vw 5vw 5vw 5vw
-  }
-
-
+div { margin: 5vw; }
 </style>

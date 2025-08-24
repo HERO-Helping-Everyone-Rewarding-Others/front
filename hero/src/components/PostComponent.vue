@@ -1,42 +1,76 @@
+<!-- src/components/PostComponent.vue -->
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
-const props = defineProps({
-  post: Object
-});
+const props = defineProps({ post: Object });
 
-const likes = ref(props.post.curtidas);
+// id estável para este post (usa id, depois _localUid, senão cria um)
+const postId = computed(() =>
+  props.post.id ??
+  props.post._localUid ??
+  (props.post._localUid = `${Date.now()}-${Math.random().toString(36).slice(2,8)}`)
+);
+
+// --- curtidas do post ---
+const likes = ref(props.post.curtidas || 0);
 const liked = ref(false);
 
-const storageKey = `liked_post_${props.post.id}`;
-const likesKey = `likes_post_${props.post.id}`;
+// --- comentários deste post ---
+const newComment = ref("");
+const comentarios = ref([]);
 
-// Carrega do localStorage ao montar o componente
+// chaves por post
+const likedKey    = computed(() => `liked_post_${postId.value}`);
+const likesKey    = computed(() => `likes_post_${postId.value}`);
+const commentsKey = computed(() => `comments_post_${postId.value}`);
+
 onMounted(() => {
-  const savedLike = localStorage.getItem(storageKey);
-  const savedLikes = localStorage.getItem(likesKey);
+  // likes do post
+  const savedLike  = localStorage.getItem(likedKey.value);
+  const savedLikes = localStorage.getItem(likesKey.value);
+  if (savedLike === "true") liked.value = true;
+  if (savedLikes) likes.value = parseInt(savedLikes);
 
-  if (savedLike === "true") {
-    liked.value = true;
-  }
-
-  if (savedLikes) {
-    likes.value = parseInt(savedLikes);
+  // comentários do post
+  const savedComments = localStorage.getItem(commentsKey.value);
+  if (savedComments) {
+    comentarios.value = JSON.parse(savedComments);
+  } else {
+    // fallback para comentários iniciais passados via props
+    comentarios.value = Array.isArray(props.post.comentariosLista)
+      ? JSON.parse(JSON.stringify(props.post.comentariosLista))
+      : [];
   }
 });
 
-// Função de curtir / descurtir
-const toggleLike = () => {
-  if (!liked.value) {
-    likes.value++;
-    liked.value = true;
-  } else {
-    likes.value--;
-    liked.value = false;
-  }
+const persistComments = () =>
+  localStorage.setItem(commentsKey.value, JSON.stringify(comentarios.value));
 
-  localStorage.setItem(storageKey, liked.value.toString());
-  localStorage.setItem(likesKey, likes.value.toString());
+const toggleLike = () => {
+  liked.value ? likes.value-- : likes.value++;
+  liked.value = !liked.value;
+  localStorage.setItem(likedKey.value, liked.value.toString());
+  localStorage.setItem(likesKey.value, likes.value.toString());
+};
+
+const addComment = () => {
+  if (!newComment.value.trim()) return;
+  comentarios.value.push({
+    id: Date.now(),
+    usuario: "Usuário Anônimo",
+    conteudo: newComment.value,
+    tempo: "agora",
+    curtidas: 0,
+    liked: false,
+  });
+  newComment.value = "";
+  persistComments();
+};
+
+const toggleCommentLike = (c) => {
+  c.liked ? c.curtidas-- : c.curtidas++;
+  c.liked = !c.liked;
+  persistComments();
 };
 </script>
 
@@ -45,9 +79,8 @@ const toggleLike = () => {
     <!-- Cabeçalho -->
     <div class="flex items-center gap-3 mb-3">
       <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
-        {{ post.usuario.split(" ")[0][0] }}{{ post.usuario.split(" ")[1]?.[0] }}
+        {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
       </div>
-
       <div>
         <div class="font-semibold">
           {{ post.usuario }}
@@ -55,7 +88,6 @@ const toggleLike = () => {
         </div>
         <div class="text-gray-500 text-sm">{{ post.tempo }}</div>
       </div>
-
       <div v-if="post.verificado" class="ml-auto">
         <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Verificado</span>
         <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">+{{ post.pontos }} pontos</span>
@@ -63,49 +95,47 @@ const toggleLike = () => {
     </div>
 
     <!-- Texto -->
-    <p class="mb-3 text-gray-800">
-      {{ post.conteudo }}
-    </p>
+    <p class="mb-3 text-gray-800">{{ post.conteudo }}</p>
 
     <!-- Imagem -->
-    <img
-      v-if="post.imagem"
-      :src="post.imagem"
-      alt="imagem do post"
-      class="w-full h-60 object-cover rounded-xl mb-3"
-    />
+    <img v-if="post.imagem" :src="post.imagem" alt="imagem do post"
+         class="w-full h-60 object-cover rounded-xl mb-3" />
 
     <!-- Ações -->
     <div class="flex items-center gap-6 text-gray-600 text-sm mb-3">
-      <!-- Botão de curtir -->
-      <button
-        @click="toggleLike"
-        class="flex items-center gap-1 transition text-lg"
-      >
+      <button @click="toggleLike" class="flex items-center gap-1 transition text-lg bg-transparent border-none">
         <span :class="liked ? 'text-red-500' : 'text-gray-500'">❤️</span>
         {{ likes }}
       </button>
-
-      <span>💬 {{ post.comentarios }}</span>
+      <span>💬 {{ comentarios.length }}</span>
       <span>🔗 {{ post.compartilhamentos }}</span>
     </div>
 
     <hr class="mb-3" />
 
-    <!-- Comentários -->
-    <div
-      v-for="(comentario, i) in post.comentariosLista"
-      :key="i"
-      class="flex items-start gap-2 mb-2"
-    >
-      <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">
-        {{ comentario.usuario.split(' ')[0][0] }}{{ comentario.usuario.split(' ')[1]?.[0] }}
-      </div>
+    <!-- Novo comentário -->
+    <div class="flex items-center gap-2 mb-4">
+      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
+             class="flex-1 border rounded-lg p-2 text-sm" />
+      <button @click="addComment" class="px-3 py-1 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700">
+        Comentar
+      </button>
+    </div>
 
-      <div class="bg-gray-100 p-2 rounded-lg">
-        <span class="font-semibold">{{ comentario.usuario }}</span>
-        <p>{{ comentario.conteudo }}</p>
-        <span class="text-xs text-gray-500">{{ comentario.tempo }}</span>
+    <!-- Lista de comentários -->
+    <div v-for="c in comentarios" :key="c.id" class="flex items-start gap-2 mb-3">
+      <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">
+        {{ c.usuario.split(' ')[0][0] }}
+      </div>
+      <div class="bg-gray-100 p-2 rounded-lg flex-1">
+        <div class="flex justify-between items-center">
+          <span class="font-semibold">{{ c.usuario }}</span>
+          <small class="text-gray-500">{{ c.tempo }}</small>
+        </div>
+        <p>{{ c.conteudo }}</p>
+        <button @click="toggleCommentLike(c)" class="text-xs mt-1 flex items-center gap-1 bg-transparent border-none">
+          <span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }}
+        </button>
       </div>
     </div>
   </div>
