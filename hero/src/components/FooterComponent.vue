@@ -48,8 +48,9 @@
     footer {
         margin: 25vw 0 1vw 0;
         padding: 5vw 0 0 0;
-        background-color: #cacbcc;
         text-align: center;
+        background: linear-gradient(135deg, #1b2353 0, #942785 50%, #f6d365 100%);
+        font-weight: 500;
     }
     footer nav section.footer1 {
         text-align: center;
@@ -58,7 +59,7 @@
         height: 70px;
         width: auto;
         margin: 1vw 0 3vw 0;
-    }   
+    }
     footer nav ul {
         display: flex;
         justify-content: center;
@@ -71,13 +72,13 @@
         padding: 0 20px;
     }
     .social a {
-        color: white;
+        color: rgb(250, 249, 246);
         background-color: black;
         padding: 10px 15px 10px 15px;
         border-radius: 100%;
     }
     .contato {
-        color: white;
+        color: rgb(250, 249, 246);
         padding: 0 20px;
     }
     .contato span {
@@ -86,13 +87,13 @@
     }
     .contato p {
         margin: 4px 0;
-        font-size: 1.2rem;     
+        font-size: 1.2rem;
     }
     .footer2 {
         background-color: rgb(36, 35, 35);
         padding: 10px 0 1px 0;
     }
     .footer2 p {
-        color: white;
+        color: rgb(250, 249, 246);
     }
 </style>
