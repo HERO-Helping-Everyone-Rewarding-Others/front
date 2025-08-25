@@ -18,37 +18,51 @@ export function useAuth(){
       localStorage.setItem("access", accessToken.value)
       localStorage.setItem("refresh", refreshToken.value)
 
-      await fetchUser()
+      await fetchUser()  // busca usuário logado após login
 
     } catch (error) {
       console.log("erro no login: ", error.response?.data || error.message)
       throw error
     }
   }
+
   const fetchUser = async () => {
-    const res = await axios.get(`${API}api/usuarios/`, {
-      headers: {
-        Authorization: `Bearer ${accessToken.value}`,
-      },
-    })
-    user.value = res.data[0]
+    try {
+      // Nova rota que retorna apenas o usuário logado
+      const res = await api.get("/UsuarioLogado/", {
+        headers: {
+          Authorization: `Bearer ${accessToken.value}`,
+        },
+      })
+      user.value = res.data  // agora é o usuário correto
+    } catch (error) {
+      console.log("erro ao buscar usuário:", error.response?.data || error.message)
+      user.value = null
+    }
   }
-  const register = async (nome, email,password, biografia, foto_perfil ) => {
-  try{
-   await axios.post(`${API}api/usuarios/`, nome, email, password, biografia, foto_perfil)
-   const res = await axios.post(`${API}/token/`, { email, password } )
+
+  const register = async (nome, email, password, biografia) => {
+    try {
+      await axios.post(`${API}api/registrar/`, {
+        nome,
+        email,
+        password,
+        biografia
+      })
+
+      // depois de registrar, tenta logar
+      const res = await axios.post(`${API}token/`, { email, password })
       accessToken.value = res.data.access
-      localStorage.setItem('access_token', accessToken.value)
+      localStorage.setItem('access', accessToken.value)
 
-      user.value = { nome, email }
+      // busca usuário recém-logado
+      await fetchUser()
       return user.value
-
+    } catch (error) {
+      console.log("erro no registro:", error.response?.data)
+      throw error
+    }
   }
-  catch(error){
-    console.log(`erro no registro: ${error.response?.data}`)
-    throw error
-  }
-}
-  return{login, fetchUser, register, user, accessToken}
-}
 
+  return { login, fetchUser, register, user, accessToken }
+}
