@@ -18,7 +18,18 @@ export const posts = ref([
   }
 ])
 
+
+
+export const comunidades = ref([
+  { nome: "Canil Amor Animal", descricao: "Resgate e adoção de cães." }
+])
+
 // função para adicionar novo post
 export function addPost(novoPost) {
   posts.value.unshift(novoPost) // adiciona no topo do feed
+}
+
+// função para adicionar nova comunidade
+export function addCommunity(novaComunidade) {
+  comunidades.value.push(novaComunidade)
 }

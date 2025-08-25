@@ -33,7 +33,9 @@ const showPassword = ref(false);
           Exemplo
         </li>
         <li>
+          <router-link to="/">
           Exemplo
+        </router-link>
         </li>
         <li>
           Exemplo

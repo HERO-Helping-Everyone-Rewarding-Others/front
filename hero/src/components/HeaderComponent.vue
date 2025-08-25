@@ -9,14 +9,20 @@
         </button>
     </div>
         <h1>
+        <router-link to="/">
             <img src="/he(1).png" alt="logo" />
+        </router-link>
         </h1>
         <ul>
             <li>
-                <a href="#">Início</a>
+              <router-link to="/">
+                Início
+              </router-link>
             </li>
             <li>
-                <a href="#">Comunidades</a>
+              <router-link to="/comunidades">
+                Comunidades
+              </router-link>
             </li>
             <li>
                 <a href="#">Loja</a>

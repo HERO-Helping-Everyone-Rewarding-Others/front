@@ -1,42 +1,47 @@
-<!-- src/components/PostComponent.vue -->
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { useAuth } from "../composables/auth";
 
 const props = defineProps({ post: Object });
+const { user, accessToken, fetchUser } = useAuth(); // usuário logado
 
-// id estável para este post (usa id, depois _localUid, senão cria um)
+// id estável para este post
 const postId = computed(() =>
   props.post.id ??
   props.post._localUid ??
   (props.post._localUid = `${Date.now()}-${Math.random().toString(36).slice(2,8)}`)
 );
 
-// --- curtidas do post ---
+// curtidas
 const likes = ref(props.post.curtidas || 0);
 const liked = ref(false);
 
-// --- comentários deste post ---
+// comentários
 const newComment = ref("");
 const comentarios = ref([]);
 
-// chaves por post
+// chaves locais para persistência
 const likedKey    = computed(() => `liked_post_${postId.value}`);
 const likesKey    = computed(() => `likes_post_${postId.value}`);
 const commentsKey = computed(() => `comments_post_${postId.value}`);
 
-onMounted(() => {
-  // likes do post
+onMounted(async () => {
+  // garante que o usuário logado esteja carregado
+  if (accessToken.value && !user.value) {
+    await fetchUser();
+  }
+
+  // likes
   const savedLike  = localStorage.getItem(likedKey.value);
   const savedLikes = localStorage.getItem(likesKey.value);
   if (savedLike === "true") liked.value = true;
   if (savedLikes) likes.value = parseInt(savedLikes);
 
-  // comentários do post
+  // comentários
   const savedComments = localStorage.getItem(commentsKey.value);
   if (savedComments) {
     comentarios.value = JSON.parse(savedComments);
   } else {
-    // fallback para comentários iniciais passados via props
     comentarios.value = Array.isArray(props.post.comentariosLista)
       ? JSON.parse(JSON.stringify(props.post.comentariosLista))
       : [];
@@ -53,16 +58,21 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString());
 };
 
+// <<< função de adicionar comentário usando automaticamente o usuário logado
 const addComment = () => {
   if (!newComment.value.trim()) return;
+
+  const usuarioNome = user.value?.nome || "Usuário Anônimo"; // pega do auth
+
   comentarios.value.push({
     id: Date.now(),
-    usuario: "Usuário Anônimo",
+    usuario: usuarioNome,
     conteudo: newComment.value,
     tempo: "agora",
     curtidas: 0,
     liked: false,
   });
+
   newComment.value = "";
   persistComments();
 };

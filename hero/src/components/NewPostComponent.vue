@@ -1,18 +1,42 @@
 <script setup>
-import { ref } from "vue"
-import { addPost } from "../store/posts"
+import { ref, computed, onMounted } from "vue"
+import { addPost, comunidades } from "../store/posts"
+import { useAuth } from "../composables/auth"
 
-const usuario = ref("")
-const comunidade = ref("")
+const { user, accessToken, fetchUser } = useAuth()
+
+const props = defineProps({
+  comunidadeFixa: { type: String, default: "" }
+})
+
 const conteudo = ref("")
 const imagem = ref("")
+const comunidade = ref(props.comunidadeFixa)
 
-function postar() {
-  if (!usuario.value || !conteudo.value) return
+// Computed para nome do usuário logado
+const usuarioLogado = computed(() => user.value?.nome || "")
+
+// Ao montar, garante que o usuário logado seja buscado se houver token
+onMounted(async () => {
+  if (accessToken.value && !user.value) {
+    await fetchUser()
+  }
+})
+
+async function postar() {
+  // garante que o usuário esteja carregado antes de postar
+  if (!user.value && accessToken.value) {
+    await fetchUser()
+  }
+
+  if (!conteudo.value || !usuarioLogado.value) {
+    alert("Você precisa estar logado e escrever algo para postar.")
+    return
+  }
 
   addPost({
-    usuario: usuario.value,
-    comunidade: comunidade.value || "Comunidade Geral",
+    usuario: usuarioLogado.value,
+    comunidade: props.comunidadeFixa || comunidade.value,
     pontos: 10,
     verificado: false,
     tempo: "agora",
@@ -24,11 +48,9 @@ function postar() {
     comentariosLista: []
   })
 
-  // limpa o formulário
-  usuario.value = ""
-  comunidade.value = ""
   conteudo.value = ""
   imagem.value = ""
+  if (!props.comunidadeFixa) comunidade.value = ""
 }
 </script>
 
@@ -36,18 +58,30 @@ function postar() {
   <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow p-4 mt-6">
     <h2 class="font-bold mb-3">Criar nova postagem</h2>
 
-    <input v-model="usuario" type="text" placeholder="Seu nome"
-      class="w-full border p-2 rounded mb-2" />
-    <input v-model="comunidade" type="text" placeholder="Comunidade"
-      class="w-full border p-2 rounded mb-2" />
-    <textarea v-model="conteudo" placeholder="Escreva algo..."
-      class="w-full border p-2 rounded mb-2"></textarea>
-    <input v-model="imagem" type="text" placeholder="URL da imagem (opcional)"
-      class="w-full border p-2 rounded mb-2" />
+    <div v-if="usuarioLogado">
+      <select v-if="!props.comunidadeFixa"
+              v-model="comunidade"
+              class="w-full border p-2 rounded mb-2">
+        <option disabled value="">Selecione uma comunidade</option>
+        <option v-for="c in comunidades" :key="c.nome" :value="c.nome">
+          {{ c.nome }}
+        </option>
+      </select>
 
-    <button @click="postar"
-      class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
-      Postar
-    </button>
+      <textarea v-model="conteudo" placeholder="Escreva algo..."
+        class="w-full border p-2 rounded mb-2"></textarea>
+
+      <input v-model="imagem" type="text" placeholder="URL da imagem (opcional)"
+        class="w-full border p-2 rounded mb-2" />
+
+      <button @click="postar"
+        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+        Postar
+      </button>
+    </div>
+
+    <div v-else>
+      <p class="text-gray-500">Carregando informações do usuário ou faça login para postar...</p>
+    </div>
   </div>
 </template>
