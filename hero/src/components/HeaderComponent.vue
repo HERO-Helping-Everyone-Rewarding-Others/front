@@ -53,7 +53,7 @@ import { usuario } from '../store/user';
         box-shadow: 0 5px 6px -4px rgba(17, 17, 17, 0.3);
         font-size: 1rem;
         height: 13%;
-        background: linear-gradient(135deg, #f6d365 0, #942785 50%, #1b2353 100%);
+        background: linear-gradient(to right, #43a86a 0%, #276394 75%, #1b2353 100%);
         color: wheat;
     }
     header nav {
