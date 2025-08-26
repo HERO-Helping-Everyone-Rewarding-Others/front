@@ -1,4 +1,5 @@
 <script setup>
+import { usuario } from '../store/user';
 </script>
 <template>
 <header>
@@ -24,14 +25,16 @@
                 Comunidades
               </router-link>
             </li>
-            <li>
-                <a href="#">Loja</a>
-            </li>
+           <li>
+            <router-link to="/loja">
+              Loja
+            </router-link>
+          </li>
         </ul>
         <div class="user">
             <div class="user-demo">
-                <p id="user-negrito">Usuário demo</p>
-                <p>120 pontos</p>
+                <p id="user-negrito">{{ usuario.nome }}</p>
+                <p>{{ usuario.pontos }} pontos</p>
             </div>
             <button class="button-user">
               <router-link to="login">

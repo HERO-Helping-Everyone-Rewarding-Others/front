@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from "vue"
 import { addPost, comunidades } from "../store/posts"
 import { useAuth } from "../composables/auth"
+import { ganharPontos } from "../store/user" // 🔥 importa a função de pontos
 
 const { user, accessToken, fetchUser } = useAuth()
 
@@ -47,6 +48,9 @@ async function postar() {
     compartilhamentos: 0,
     comentariosLista: []
   })
+
+  // 🔥 ganha pontos ao criar post
+  ganharPontos(20)
 
   conteudo.value = ""
   imagem.value = ""
