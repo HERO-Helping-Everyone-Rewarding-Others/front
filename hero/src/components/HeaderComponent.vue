@@ -1,49 +1,60 @@
 <script setup>
-import { usuario } from '../store/user';
+import { usuario } from '../store/user'
+import { sidebar } from '../store/sidebar' // ✅ importa a store da sidebar
 </script>
+
 <template>
 <header>
  <nav>
+    <!-- botão abre/fecha sidebar -->
     <div>
-        <button class="sidebar-button">
-            <span class="mdi mdi-view-headline"></span>
-        </button>
+       <button class="sidebar-button" @click="sidebar.toggleSidebar()">
+       <span class="mdi mdi-view-headline"></span>
+       </button>
     </div>
-        <h1>
+
+    <!-- logo -->
+    <h1>
         <router-link to="/">
             <img src="/he(1).png" alt="logo" />
         </router-link>
-        </h1>
-        <ul>
-            <li>
-              <router-link to="/">
-                Início
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/comunidades">
-                Comunidades
-              </router-link>
-            </li>
-           <li>
-            <router-link to="/loja">
-              Loja
-            </router-link>
-          </li>
-        </ul>
-        <div class="user">
-            <div class="user-demo">
-                <p id="user-negrito">{{ usuario.nome }}</p>
-                <p>{{ usuario.pontos }} pontos</p>
-            </div>
-            <button class="button-user">
-              <router-link to="login">
-                <span class="mdi mdi-account-circle-outline user"></span>
-              </router-link>
-            </button>
+    </h1>
+
+    <!-- menu normal (fica no header, independente da sidebar) -->
+    <ul>
+        <li>
+          <router-link to="/">
+            Início
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/comunidades">
+            Comunidades
+          </router-link>
+        </li>
+       <li>
+        <router-link to="/loja">
+          Loja
+        </router-link>
+      </li>
+    </ul>
+
+    <!-- info do usuário -->
+    <div class="user">
+        <div class="user-demo">
+            <p id="user-negrito">{{ usuario.nome }}</p>
+            <p>{{ usuario.pontos }} pontos</p>
         </div>
-        <button class="exit-button">Sair</button>
-        </nav>
+        <button class="button-user">
+          <router-link to="login">
+            <span class="mdi mdi-account-circle-outline user"></span>
+          </router-link>
+        </button>
+    </div>
+
+    <!-- sair -->
+    <button class="exit-button">Sair</button>
+ </nav>
 </header>
 </template>
 
