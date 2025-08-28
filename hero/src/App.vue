@@ -1,28 +1,24 @@
-<script>
-import api from './services/axios';
-import Login from './components/Login.vue';
-import Register from './components/Register.vue';
-import HeaderComponent from './components/HeaderComponent.vue';
-import FooterComponent from './components/FooterComponent.vue';
-export default {
-  components: {
-    Login,
-    Register,
-    HeaderComponent,
-    FooterComponent
-  }
-}
-
+<script setup>
+import { useRoute } from 'vue-router'
+import HeaderComponent from './components/HeaderComponent.vue'
+import FooterComponent from './components/FooterComponent.vue'
+import SidebarCommunities from './components/SidebarCommunities.vue'
+const route = useRoute()
 </script>
 
 <template>
- <body>
+  <body>
+    <div>
+
+    <HeaderComponent v-if="route.name !== 'login' && route.name !=='register'" />
+
+    <RouterView />
+    <SidebarCommunities/>
 
 
-<Login />
 
- </body>
-
+    <FooterComponent v-if="route.name !== 'login' && route.name !=='register'" />
+  </div>
+  </body>
 </template>
-
 
