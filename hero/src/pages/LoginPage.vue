@@ -33,7 +33,9 @@ const showPassword = ref(false);
           Exemplo
         </li>
         <li>
+          <router-link to="/">
           Exemplo
+        </router-link>
         </li>
         <li>
           Exemplo
@@ -57,7 +59,7 @@ const showPassword = ref(false);
           placeholder="password"
           v-model="password"
         />
-          <span class="mdi" 
+          <span class="mdi"
           :class="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click="showPassword = !showPassword">
           </span>
@@ -72,7 +74,9 @@ const showPassword = ref(false);
        <p>
           Não possui uma conta?
         </p>
-        <a href="#">Criar conta</a>
+        <router-link to="register" class="register-button">
+        Criar conta
+      </router-link>
       </div>
     </div>
 </section>
@@ -88,7 +92,7 @@ const showPassword = ref(false);
   background: linear-gradient(to right bottom, #1b2353 0%, #276394 75%, #43a86a 100%);
   }
   .box1, .box2 {
-    flex: 1; 
+    flex: 1;
   }
   .box1 {
     margin-right: 5vw;
@@ -154,34 +158,31 @@ const showPassword = ref(false);
   }
   form input {
     background: rgb(255, 255, 255, 0.3);
-    color: rgb(243, 243, 243);
+    color: rgb(252, 249, 249);
     border-radius: 25px;
     border: 1px solid rgb(204, 198, 198);
     box-shadow: 0 0 10px rgba(150, 148, 148, 0.5);
     padding: 10px 15px;
-    margin-bottom: 1.5vw;
+    margin-bottom: 2vw;
     transition: 0.2s;
-  } 
+  }
   form input:focus,
   form input:hover {
     outline: none;
     border-color: #ffffff;
-    background: rgba(155, 147, 147, 0.2);
+    background: rgba(165, 164, 164, 0.2);
     color: white;
-  }
-  form input::placeholder {
-    color: rgb(243, 243, 243);
   }
   form button {
     background: linear-gradient(135deg, #1c0c79, #54cada);
-    padding: 0.6vw 1.5vw 0.5vw 1.5vw;
+    padding: 10px 3vw 10px 3vw;
     font-size: 1rem;
-    margin: 0 0 1vw 0;
+    margin: 0 0 0.7vw 0;
     border-radius: 25px;
     border: none;
     color: rgb(247, 244, 244);
     font-weight: 700;
-    transition: 0.2s; 
+    transition: 0.2s;
   }
   .password-field {
     position: relative;
@@ -194,7 +195,7 @@ const showPassword = ref(false);
     transform: translateY(-50%);
     position: absolute;
     font-size: 1.2rem;
-    color: #ffffff;
+    color: #2c2a2a;
   }
   .password-field input {
     width: 100%;
@@ -209,13 +210,13 @@ const showPassword = ref(false);
   .register p {
     font-weight: 500;
     font-size: 1.1rem;
-    margin-bottom: 1.5vw;
+    margin-bottom: 1vw;
   }
-  .register a {
+  .register .register-button {
     text-decoration: none;
     background: linear-gradient(90deg, #1c0c79, #54cada);
     color: rgb(247, 244, 244);
-    padding: 0.7vw 1.3vw 0.7vw 1.3vw;
+    padding: 5vw;
     border-radius: 25px;
     font-weight: 700;
     transition: 0.2s;
@@ -224,6 +225,5 @@ const showPassword = ref(false);
   .box2 button:hover {
     color: #b9b7b7;
   }
-  
-</style>
 
+</style>
