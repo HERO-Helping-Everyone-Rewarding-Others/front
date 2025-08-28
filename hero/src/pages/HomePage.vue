@@ -21,6 +21,7 @@ const togglePost = () => {
 
     <FeedComponent />
 
+
   </div>
 </template>
 <style scoped>

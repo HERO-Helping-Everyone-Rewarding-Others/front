@@ -9,7 +9,7 @@ export const posts = ref([
     tempo: "13d",
     conteudo: "Resgatamos mais 3 cães hoje! Precisamos de ajuda para castração.",
     imagem: "https://static9.depositphotos.com/1594920/1087/i/450/depositphotos_10875445-stock-photo-cavalier-king-charles-spaniel-3.jpg",
-    curtidas: 2,
+    curtidas: 0,
     comentarios: 1,
     compartilhamentos: 1,
     comentariosLista: [

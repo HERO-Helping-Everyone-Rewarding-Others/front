@@ -2,13 +2,28 @@
 import { comunidades, addCommunity } from "../store/posts"
 import { ref } from "vue"
 import { useRouter } from "vue-router"
+import { useAuth } from "../composables/auth"
+import { useCommunityState } from "../store/communities"
 
 const router = useRouter()
+const { user } = useAuth()
+const { adicionarComunidadeCriada } = useCommunityState()
 const novaComunidade = ref("")
 
 function criarComunidade() {
   if (!novaComunidade.value) return
+
   addCommunity({ nome: novaComunidade.value, descricao: "Nova comunidade criada!" })
+
+  // Marca o usuário como membro/dono
+  if (!user.value.comunidades) user.value.comunidades = []
+  if (!user.value.comunidades.includes(novaComunidade.value)) {
+    user.value.comunidades.push(novaComunidade.value)
+  }
+
+  // Atualiza o composable de comunidades
+  adicionarComunidadeCriada(novaComunidade.value)
+
   novaComunidade.value = ""
 }
 </script>

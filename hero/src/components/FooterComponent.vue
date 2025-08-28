@@ -49,7 +49,7 @@
         margin: 25vw 0 1vw 0;
         padding: 5vw 0 0 0;
         text-align: center;
-        background: linear-gradient(135deg, #1b2353 0, #942785 50%, #f6d365 100%);
+        background: linear-gradient(to right, #1b2353 0%, #276394 75%, #43a86a 100%);
         font-weight: 500;
     }
     footer nav section.footer1 {
