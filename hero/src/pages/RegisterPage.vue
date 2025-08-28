@@ -50,3 +50,5 @@ const handleRegister = async () => {
 
   </form>
 </template>
+<style scoped>
+</style>

@@ -15,5 +15,4 @@ import Post from "./PostComponent.vue"
 </template>
 
 <style scoped>
-div { margin: 5vw; }
 </style>

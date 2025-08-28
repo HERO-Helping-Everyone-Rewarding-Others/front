@@ -7,7 +7,8 @@ const route = useRoute()
 </script>
 
 <template>
-  <div>
+  <body>
+    <div>
 
     <HeaderComponent v-if="route.name !== 'login' && route.name !=='register'" />
 
@@ -18,4 +19,5 @@ const route = useRoute()
 
     <FooterComponent v-if="route.name !== 'login' && route.name !=='register'" />
   </div>
+  </body>
 </template>

@@ -128,3 +128,6 @@ async function postar() {
     </div>
   </div>
 </template>
+
+<style scoped>
+</style>
