@@ -30,13 +30,13 @@ const showPassword = ref(false);
       <p>No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você encontra pessoas que compartilham da mesma vontade de ajudar e recebe reconhecimento por cada contribuição. Juntos, podemos provar que ser herói é um papel que cabe a todos nós!</p>
       <ul>
         <li>
-          Exemplo
+          Crie uma comunidade
         </li>
         <li>
-          Exemplo
+          Ajude o mundo
         </li>
         <li>
-          Exemplo
+          Seja um herói
         </li>
       </ul>
     </div>
@@ -224,6 +224,22 @@ const showPassword = ref(false);
   .box2 button:hover {
     color: #b9b7b7;
   }
-  
+  @media (max-width: 1400px) {
+  section {
+  padding: 3vw 5vw;
+  }
+  .box1 h2 {
+    font-size: 2.5rem;
+  }
+  .box1 p {
+    font-size: 1.1rem;
+  }
+  .box1 ul li {
+    font-size: 0.9rem;
+  }
+  .box2 label {
+    font-size: 1.2rem;
+  }
+  }
 </style>
 
