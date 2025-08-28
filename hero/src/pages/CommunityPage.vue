@@ -1,82 +1,119 @@
 <script setup>
-import { ref, computed } from "vue"
+import { ref, computed, onMounted } from "vue"
+import { useAuth } from "../composables/auth"
 import { useRoute } from "vue-router"
-import { posts } from "../store/posts"
-import { minhasComunidades, ehDonoComunidade, entrarComunidade } from "../store/communities"
-import { usuario } from "../store/user"
-import NewPostComponent from "../components/NewPostComponent.vue"
+import { addPost, posts } from "../store/posts"
+import { ganharPontos } from "../store/user"
+import { useCommunityState } from "../store/communities"
+import PostComponent from "../components/PostComponent.vue"
 
+const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
-const nomeComunidade = route.params.nome
+const { entrouNaComunidade, entrarNaComunidade } = useCommunityState()
 
-// controla se o formulário está visível
-const mostrarForm = ref(false)
+const comunidadeNome = route.params.nome
+const conteudo = ref("")
+const imagemLink = ref("")
+const arquivoImagem = ref(null)
+const previewImagem = ref("")
+const usuarioLogado = computed(() => user.value?.nome || "")
+const membro = ref(false)
 
-// filtra os posts dessa comunidade
 const postsDaComunidade = computed(() =>
-  posts.value.filter(p => p.comunidade === nomeComunidade)
+  posts.value.filter(p => p.comunidade === comunidadeNome)
 )
 
-// Verifica se o usuário participa ou é dono
-const participa = computed(() =>
-  minhasComunidades.value.some(c => c.nome === nomeComunidade)
-)
-
-const dono = computed(() => {
-  const comunidade = minhasComunidades.value.find(c => c.nome === nomeComunidade)
-  return comunidade ? ehDonoComunidade(usuario.value, comunidade) : false
+onMounted(async () => {
+  if (accessToken.value && !user.value) await fetchUser()
+  if (!user.value.comunidades) user.value.comunidades = []
+  membro.value = entrouNaComunidade(comunidadeNome)
 })
 
-const podePostar = computed(() => participa.value || dono.value)
-
-function toggleForm() {
-  mostrarForm.value = !mostrarForm.value
+function entrar() {
+  entrarNaComunidade(comunidadeNome)
+  membro.value = true
+  alert(`Você entrou na comunidade ${comunidadeNome}! Agora você pode postar.`)
 }
 
-function entrar() {
-  const comunidade = { nome: nomeComunidade, criadorId: 999 } // mock (ideal puxar do backend)
-  entrarComunidade(comunidade)
+function selecionarImagem(event) {
+  const file = event.target.files[0]
+  if (file) {
+    arquivoImagem.value = file
+    previewImagem.value = URL.createObjectURL(file)
+  }
+}
+
+async function postar() {
+  if (!conteudo.value || !usuarioLogado.value) {
+    alert("Você precisa escrever algo para postar.")
+    return
+  }
+
+  if (!membro.value) {
+    alert("Você precisa entrar na comunidade antes de postar.")
+    return
+  }
+
+  addPost({
+    usuario: usuarioLogado.value,
+    comunidade: comunidadeNome,
+    pontos: 10,
+    verificado: false,
+    tempo: new Date().toISOString(),
+    conteudo: conteudo.value,
+    imagem: previewImagem.value || imagemLink.value,
+    curtidas: 0,
+    comentarios: 0,
+    compartilhamentos: 0,
+    comentariosLista: []
+  })
+
+  ganharPontos(20)
+  conteudo.value = ""
+  imagemLink.value = ""
+  arquivoImagem.value = null
+  previewImagem.value = ""
 }
 </script>
 
 <template>
-  <div class="max-w-3xl mx-auto mt-6">
-    <h1 class="text-2xl font-bold mb-4">
-      Comunidade: {{ nomeComunidade }}
-    </h1>
+  <div class="max-w-2xl mx-auto p-4">
+    <h1 class="text-xl font-bold mb-4">{{ comunidadeNome }}</h1>
 
-    <!-- Se pode postar, mostra o botão e o form -->
-    <div v-if="podePostar">
-      <button @click="toggleForm"
-        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 mb-4">
-        {{ mostrarForm ? "Fechar formulário" : "Criar nova postagem" }}
-      </button>
-
-      <NewPostComponent v-if="mostrarForm" :comunidade-fixa="nomeComunidade" />
-    </div>
-
-    <!-- Se não participa, mostra aviso e botão -->
-    <div v-else class="mb-4 p-4 bg-yellow-100 border border-yellow-300 rounded">
-      <p class="text-yellow-800">Você precisa entrar nesta comunidade para poder postar.</p>
+    <div v-if="!membro">
       <button @click="entrar"
-        class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">
         Entrar na comunidade
       </button>
     </div>
 
-    <!-- Lista de posts -->
-    <div v-if="postsDaComunidade.length" class="mt-6 space-y-4">
-      <div v-for="post in postsDaComunidade" :key="post.conteudo"
-           class="bg-white shadow rounded-2xl p-4">
-        <h2 class="font-semibold">{{ post.usuario }}</h2>
-        <p class="text-gray-700">{{ post.conteudo }}</p>
+    <p v-else class="text-gray-500 mb-4">Você é membro desta comunidade e pode criar posts!</p>
 
-        <img v-if="post.imagem"
-             :src="post.imagem"
-             alt="Imagem do post"
-             class="w-full max-h-80 object-cover rounded-xl mt-2" />
+    <div v-if="membro" class="mb-6">
+      <textarea v-model="conteudo" placeholder="Escreva algo..."
+        class="w-full border p-2 rounded mb-2"></textarea>
+
+      <input v-model="imagemLink" type="text" placeholder="URL da imagem (opcional)"
+        class="w-full border p-2 rounded mb-2" />
+
+      <input type="file" accept="image/*"
+             @change="selecionarImagem"
+             class="w-full border p-2 rounded mb-2" />
+
+      <img v-if="previewImagem" :src="previewImagem" class="max-h-40 mt-2 mb-2 rounded" />
+
+      <button @click="postar"
+        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 mb-4">
+        Postar
+      </button>
+    </div>
+
+    <div v-if="postsDaComunidade.length">
+      <h2 class="font-bold mb-2">Posts desta comunidade:</h2>
+      <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario">
+        <PostComponent :post="p" />
       </div>
     </div>
-    <p v-else class="text-gray-500 mt-4">Ainda não há postagens aqui.</p>
+    <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
   </div>
 </template>
