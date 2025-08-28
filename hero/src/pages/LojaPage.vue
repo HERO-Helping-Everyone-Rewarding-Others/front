@@ -34,6 +34,7 @@ const confirmarCompra = () => {
 </script>
 
 <template>
+
   <div class="loja">
     <h1>Loja de Recompensas</h1>
     <!-- aqui NÃO usa .value -->
@@ -62,6 +63,7 @@ const confirmarCompra = () => {
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>

@@ -1,4 +1,3 @@
-<!-- src/components/FeedComponent.vue -->
 <script setup>
 import { posts } from "../store/posts"
 import Post from "./PostComponent.vue"

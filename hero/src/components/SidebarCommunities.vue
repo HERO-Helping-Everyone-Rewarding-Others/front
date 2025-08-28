@@ -16,7 +16,7 @@ import { sidebar } from "../store/sidebar";
 </template>
 
 <style scoped>
-/* fundo escuro por trás */
+
 .overlay {
   position: fixed;
   top: 0;
