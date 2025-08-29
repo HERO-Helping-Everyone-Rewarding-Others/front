@@ -6,21 +6,21 @@ import { sidebar } from '../store/sidebar' // ✅ importa a store da sidebar
 <template>
 <header>
  <nav>
-    <!-- botão abre/fecha sidebar -->
+  
     <div>
        <button class="sidebar-button" @click="sidebar.toggleSidebar()">
        <span class="mdi mdi-view-headline"></span>
        </button>
     </div>
 
-    <!-- logo -->
+
     <h1>
         <router-link to="/">
             <img src="/he(1).png" alt="logo" />
         </router-link>
     </h1>
 
-    <!-- menu normal (fica no header, independente da sidebar) -->
+
     <ul>
         <li>
           <router-link to="/">
@@ -39,7 +39,7 @@ import { sidebar } from '../store/sidebar' // ✅ importa a store da sidebar
       </li>
     </ul>
 
-    <!-- info do usuário -->
+
     <div class="user">
         <div class="user-demo">
             <p id="user-negrito">{{ usuario.nome }}</p>
@@ -52,7 +52,7 @@ import { sidebar } from '../store/sidebar' // ✅ importa a store da sidebar
         </button>
     </div>
 
-    <!-- sair -->
+
     <button class="exit-button">Sair</button>
  </nav>
 </header>

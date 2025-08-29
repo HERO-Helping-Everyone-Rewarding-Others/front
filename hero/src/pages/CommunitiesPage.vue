@@ -15,13 +15,13 @@ function criarComunidade() {
 
   addCommunity({ nome: novaComunidade.value, descricao: "Nova comunidade criada!" })
 
-  // Marca o usuário como membro/dono
+
   if (!user.value.comunidades) user.value.comunidades = []
   if (!user.value.comunidades.includes(novaComunidade.value)) {
     user.value.comunidades.push(novaComunidade.value)
   }
 
-  // Atualiza o composable de comunidades
+
   adicionarComunidadeCriada(novaComunidade.value)
 
   novaComunidade.value = ""

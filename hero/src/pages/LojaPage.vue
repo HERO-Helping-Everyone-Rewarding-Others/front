@@ -2,14 +2,13 @@
 import { ref } from "vue";
 import { usuario, gastarPontos } from "../store/user";
 
-// Itens da loja
+
 const itens = ref([
   { id: 1, nome: "Camiseta exclusiva", preco: 100, descricao: "Uma camiseta estilosa da comunidade." },
   { id: 2, nome: "Caneca personalizada", preco: 50, descricao: "Caneca oficial para café ou chá." },
   { id: 3, nome: "Adesivo da comunidade", preco: 20, descricao: "Adesivo para colar onde quiser." },
 ]);
 
-// Controle do modal
 const itemSelecionado = ref(null);
 const mostrarModal = ref(false);
 

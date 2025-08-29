@@ -3,7 +3,6 @@ import { sidebar } from "../store/sidebar";
 </script>
 
 <template>
-  <!-- fundo escuro quando a sidebar está aberta -->
 <div v-show="sidebar.aberto" class="overlay" @click="sidebar.fecharSidebar()"></div>
 <aside v-show="sidebar.aberto" class="sidebar">
   <button class="close-btn" @click="sidebar.fecharSidebar()">X</button>
@@ -27,7 +26,7 @@ import { sidebar } from "../store/sidebar";
   z-index: 9;
 }
 
-/* sidebar */
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -44,7 +43,7 @@ import { sidebar } from "../store/sidebar";
   animation: slideIn 0.3s ease;
 }
 
-/* botão fechar */
+
 .close-btn {
   background: transparent;
   border: none;
@@ -54,7 +53,7 @@ import { sidebar } from "../store/sidebar";
   cursor: pointer;
 }
 
-/* links */
+
 .sidebar-menu {
   display: flex;
   flex-direction: column;
@@ -69,7 +68,7 @@ import { sidebar } from "../store/sidebar";
   color: #43a86a;
 }
 
-/* animação */
+
 @keyframes slideIn {
   from {
     transform: translateX(-100%);

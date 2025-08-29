@@ -5,39 +5,40 @@ import { useAuth } from "../composables/auth";
 const props = defineProps({ post: Object });
 const { user, accessToken, fetchUser } = useAuth(); // usuário logado
 
-// id estável para este post
-const postId = computed(() =>
-  props.post.id ??
-  props.post._localUid ??
-  (props.post._localUid = `${Date.now()}-${Math.random().toString(36).slice(2,8)}`)
-);
+const postId = computed(() => {
+  if (props.post.id) return props.post.id;
+  if (props.post._localUid) return props.post._localUid;
 
-// curtidas
+  const newId = `${Date.now()}.${Math.random().toString(36).slice(2, 8)}`;
+  props.post._localUid = newId;
+  return newId;
+});
+
+
 const likes = ref(props.post.curtidas || 0);
 const liked = ref(false);
 
-// comentários
+
 const newComment = ref("");
 const comentarios = ref([]);
 
-// chaves locais para persistência
+
 const likedKey    = computed(() => `liked_post_${postId.value}`);
 const likesKey    = computed(() => `likes_post_${postId.value}`);
 const commentsKey = computed(() => `comments_post_${postId.value}`);
 
 onMounted(async () => {
-  // garante que o usuário logado esteja carregado
   if (accessToken.value && !user.value) {
     await fetchUser();
   }
 
-  // likes
+
   const savedLike  = localStorage.getItem(likedKey.value);
   const savedLikes = localStorage.getItem(likesKey.value);
   if (savedLike === "true") liked.value = true;
   if (savedLikes) likes.value = parseInt(savedLikes);
 
-  // comentários
+
   const savedComments = localStorage.getItem(commentsKey.value);
   if (savedComments) {
     comentarios.value = JSON.parse(savedComments);
@@ -58,11 +59,11 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString());
 };
 
-// <<< função de adicionar comentário usando automaticamente o usuário logado
+
 const addComment = () => {
   if (!newComment.value.trim()) return;
 
-  const usuarioNome = user.value?.nome || "Usuário Anônimo"; // pega do auth
+  const usuarioNome = user.value?.nome || "Usuário Anônimo";
 
   comentarios.value.push({
     id: Date.now(),
@@ -86,7 +87,7 @@ const toggleCommentLike = (c) => {
 
 <template>
   <div class="max-w-2xl mx-auto mt-6 bg-white rounded-2xl shadow p-4">
-    <!-- Cabeçalho -->
+
     <div class="flex items-center gap-3 mb-3">
       <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
         {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
@@ -104,14 +105,14 @@ const toggleCommentLike = (c) => {
       </div>
     </div>
 
-    <!-- Texto -->
+
     <p class="mb-3 text-gray-800">{{ post.conteudo }}</p>
 
-    <!-- Imagem -->
+
     <img v-if="post.imagem" :src="post.imagem" alt="imagem do post"
          class="w-full h-60 object-cover rounded-xl mb-3" />
 
-    <!-- Ações -->
+
     <div class="flex items-center gap-6 text-gray-600 text-sm mb-3">
       <button @click="toggleLike" class="flex items-center gap-1 transition text-lg bg-transparent border-none">
         <span :class="liked ? 'text-red-500' : 'text-gray-500'">❤️</span>
@@ -123,7 +124,7 @@ const toggleCommentLike = (c) => {
 
     <hr class="mb-3" />
 
-    <!-- Novo comentário -->
+
     <div class="flex items-center gap-2 mb-4">
       <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
              class="flex-1 border rounded-lg p-2 text-sm" />
@@ -132,7 +133,7 @@ const toggleCommentLike = (c) => {
       </button>
     </div>
 
-    <!-- Lista de comentários -->
+   
     <div v-for="c in comentarios" :key="c.id" class="flex items-start gap-2 mb-3">
       <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">
         {{ c.usuario.split(' ')[0][0] }}

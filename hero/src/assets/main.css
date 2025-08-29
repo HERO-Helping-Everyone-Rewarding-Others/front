@@ -1,15 +1,5 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-
-  width: 100%;
-  height: 100%; /* ocupa 100% da altura da tela */
-  background: #fff; /* define o fundo branco (ou muda pra outra cor se quiser) */
+body, html{
+  margin : 0vw;
+  padding : 0vw;
 }
 
-#app, .unica {
-  min-height: 100%; /* garante que o conteúdo ocupe pelo menos a tela inteira */
-  width: 100%;
-}

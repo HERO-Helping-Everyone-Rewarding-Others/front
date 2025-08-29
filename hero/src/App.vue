@@ -7,7 +7,7 @@ const route = useRoute()
 </script>
 
 <template>
-  
+
     <HeaderComponent v-if="route.name !== 'login' && route.name !=='register'" />
     <RouterView />
     <SidebarCommunities/>
@@ -20,6 +20,8 @@ const route = useRoute()
 #app {
   min-height: 100%;
   width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 </style>
