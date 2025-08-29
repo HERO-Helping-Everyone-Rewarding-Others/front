@@ -36,7 +36,7 @@ const confirmarCompra = () => {
 
   <div class="loja">
     <h1>Loja de Recompensas</h1>
-    <!-- aqui NÃO usa .value -->
+
     <p class="pontos">Seus pontos: <strong>{{ usuario.pontos }}</strong></p>
 
     <div class="grid">
@@ -48,7 +48,6 @@ const confirmarCompra = () => {
       </div>
     </div>
 
-    <!-- Modal de confirmação -->
     <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
       <div class="modal">
         <h2>Confirmar compra</h2>

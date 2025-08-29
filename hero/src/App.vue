@@ -7,12 +7,12 @@ const route = useRoute()
 </script>
 
 <template>
-
+    <div>
     <HeaderComponent v-if="route.name !== 'login' && route.name !=='register'" />
     <RouterView />
     <SidebarCommunities/>
     <FooterComponent v-if="route.name !== 'login' && route.name !=='register'" />
-
+</div>
 </template>
 
 <style scoped>

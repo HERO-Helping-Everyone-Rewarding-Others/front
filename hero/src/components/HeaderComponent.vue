@@ -1,12 +1,12 @@
 <script setup>
 import { usuario } from '../store/user'
-import { sidebar } from '../store/sidebar' // ✅ importa a store da sidebar
+import { sidebar } from '../store/sidebar' 
 </script>
 
 <template>
 <header>
  <nav>
-  
+
     <div>
        <button class="sidebar-button" @click="sidebar.toggleSidebar()">
        <span class="mdi mdi-view-headline"></span>
@@ -46,8 +46,9 @@ import { sidebar } from '../store/sidebar' // ✅ importa a store da sidebar
             <p>{{ usuario.pontos }} pontos</p>
         </div>
         <button class="button-user">
+
           <router-link to="login">
-            <span class="mdi mdi-account-circle-outline user"></span>
+          <p>login</p>
           </router-link>
         </button>
     </div>

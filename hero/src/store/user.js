@@ -1,4 +1,3 @@
-// store/user.js
 import { ref, watch } from "vue";
 
 const stored = localStorage.getItem("userData");
