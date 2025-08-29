@@ -1,6 +1,6 @@
 <script setup>
-    import { CIcon } from '@coreui/icons-vue';
-  import { cibFacebookF, cibLinkedinIn } from '@coreui/icons';
+import { CIcon } from '@coreui/icons-vue'
+import { cibFacebookF } from '@coreui/icons'
 </script>
 <template>
     <footer>
@@ -8,13 +8,15 @@
             <section class="footer1">
                 <ul>
                 <li class="social">
-                    <a href="https://www.facebook.com/?locale=pt_BR"><CIcon :icon="cibFacebookF" /></a>
+                    <a href="https://www.facebook.com/?locale=pt_BR" class="icon-social"></a>
+                    <CIcon :icon="cibFacebookF" />
+                    
                 </li>
                 <li class="social">
                     <a href="https://x.com/"><span class="mdi mdi-twitter"></span></a>
                 </li>
                 <li class="social">
-                    <a href="https://br.linkedin.com/"><CIcon :icon="cibLinkedinIn" /></a>
+                    <a href="https://br.linkedin.com/"><CIcom :icon="cibLinkedinIn" /></a>
                 </li>
             </ul>
             <ul>
@@ -46,8 +48,8 @@
 
 <style scoped>
     footer {
-        margin: 25vw 0 1vw 0;
-        padding: 5vw 0 0 0;
+        margin: 20vw 0 0 0;
+        padding: 4vw 0 0 0;
         text-align: center;
         background: linear-gradient(to right, #1b2353 0%, #276394 75%, #43a86a 100%);
         font-weight: 500;
@@ -76,6 +78,9 @@
         background-color: black;
         padding: 10px 15px 10px 15px;
         border-radius: 100%;
+    }
+    .icon-social {
+          fill: #3b5998;
     }
     .contato {
         color: rgb(250, 249, 246);
