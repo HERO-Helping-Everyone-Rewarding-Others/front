@@ -1,6 +1,4 @@
 <script setup>
-import { CIcon } from '@coreui/icons-vue'
-import { cibFacebookF } from '@coreui/icons'
 </script>
 <template>
     <footer>
@@ -8,15 +6,16 @@ import { cibFacebookF } from '@coreui/icons'
             <section class="footer1">
                 <ul>
                 <li class="social">
-                    <a href="https://www.facebook.com/?locale=pt_BR" class="icon-social"></a>
-                    <CIcon :icon="cibFacebookF" />
-                    
+                    <a href="https://www.facebook.com/?locale=pt_BR" class="icon-social">
+                    <font-awesome-icon :icon="['fab', 'facebook-f']" /></a>
                 </li>
                 <li class="social">
-                    <a href="https://x.com/"><span class="mdi mdi-twitter"></span></a>
+                    <a href="https://x.com/"  class="icon-social">
+                    <font-awesome-icon :icon="['fab', 'twitter']" /></a>
                 </li>
                 <li class="social">
-                    <a href="https://br.linkedin.com/"><CIcom :icon="cibLinkedinIn" /></a>
+                    <a href="https://br.linkedin.com/" class="icon-social">
+                    <font-awesome-icon :icon="['fab', 'instagram']" />  </a>
                 </li>
             </ul>
             <ul>
@@ -54,9 +53,6 @@ import { cibFacebookF } from '@coreui/icons'
         background: linear-gradient(to right, #1b2353 0%, #276394 75%, #43a86a 100%);
         font-weight: 500;
     }
-    footer nav section.footer1 {
-        text-align: center;
-    }
     .logo-footer img {
         height: 70px;
         width: auto;
@@ -72,15 +68,13 @@ import { cibFacebookF } from '@coreui/icons'
         justify-content: center;
         text-align: center;
         padding: 0 20px;
+        font-weight: 600;
     }
-    .social a {
+    .social a.icon-social  {
         color: rgb(250, 249, 246);
         background-color: black;
-        padding: 10px 15px 10px 15px;
+        padding: 13px 15px 13px 15px;
         border-radius: 100%;
-    }
-    .icon-social {
-          fill: #3b5998;
     }
     .contato {
         color: rgb(250, 249, 246);
@@ -96,9 +90,10 @@ import { cibFacebookF } from '@coreui/icons'
     }
     .footer2 {
         background-color: rgb(36, 35, 35);
-        padding: 10px 0 1px 0;
+        padding: 1vw 0;
     }
     .footer2 p {
         color: rgb(250, 249, 246);
+        margin: 0;
     }
 </style>
