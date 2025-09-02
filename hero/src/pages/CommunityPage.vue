@@ -117,3 +117,6 @@ async function postar() {
     <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
   </div>
 </template>
+
+<style scoped>
+</style>

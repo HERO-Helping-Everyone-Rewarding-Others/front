@@ -151,3 +151,6 @@ const toggleCommentLike = (c) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+</style>

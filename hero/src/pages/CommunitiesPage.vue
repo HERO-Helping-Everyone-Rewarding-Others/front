@@ -50,3 +50,6 @@ function criarComunidade() {
     </ul>
   </div>
 </template>
+
+<style scoped>
+</style>

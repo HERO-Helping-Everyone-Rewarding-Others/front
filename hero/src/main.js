@@ -8,6 +8,7 @@ import { faTwitter, faFacebookF, faInstagram } from '@fortawesome/free-brands-sv
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faTwitter, faFacebookF, faInstagram)
 
+
 const app = createApp(App)
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(router)
