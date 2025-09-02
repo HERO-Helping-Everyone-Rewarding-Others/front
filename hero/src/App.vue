@@ -7,17 +7,21 @@ const route = useRoute()
 </script>
 
 <template>
-  <body>
     <div>
-
     <HeaderComponent v-if="route.name !== 'login' && route.name !=='register'" />
-
     <RouterView />
     <SidebarCommunities/>
-
-
-
     <FooterComponent v-if="route.name !== 'login' && route.name !=='register'" />
-  </div>
-  </body>
+</div>
 </template>
+
+<style scoped>
+
+#app {
+  min-height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+</style>

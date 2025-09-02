@@ -1,6 +1,5 @@
 import { ref } from "vue"
 
-// Mantém as comunidades que o usuário entrou na sessão atual
 const comunidadesEntradas = ref([])
 
 export function useCommunityState() {

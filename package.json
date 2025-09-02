@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "vue": "^3.5.20"
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-vue": "^2.2.0",
+    "@mdi/font": "^7.4.47",
+    "@mdi/js": "^7.4.47",
+    "vue": "^3.5.20",
+    "@fortawesome/fontawesome-svg-core": "^6.x.x",
+    "@fortawesome/free-brands-svg-icons": "^6.x.x",
+    "@fortawesome/vue-fontawesome": "^3.x.x"
   }
 }

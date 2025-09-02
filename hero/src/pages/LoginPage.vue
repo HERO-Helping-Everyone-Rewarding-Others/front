@@ -15,7 +15,6 @@ const handleLogin = async () => {
   }
 }
 
-const passwordTeste = ref('');
 const showPassword = ref(false);
 </script>
 

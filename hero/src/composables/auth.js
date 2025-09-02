@@ -18,7 +18,7 @@ export function useAuth(){
       localStorage.setItem("access", accessToken.value)
       localStorage.setItem("refresh", refreshToken.value)
 
-      await fetchUser()  // busca usuário logado após login
+      await fetchUser()  
 
     } catch (error) {
       console.log("erro no login: ", error.response?.data || error.message)
@@ -28,13 +28,13 @@ export function useAuth(){
 
   const fetchUser = async () => {
     try {
-      // Nova rota que retorna apenas o usuário logado
+
       const res = await api.get("/UsuarioLogado/", {
         headers: {
           Authorization: `Bearer ${accessToken.value}`,
         },
       })
-      user.value = res.data  // agora é o usuário correto
+      user.value = res.data
     } catch (error) {
       console.log("erro ao buscar usuário:", error.response?.data || error.message)
       user.value = null
@@ -50,12 +50,12 @@ export function useAuth(){
         biografia
       })
 
-      // depois de registrar, tenta logar
+
       const res = await axios.post(`${API}token/`, { email, password })
       accessToken.value = res.data.access
       localStorage.setItem('access', accessToken.value)
 
-      // busca usuário recém-logado
+
       await fetchUser()
       return user.value
     } catch (error) {

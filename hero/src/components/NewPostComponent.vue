@@ -87,7 +87,6 @@ async function postar() {
         </option>
       </select>
 
-      <!-- Se não entrou na comunidade -->
       <div v-if="comunidade && !entrouNaComunidade(comunidade)">
         <p class="text-red-500 mb-2">Você precisa entrar na comunidade para poder postar.</p>
         <button @click="redirecionarParaComunidade"
@@ -117,7 +116,6 @@ async function postar() {
         Postar
       </button>
 
-      <!-- Lista de posts filtrados pela comunidade selecionada -->
       <div v-if="postsFiltrados.length" class="mt-6 space-y-4">
         <PostComponent v-for="p in postsFiltrados" :key="p.tempo + p.usuario" :post="p" />
       </div>

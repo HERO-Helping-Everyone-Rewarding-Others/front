@@ -2,14 +2,13 @@
 import { ref } from "vue";
 import { usuario, gastarPontos } from "../store/user";
 
-// Itens da loja
+
 const itens = ref([
   { id: 1, nome: "Camiseta exclusiva", preco: 100, descricao: "Uma camiseta estilosa da comunidade." },
   { id: 2, nome: "Caneca personalizada", preco: 50, descricao: "Caneca oficial para café ou chá." },
   { id: 3, nome: "Adesivo da comunidade", preco: 20, descricao: "Adesivo para colar onde quiser." },
 ]);
 
-// Controle do modal
 const itemSelecionado = ref(null);
 const mostrarModal = ref(false);
 
@@ -34,9 +33,10 @@ const confirmarCompra = () => {
 </script>
 
 <template>
+
   <div class="loja">
     <h1>Loja de Recompensas</h1>
-    <!-- aqui NÃO usa .value -->
+
     <p class="pontos">Seus pontos: <strong>{{ usuario.pontos }}</strong></p>
 
     <div class="grid">
@@ -48,7 +48,6 @@ const confirmarCompra = () => {
       </div>
     </div>
 
-    <!-- Modal de confirmação -->
     <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
       <div class="modal">
         <h2>Confirmar compra</h2>
@@ -62,6 +61,7 @@ const confirmarCompra = () => {
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>
