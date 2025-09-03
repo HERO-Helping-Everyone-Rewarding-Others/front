@@ -59,7 +59,6 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString());
 };
 
-
 const addComment = () => {
   if (!newComment.value.trim()) return;
 
@@ -83,74 +82,197 @@ const toggleCommentLike = (c) => {
   c.liked = !c.liked;
   persistComments();
 };
+
+function getUserColor(name) {
+  const colors = ["#FF5733", "#33FF57", "#3357FF", "#F39C12", "#8E44AD", "#E74C3C"];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % colors.length; 
+  return colors[index];
+}
+
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto mt-6 bg-white rounded-2xl shadow p-4">
-
-    <div class="flex items-center gap-3 mb-3">
-      <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
-        {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
-      </div>
-      <div>
-        <div class="font-semibold">
-          {{ post.usuario }}
-          <span class="text-blue-600 cursor-pointer"> • {{ post.comunidade }}</span>
-        </div>
-        <div class="text-gray-500 text-sm">{{ post.tempo }}</div>
-      </div>
-      <div v-if="post.verificado" class="ml-auto">
-        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Verificado</span>
-        <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">+{{ post.pontos }} pontos</span>
-      </div>
+  <section>
+    <div class="welcome">
+      <h1>Bem-vindo ao HERO</h1>
+    <p>
+      Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
+    </p>
     </div>
 
+    
+<div class="feed">
+  <p>
+      Feed de Atividades
+    </p>
+</div>
+    <div class="box-post">
 
-    <p class="mb-3 text-gray-800">{{ post.conteudo }}</p>
+      <div class="info-box">
+        <div class="perfil-user">
+        <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
+        {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
+      </p>
+      </div>
 
+        <div class="info-post">
+          <div class="post-user">
+          <span id="user">{{ post.usuario }}</span>
+          <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
+        </div>
 
-    <img v-if="post.imagem" :src="post.imagem" alt="imagem do post"
-         class="w-full h-60 object-cover rounded-xl mb-3" />
+      <div v-if="post.verificado" class="pontos-info">
+        <p class="verificado">Verificado</p>
+        <p class="pontos">+{{ post.pontos }} pontos</p>
+      </div>
+        </div>
+      </div>
 
+    <div class="post-img">
+      <p>{{ post.conteudo }}</p>
 
-    <div class="flex items-center gap-6 text-gray-600 text-sm mb-3">
-      <button @click="toggleLike" class="flex items-center gap-1 transition text-lg bg-transparent border-none">
-        <span :class="liked ? 'text-red-500' : 'text-gray-500'">❤️</span>
+      <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" />
+    </div>
+
+    <div class="social">
+      <button @click="toggleLike" class="like-btn">
+        <font-awesome-icon
+        :icon="[liked ? 'fas' : 'far', 'heart']"
+        :style="{ color: liked ? 'red' : 'gray' }"
+        class="heart-icon"
+      />
         {{ likes }}
       </button>
-      <span>💬 {{ comentarios.length }}</span>
-      <span>🔗 {{ post.compartilhamentos }}</span>
+      <p><font-awesome-icon :icon="['far', 'comment']" /> {{ comentarios.length }}</p>
+      <p><font-awesome-icon :icon="['fas', 'link']" /> {{ post.compartilhamentos }}</p>
     </div>
 
-    <hr class="mb-3" />
-
-
-    <div class="flex items-center gap-2 mb-4">
-      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
-             class="flex-1 border rounded-lg p-2 text-sm" />
-      <button @click="addComment" class="px-3 py-1 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700">
+    <div>
+      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"/>
+      <button @click="addComment">
         Comentar
       </button>
     </div>
 
    
-    <div v-for="c in comentarios" :key="c.id" class="flex items-start gap-2 mb-3">
-      <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">
+    <div v-for="c in comentarios" :key="c.id" >
+      <div  class="avatar" 
+     :style="{ background: getUserColor(c.usuario) }">
         {{ c.usuario.split(' ')[0][0] }}
       </div>
-      <div class="bg-gray-100 p-2 rounded-lg flex-1">
-        <div class="flex justify-between items-center">
-          <span class="font-semibold">{{ c.usuario }}</span>
-          <small class="text-gray-500">{{ c.tempo }}</small>
+      <div>
+        <div>
+          <span >{{ c.usuario }}</span>
+          <small >{{ c.tempo }}</small>
         </div>
         <p>{{ c.conteudo }}</p>
-        <button @click="toggleCommentLike(c)" class="text-xs mt-1 flex items-center gap-1 bg-transparent border-none">
-          <span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }}
-        </button>
+        <span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }} <button @click="toggleCommentLike(c)" ></button>
+         
       </div>
     </div>
-  </div>
+    </div>
+    </section>
 </template>
 
 <style scoped>
+section {
+  background: rgb(253, 252, 252);
+  padding-top: 3vw;
+}
+div.welcome {
+  text-align: center;
+}
+.welcome h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1vw;
+}
+.welcome p {
+  font-size: 1.5rem;
+  color: rgb(104, 104, 103);
+  margin: 0 0 5vw 0;
+}
+.feed p {
+  font-size: 2rem;
+  font-weight: 700;
+}
+div.feed {
+  margin: 0 auto;
+  width: 65vw;
+}
+div.box-post {
+  border: 3px solid rgb(218, 215, 215);
+  width: 65vw;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 2vw;
+  box-sizing: border-box;
+  box-shadow: 0 5px 10px 5px rgba(180, 179, 179, 0.3);
+}
+.info-box {
+  display: flex;
+  margin-bottom: 4vw;
+}
+.perfil-user p {
+ width: 4vw;
+ height: 4vw;
+ border-radius: 100%;
+ margin: 0 1vw 0 0;
+ display: flex;            
+ justify-content: center;   
+ align-items: center; 
+ color: white;
+ font-weight: 700;
+}
+#user {
+  font-weight: 600;
+  color: black  ;
+}
+.info-post .post-user span {
+  color: rgb(81, 81, 82);
+}
+.pontos-info {
+  display: flex;
+}
+div.pontos-info .verificado,
+div.pontos-info .pontos {
+  padding: 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin: 0.7vw 1.2vw 0 0;
+}
+div.pontos-info .verificado {
+  background: rgb(151, 247, 231, 0.6);
+  
+}
+div.pontos-info .pontos {
+  background: rgba(238, 240, 146, 0.6);
+}
+
+.post-img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  
+}
+.social button {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: gray;
+}
+.social {
+  display: flex;
+  font-size: 1.3rem;
+  color: grey;
+  gap: 15px;
+}
+
 </style>

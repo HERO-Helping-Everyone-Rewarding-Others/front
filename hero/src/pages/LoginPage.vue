@@ -124,12 +124,12 @@ const showPassword = ref(false);
   }
   .box1 ul li {
     list-style: none;
-    border: 1px solid rgba(17, 17, 17, 0.2);
-    box-shadow: 1px 1px 10px 5px rgba(17, 17, 17, 0.2);
+    border: 1px solid rgba(177, 175, 175, 0.377);
+    box-shadow: 1px 1px 5px 2px rgba(177, 175, 175, 0.3);
     width: auto;
     text-align: center;
     border-radius: 5vw;
-    padding: 6px 20px 6px 20px;
+    padding: 7px 20px 7px 20px;
     font-weight: 600;
   }
   .box2 {
@@ -164,6 +164,7 @@ const showPassword = ref(false);
     padding: 20px;
     margin-bottom: 1.5vw;
     transition: 0.2s;
+    font-size: 1.3rem;
   } 
   form input:focus,
   form input:hover {
