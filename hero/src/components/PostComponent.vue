@@ -105,11 +105,7 @@ function getUserColor(name) {
     </div>
 
     
-<div class="feed">
-  <p>
-      Feed de Atividades
-    </p>
-</div>
+
     <div class="box-post">
 
       <div class="info-box">
@@ -139,16 +135,16 @@ function getUserColor(name) {
     </div>
 
     <div class="social">
-      <button @click="toggleLike" class="like-btn">
+      <a @click="toggleLike" class="like-btn">
         <font-awesome-icon
         :icon="[liked ? 'fas' : 'far', 'heart']"
         :style="{ color: liked ? 'red' : 'gray' }"
         class="heart-icon"
       />
         {{ likes }}
-      </button>
-      <p><font-awesome-icon :icon="['far', 'comment']" /> {{ comentarios.length }}</p>
-      <p><font-awesome-icon :icon="['fas', 'link']" /> {{ post.compartilhamentos }}</p>
+      </a>
+      <p class="comment"><font-awesome-icon :icon="['far', 'comment']" /> {{ comentarios.length }}</p>
+      <p class="link"><font-awesome-icon :icon="['fas', 'link']" /> {{ post.compartilhamentos }}</p>
     </div>
 
     <div>
@@ -156,7 +152,7 @@ function getUserColor(name) {
       <button @click="addComment">
         Comentar
       </button>
-    </div>
+    </div>/* Gradiente do cabeçalho para o branco */
 
    
     <div v-for="c in comentarios" :key="c.id" >
@@ -188,12 +184,12 @@ div.welcome {
 }
 .welcome h1 {
   font-size: 2.5rem;
-  margin-bottom: 1vw;
+  margin: 0;
 }
 .welcome p {
   font-size: 1.5rem;
   color: rgb(104, 104, 103);
-  margin: 0 0 5vw 0;
+  margin: 0 0 8vw 0;
 }
 .feed p {
   font-size: 2rem;
@@ -201,11 +197,11 @@ div.welcome {
 }
 div.feed {
   margin: 0 auto;
-  width: 65vw;
+  width: 50vw;
 }
 div.box-post {
   border: 3px solid rgb(218, 215, 215);
-  width: 65vw;
+  width: 50vw;
   margin: 0 auto;
   border-radius: 20px;
   padding: 2vw;
@@ -258,7 +254,7 @@ div.pontos-info .pontos {
   object-fit: cover;
   
 }
-.social button {
+.social a {
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -268,6 +264,17 @@ div.pontos-info .pontos {
   font-size: 1.3rem;
   color: gray;
 }
+.social {
+  display: flex;
+  gap: 10px;
+}
+.social p {
+  cursor: pointer;
+}
+.social p:hover {
+  color: rgb(11, 20, 146);
+}
+.social p
 .social {
   display: flex;
   font-size: 1.3rem;

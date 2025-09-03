@@ -14,9 +14,6 @@ const togglePost = () => {
 <template>
 
   <div>
-    <button @click="togglePost">
-      {{ ShowPost ? 'Cancelar' : 'Fazer publicação' }}
-    </button>
     <NewPostComponent v-if="ShowPost" />
 
     <FeedComponent />
