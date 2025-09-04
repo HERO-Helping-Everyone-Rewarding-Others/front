@@ -46,8 +46,7 @@
 </template>
 
 <style scoped>
-    footer {
-        margin: 20vw 0 0 0;
+    footer {    
         padding: 4vw 0 0 0;
         text-align: center;
         background: linear-gradient(to right, #1b2353 0%, #276394 75%, #43a86a 100%);
