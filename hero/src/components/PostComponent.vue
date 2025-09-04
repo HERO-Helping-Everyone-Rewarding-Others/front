@@ -103,9 +103,6 @@ function getUserColor(name) {
       Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
     </p>
     </div>
-
-    
-
     <div class="box-post">
 
       <div class="info-box">
@@ -114,13 +111,11 @@ function getUserColor(name) {
         {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
       </p>
       </div>
-
         <div class="info-post">
           <div class="post-user">
           <span id="user">{{ post.usuario }}</span>
           <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
         </div>
-
       <div v-if="post.verificado" class="pontos-info">
         <p class="verificado">Verificado</p>
         <p class="pontos">+{{ post.pontos }} pontos</p>
@@ -130,48 +125,47 @@ function getUserColor(name) {
 
     <div class="post-img">
       <p>{{ post.conteudo }}</p>
-
       <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" />
     </div>
 
     <div class="social">
       <a @click="toggleLike" class="like-btn">
         <font-awesome-icon
-        :icon="[liked ? 'fas' : 'far', 'heart']"
-        :style="{ color: liked ? 'red' : 'gray' }"
+         :icon="[liked ? 'fas' : 'far', 'heart']"
+         :class="['heart-icon', liked ? 'liked' : '']"
         class="heart-icon"
       />
         {{ likes }}
       </a>
-      <p class="comment"><font-awesome-icon :icon="['far', 'comment']" /> {{ comentarios.length }}</p>
-      <p class="link"><font-awesome-icon :icon="['fas', 'link']" /> {{ post.compartilhamentos }}</p>
+      <a><font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}</a>
+      <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
     </div>
 
-    <div>
-      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"/>
-      <button @click="addComment">
-        Comentar
-      </button>
-    </div>/* Gradiente do cabeçalho para o branco */
-
-   
-    <div v-for="c in comentarios" :key="c.id" >
-      <div  class="avatar" 
-     :style="{ background: getUserColor(c.usuario) }">
-        {{ c.usuario.split(' ')[0][0] }}
-      </div>
+    <div v-for="c in comentarios" :key="c.id" class="comment-user">
       <div>
-        <div>
-          <span >{{ c.usuario }}</span>
-          <small >{{ c.tempo }}</small>
-        </div>
-        <p>{{ c.conteudo }}</p>
-        <span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }} <button @click="toggleCommentLike(c)" ></button>
-         
+        <p class="avatar" 
+        :style="{ background: getUserColor(c.usuario) }">
+        {{ c.usuario.split(' ')[0][0] }}
+      </p>
       </div>
-    </div>
+        <div class="c-post">
+          <p class="c-user">{{ c.usuario }}</p>
+          <span class="c-conteudo">{{ c.conteudo }}</span>
+        </div>
+      </div>
+
+      <div class="comment-box">
+      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
+       @keyup.enter="addComment"/>
+      <button @click="addComment">
+        Publicar
+      </button>
+      </div>
+
     </div>
     </section>
+    <!--<span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }} <button @click="toggleCommentLike(c)" ></button>
+         <small >{{ c.tempo }}</small>-->
 </template>
 
 <style scoped>
@@ -191,22 +185,15 @@ div.welcome {
   color: rgb(104, 104, 103);
   margin: 0 0 8vw 0;
 }
-.feed p {
-  font-size: 2rem;
-  font-weight: 700;
-}
-div.feed {
-  margin: 0 auto;
-  width: 50vw;
-}
 div.box-post {
-  border: 3px solid rgb(218, 215, 215);
+  border: 2px solid rgb(218, 215, 215);
   width: 50vw;
+  height: auto;
   margin: 0 auto;
   border-radius: 20px;
   padding: 2vw;
   box-sizing: border-box;
-  box-shadow: 0 5px 10px 5px rgba(180, 179, 179, 0.3);
+  box-shadow: 0 0 5px 1px rgb(204, 202, 202, 0.6);
 }
 .info-box {
   display: flex;
@@ -223,11 +210,13 @@ div.box-post {
  color: white;
  font-weight: 700;
 }
-#user {
+#user,
+.c-user {
   font-weight: 600;
   color: black  ;
 }
-.info-post .post-user span {
+.info-post .post-user span,
+.c-conteudo {
   color: rgb(81, 81, 82);
 }
 .pontos-info {
@@ -238,48 +227,88 @@ div.pontos-info .pontos {
   padding: 8px;
   border-radius: 12px;
   font-weight: 600;
-  margin: 0.7vw 1.2vw 0 0;
+  margin: 0.7vw 1vw 0 0;
+  font-size: 1rem;
 }
 div.pontos-info .verificado {
-  background: rgb(151, 247, 231, 0.6);
-  
+  background: rgba(53, 231, 178, 0.4);  
 }
 div.pontos-info .pontos {
   background: rgba(238, 240, 146, 0.6);
 }
-
+.post-img p {
+  font-size: 1rem;
+}
 .post-img img {
   width: 100%;
   height: auto;
   object-fit: cover;
-  
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  border-radius: 12px;
 }
-.social a {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 1.3rem;
-  color: gray;
-}
-.social {
-  display: flex;
-  gap: 10px;
-}
-.social p {
-  cursor: pointer;
-}
-.social p:hover {
-  color: rgb(11, 20, 146);
-}
-.social p
 .social {
   display: flex;
   font-size: 1.3rem;
   color: grey;
-  gap: 15px;
+  gap: 15px; 
+  margin: 1vw 0;
+}
+.heart-icon,
+.comment,
+#link {
+  cursor: pointer;
+}
+.social span:hover {
+  color: rgb(13, 129, 66);
+}
+.comment:hover {
+  color: blue;
+}
+.heart-icon:hover {
+  color: red; 
+}
+.heart-icon.liked {
+  color: red; 
+}
+.comment-user p.avatar {
+ width: 3vw;
+ height: 3vw;
+ border-radius: 100%;
+ padding: 0;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ color: white;
+ font-weight: 700;
+ margin-right: 1vw;
+}
+.comment-user {
+  display: flex;
+  margin-top: 0;
+}
+.c-user {
+  margin: 1vw 0 0.2vw 0;
+}
+.comment-box {
+  margin: 1vw 0;
+  padding-bottom: 1vw;
+  border-bottom: 1px solid rgb(204, 196, 196, 0.5);
+  display: flex;
+  justify-content: space-between;
+}
+.comment-box input {
+  border: none;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+}
+.comment-box button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(101, 143, 235);
 }
 
 </style>
