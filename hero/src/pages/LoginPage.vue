@@ -18,7 +18,7 @@ const handleLogin = async () => {
 const showPassword = ref(false);
 </script>
 
-<template>  
+<template>
 <section>
     <div class="box1">
       <div class="logo">
@@ -37,6 +37,7 @@ const showPassword = ref(false);
         <li>
           Seja um herói
         </li>
+       <router-link to="/"> volta</router-link>
       </ul>
     </div>
     <div class="box2">
@@ -56,7 +57,7 @@ const showPassword = ref(false);
           placeholder="password"
           v-model="password"
         />
-          <span class="mdi" 
+          <span class="mdi"
           :class="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click="showPassword = !showPassword">
           </span>
@@ -88,7 +89,7 @@ const showPassword = ref(false);
   background: linear-gradient(to right bottom, #1b2353 0%, #276394 75%, #43a86a 100%);
   }
   .box1, .box2 {
-    flex: 1; 
+    flex: 1;
     margin-top: 5vw;
   }
   .box1 {
@@ -165,7 +166,7 @@ const showPassword = ref(false);
     margin-bottom: 1.5vw;
     transition: 0.2s;
     font-size: 1.3rem;
-  } 
+  }
   form input:focus,
   form input:hover {
     outline: none;
@@ -186,7 +187,7 @@ const showPassword = ref(false);
     border: none;
     color: rgb(228, 225, 225);
     font-weight: 700;
-    transition: 0.2s; 
+    transition: 0.2s;
     cursor: pointer;
   }
   .password-field {

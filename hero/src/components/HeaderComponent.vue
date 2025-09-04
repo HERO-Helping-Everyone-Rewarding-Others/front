@@ -1,22 +1,18 @@
 <script setup>
 import { usuario } from '../store/user'
-import { sidebar } from '../store/sidebar' 
 import router from '@/router/'
+import { useAuth } from '@/composables/auth'
+
+// pega o user reativo do auth.js
+const { user } = useAuth()
 </script>
 
 <template>
 <header>
  <nav>
-
-
-
-
     <h1>
-        
-            <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
-        
+      <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
     </h1>
-
 
     <ul>
         <li>
@@ -36,17 +32,16 @@ import router from '@/router/'
       </li>
     </ul>
 
-
     <div class="user">
-        <div class="user-demo">
-            <p id="user-negrito">{{ usuario.nome }}</p>
-            <p>{{ usuario.pontos }} pontos</p>
-        </div>
-          <router-link to="login" class="button-user">
-            <span class="mdi mdi-account-outline"></span>
-          </router-link>
-        </div>
-
+      <div class="user-demo">
+        <!-- mostra nome do usuário logado ou "Visitante" -->
+        <strong>{{ user?.nome || "Visitante" }}</strong>
+        <p>{{ usuario.pontos }} pontos</p>
+      </div>
+      <router-link to="login" class="button-user">
+        <span class="mdi mdi-account-outline"></span>
+      </router-link>
+    </div>
 
     <button class="exit-button">Sair</button>
  </nav>
@@ -54,6 +49,7 @@ import router from '@/router/'
 </template>
 
 <style scoped>
+/* seu CSS permanece exatamente igual */
 header {
     width: 100%;
     font-size: 1rem;
@@ -91,7 +87,6 @@ header nav ul li a {
     transition: 0.2s;
     font-weight: 600;
 }
-
 header nav ul li {
     list-style: none;
 }
