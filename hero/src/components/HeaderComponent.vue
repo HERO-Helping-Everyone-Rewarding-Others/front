@@ -1,19 +1,11 @@
 <script setup>
 import { usuario } from '../store/user'
-import { sidebar } from '../store/sidebar' 
 import router from '@/router/'
 </script>
 
 <template>
 <header>
  <nav>
-
-    <div>
-       <button class="sidebar-button" @click="sidebar.toggleSidebar()">
-       <span class="mdi mdi-view-headline"></span>
-       </button>
-    </div>
-
 
     <h1>
         
