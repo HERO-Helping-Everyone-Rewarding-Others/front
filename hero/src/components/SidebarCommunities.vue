@@ -1,81 +1,41 @@
 <script setup>
-import { sidebar } from "../store/sidebar";
+import { computed } from "vue"
+import { RouterLink } from "vue-router"
+import { useCommunityState } from "../store/communities"
+
+const { todasComunidades, comunidadesEntradas } = useCommunityState()
+const comunidadesPopulares = computed(() => todasComunidades.value)
+const minhasComunidades = computed(() => comunidadesEntradas.value)
 </script>
 
 <template>
-<div v-show="sidebar.aberto" class="overlay" @click="sidebar.fecharSidebar()"></div>
-<aside v-show="sidebar.aberto" class="sidebar">
-  <button class="close-btn" @click="sidebar.fecharSidebar()">X</button>
-  
-    <nav class="sidebar-menu">
-      <router-link to="/" @click="sidebar.fecharSidebar()">Início</router-link>
-      <router-link to="/comunidades" @click="sidebar.fecharSidebar()">Comunidades</router-link>
-      <router-link to="/loja" @click="sidebar.fecharSidebar()">Loja</router-link>
-    </nav>
+  <aside class="sidebar-menu p-4 bg-gray-100 rounded-md shadow">
+    <h2 class="font-bold mb-2">🌍 Comunidades Populares</h2>
+    <ul class="mb-4">
+      <li v-for="c in comunidadesPopulares" :key="c.id" class="mb-1">
+        <RouterLink :to="`/comunidade/${c.nome}`" class="hover:underline">
+          {{ c.nome }}
+        </RouterLink>
+      </li>
+    </ul>
+
+    <h2 class="font-bold mb-2">👥 Suas Comunidades</h2>
+    <ul>
+      <li v-if="minhasComunidades.length === 0" class="text-gray-500 text-sm">
+        Você ainda não entrou em nenhuma comunidade.
+      </li>
+      <li v-for="nome in minhasComunidades" :key="nome" class="mb-1">
+        <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
+          {{ nome }}
+        </RouterLink>
+      </li>
+    </ul>
   </aside>
 </template>
 
 <style scoped>
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  z-index: 9;
-}
-
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 100%;
-  background: #1b2353;
-  color: white;
-  padding: 20px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  animation: slideIn 0.3s ease;
-}
-
-
-.close-btn {
-  background: transparent;
-  border: none;
-  font-size: 2rem;
-  align-self: flex-end;
-  color: white;
-  cursor: pointer;
-}
-
-
 .sidebar-menu {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-.sidebar-menu a {
-  text-decoration: none;
-  color: white;
-  font-size: 1.2rem;
-}
-.sidebar-menu a:hover {
-  color: #43a86a;
-}
-
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
 }
 </style>

@@ -59,7 +59,6 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString());
 };
 
-
 const addComment = () => {
   if (!newComment.value.trim()) return;
 
@@ -78,79 +77,215 @@ const addComment = () => {
   persistComments();
 };
 
-const toggleCommentLike = (c) => {
-  c.liked ? c.curtidas-- : c.curtidas++;
-  c.liked = !c.liked;
-  persistComments();
-};
+
+function getUserColor(name) {
+  const colors = ["#FF5733", "#33FF57", "#3357FF", "#F39C12", "#8E44AD", "#E74C3C"];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % colors.length;
+  return colors[index];
+}
+
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto mt-6 bg-white rounded-2xl shadow p-4">
-
-    <div class="flex items-center gap-3 mb-3">
-      <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
+  <section>
+    <div class="box-post">
+      <div class="info-box">
+        <div class="perfil-user">
+        <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
         {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
+      </p>
       </div>
-      <div>
-        <div class="font-semibold">
-          {{ post.usuario }}
-          <span class="text-blue-600 cursor-pointer"> • {{ post.comunidade }}</span>
+        <div class="info-post">
+          <div class="post-user">
+          <span id="user">{{ post.usuario }}</span>
+          <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
         </div>
-        <div class="text-gray-500 text-sm">{{ post.tempo }}</div>
+      <div v-if="post.verificado" class="pontos-info">
+        <p class="verificado">Verificado</p>
+        <p class="pontos">+{{ post.pontos }} pontos</p>
       </div>
-      <div v-if="post.verificado" class="ml-auto">
-        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Verificado</span>
-        <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">+{{ post.pontos }} pontos</span>
+        </div>
       </div>
+
+    <div class="post-img">
+      <p>{{ post.conteudo }}</p>
+      <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" />
     </div>
 
-
-    <p class="mb-3 text-gray-800">{{ post.conteudo }}</p>
-
-
-    <img v-if="post.imagem" :src="post.imagem" alt="imagem do post"
-         class="w-full h-60 object-cover rounded-xl mb-3" />
-
-
-    <div class="flex items-center gap-6 text-gray-600 text-sm mb-3">
-      <button @click="toggleLike" class="flex items-center gap-1 transition text-lg bg-transparent border-none">
-        <span :class="liked ? 'text-red-500' : 'text-gray-500'">❤️</span>
+    <div class="social">
+      <a @click="toggleLike" class="like-btn">
+        <font-awesome-icon
+         :icon="[liked ? 'fas' : 'far', 'heart']"
+         :class="['heart-icon', liked ? 'liked' : '']"
+        class="heart-icon"
+      />
         {{ likes }}
-      </button>
-      <span>💬 {{ comentarios.length }}</span>
-      <span>🔗 {{ post.compartilhamentos }}</span>
+      </a>
+      <a><font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}</a>
+      <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
     </div>
 
-    <hr class="mb-3" />
-
-
-    <div class="flex items-center gap-2 mb-4">
-      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
-             class="flex-1 border rounded-lg p-2 text-sm" />
-      <button @click="addComment" class="px-3 py-1 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700">
-        Comentar
-      </button>
-    </div>
-
-   
-    <div v-for="c in comentarios" :key="c.id" class="flex items-start gap-2 mb-3">
-      <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold">
+    <div v-for="c in comentarios" :key="c.id" class="comment-user">
+      <div>
+        <p class="avatar"
+        :style="{ background: getUserColor(c.usuario) }">
         {{ c.usuario.split(' ')[0][0] }}
+      </p>
       </div>
-      <div class="bg-gray-100 p-2 rounded-lg flex-1">
-        <div class="flex justify-between items-center">
-          <span class="font-semibold">{{ c.usuario }}</span>
-          <small class="text-gray-500">{{ c.tempo }}</small>
+        <div class="c-post">
+          <p class="c-user">{{ c.usuario }}</p>
+          <span class="c-conteudo">{{ c.conteudo }}</span>
         </div>
-        <p>{{ c.conteudo }}</p>
-        <button @click="toggleCommentLike(c)" class="text-xs mt-1 flex items-center gap-1 bg-transparent border-none">
-          <span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }}
-        </button>
       </div>
+
+      <div class="comment-box">
+      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
+       @keyup.enter="addComment"/>
+      <button @click="addComment">
+        Publicar
+      </button>
+      </div>
+
     </div>
-  </div>
+    </section>
+    <!--<span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }} <button @click="toggleCommentLike(c)" ></button>
+         <small >{{ c.tempo }}</small>-->
 </template>
 
 <style scoped>
+section {
+  background: rgb(253, 252, 252);
+  padding-top: 3vw;
+}
+
+div.box-post {
+  border: 2px solid rgb(218, 215, 215);
+  width: 50vw;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 2vw;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px 1px rgb(204, 202, 202, 0.6);
+}
+.info-box {
+  display: flex;
+  margin-bottom: 4vw;
+}
+.perfil-user p {
+ width: 4vw;
+ height: 4vw;
+ border-radius: 100%;
+ margin: 0 1vw 0 0;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ color: white;
+ font-weight: 700;
+}
+#user,
+.c-user {
+  font-weight: 600;
+  color: black  ;
+}
+.info-post .post-user span,
+.c-conteudo {
+  color: rgb(81, 81, 82);
+}
+.pontos-info {
+  display: flex;
+}
+div.pontos-info .verificado,
+div.pontos-info .pontos {
+  padding: 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin: 0.7vw 1vw 0 0;
+  font-size: 1rem;
+}
+div.pontos-info .verificado {
+  background: rgba(53, 231, 178, 0.4);
+}
+div.pontos-info .pontos {
+  background: rgba(238, 240, 146, 0.6);
+}
+.post-img p {
+  font-size: 1rem;
+}
+.post-img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  border-radius: 12px;
+}
+.social {
+  display: flex;
+  font-size: 1.3rem;
+  color: grey;
+  gap: 15px;
+  margin: 1vw 0;
+}
+.heart-icon,
+.comment,
+#link {
+  cursor: pointer;
+}
+.social span:hover {
+  color: rgb(13, 129, 66);
+}
+.comment:hover {
+  color: blue;
+}
+.heart-icon:hover {
+  color: red;
+}
+.heart-icon.liked {
+  color: red;
+}
+.comment-user p.avatar {
+ width: 3vw;
+ height: 3vw;
+ border-radius: 100%;
+ padding: 0;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ color: white;
+ font-weight: 700;
+ margin-right: 1vw;
+}
+.comment-user {
+  display: flex;
+  margin-top: 0;
+}
+.c-user {
+  margin: 1vw 0 0.2vw 0;
+}
+.comment-box {
+  margin: 1vw 0;
+  padding-bottom: 1vw;
+  border-bottom: 1px solid rgb(204, 196, 196, 0.5);
+  display: flex;
+  justify-content: space-between;
+}
+.comment-box input {
+  border: none;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+}
+.comment-box button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(101, 143, 235);
+}
+
 </style>
