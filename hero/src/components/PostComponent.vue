@@ -77,11 +77,6 @@ const addComment = () => {
   persistComments();
 };
 
-const toggleCommentLike = (c) => {
-  c.liked ? c.curtidas-- : c.curtidas++;
-  c.liked = !c.liked;
-  persistComments();
-};
 
 function getUserColor(name) {
   const colors = ["#FF5733", "#33FF57", "#3357FF", "#F39C12", "#8E44AD", "#E74C3C"];
@@ -89,7 +84,7 @@ function getUserColor(name) {
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const index = Math.abs(hash) % colors.length; 
+  const index = Math.abs(hash) % colors.length;
   return colors[index];
 }
 
@@ -97,14 +92,7 @@ function getUserColor(name) {
 
 <template>
   <section>
-    <div class="welcome">
-      <h1>Bem-vindo ao HERO</h1>
-    <p>
-      Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
-    </p>
-    </div>
     <div class="box-post">
-
       <div class="info-box">
         <div class="perfil-user">
         <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
@@ -143,7 +131,7 @@ function getUserColor(name) {
 
     <div v-for="c in comentarios" :key="c.id" class="comment-user">
       <div>
-        <p class="avatar" 
+        <p class="avatar"
         :style="{ background: getUserColor(c.usuario) }">
         {{ c.usuario.split(' ')[0][0] }}
       </p>
@@ -173,18 +161,7 @@ section {
   background: rgb(253, 252, 252);
   padding-top: 3vw;
 }
-div.welcome {
-  text-align: center;
-}
-.welcome h1 {
-  font-size: 2.5rem;
-  margin: 0;
-}
-.welcome p {
-  font-size: 1.5rem;
-  color: rgb(104, 104, 103);
-  margin: 0 0 8vw 0;
-}
+
 div.box-post {
   border: 2px solid rgb(218, 215, 215);
   width: 50vw;
@@ -204,9 +181,9 @@ div.box-post {
  height: 4vw;
  border-radius: 100%;
  margin: 0 1vw 0 0;
- display: flex;            
- justify-content: center;   
- align-items: center; 
+ display: flex;
+ justify-content: center;
+ align-items: center;
  color: white;
  font-weight: 700;
 }
@@ -231,7 +208,7 @@ div.pontos-info .pontos {
   font-size: 1rem;
 }
 div.pontos-info .verificado {
-  background: rgba(53, 231, 178, 0.4);  
+  background: rgba(53, 231, 178, 0.4);
 }
 div.pontos-info .pontos {
   background: rgba(238, 240, 146, 0.6);
@@ -250,7 +227,7 @@ div.pontos-info .pontos {
   display: flex;
   font-size: 1.3rem;
   color: grey;
-  gap: 15px; 
+  gap: 15px;
   margin: 1vw 0;
 }
 .heart-icon,
@@ -265,10 +242,10 @@ div.pontos-info .pontos {
   color: blue;
 }
 .heart-icon:hover {
-  color: red; 
+  color: red;
 }
 .heart-icon.liked {
-  color: red; 
+  color: red;
 }
 .comment-user p.avatar {
  width: 3vw;

@@ -1,31 +1,31 @@
 <script>
 </script>
 <template>
-    <section class="welcome">
-        <h2>
-            Bem-vindo ao HERO
-        </h2>
-        <P>Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!</P>
-        <div class="">
-            <ul>
-                <li>
-                    <span class="mdi mdi-account-group"></span>
-                    <p>5</p>
-                    <p>Comunidades Ativas</p>
-                </li>
-                <li>
-                    <span class="mdi mdi-hand-front-left"></span>
-                    <p><!--numero de Voluntários--></p>
-                    <p>Voluntários</p>
-                </li>
-                <li>
-                    <span class="mdi mdi-eye-check"></span>
-                    <p><!--numero de Ações Realizadas--></p>
-                    <p>Ações Realizadas</p>
-                </li>
-            </ul>
-        </div>
-    </section>
+  <section>
+  <div class="welcome">
+      <h1>Bem-vindo ao HERO</h1>
+    <p>
+      Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
+    </p>
+    </div>
+  </section>
 </template>
 <style scoped>
+section {
+  background: rgb(253, 252, 252);
+  padding-top: 3vw;
+}
+
+div.welcome {
+  text-align: center;
+}
+.welcome h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+.welcome p {
+  font-size: 1.5rem;
+  color: rgb(104, 104, 103);
+  margin: 0 0 8vw 0;
+}
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import NewPostComponent from '../components/NewPostComponent.vue'
+import WelcomeComponent from '../components/WelcomeComponent.vue'
 import FeedComponent from '../components/FeedComponent.vue'
 
 
@@ -8,11 +8,8 @@ import FeedComponent from '../components/FeedComponent.vue'
 <template>
 
   <div>
-    <NewPostComponent v-if="ShowPost" />
-
+    <WelcomeComponent/>
     <FeedComponent />
-
-
   </div>
 </template>
 
