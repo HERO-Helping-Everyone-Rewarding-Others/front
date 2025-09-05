@@ -4,10 +4,12 @@ import { usuario, gastarPontos } from "../store/user";
 
 
 const itens = ref([
-  { id: 1, nome: "pinto de borracha", preco: 100, descricao: "Uma camiseta estilosa da comunidade." },
-  { id: 2, nome: "Caneca personalizada", preco: 50, descricao: "Caneca oficial para café ou chá." },
-  { id: 3, nome: "Adesivo da comunidade", preco: 20, descricao: "Adesivo para colar onde quiser." },
-  {  id: 4, nome: "oibrdsaD", preco: 60, descricao: "AWI " }
+  { id: 1, nome: "Gift Card Amazon R$ 50", preco: 500, descricao: "Vale-presente para compras na Amazon", disponivel: 280, img: "/amazon.png" },
+  { id: 2, nome: "Desconto 20% iFood", preco: 200, descricao: "Cupom de desconto para pedidos no iFood", disponivel: 50, img: "/ifood.png" },
+  { id: 3, nome: "PIX R$ 50", preco: 300, descricao: "Tranferência PIX direto para sua conta", disponivel: 100, img: "/pix.png" },
+  { id: 4, nome: "Doação para ONGs", preco: 100, descricao: "Doe seus pontos para ONGs parceiras", disponivel: 999, img:"/ong.png" },
+  { id: 5, nome: "Gift Card Spotify R$ 30", preco: 350, descricao: "Assinatura premium do Spotify", disponivel: 15, img: "/spotify.png" },
+  { id: 6, nome: "Desconto 15% Uber", preco: 150, descricao: "Cupom de desconto para corridas Uber", disponivel: 75, img: "/uber.png" }
 ]);
 
 const itemSelecionado = ref(null);
@@ -87,20 +89,21 @@ const confirmarCompra = () => {
       </ul>
     </div>
 
-
-
-    <p class="pontos">Seus pontos: <strong></strong></p>
-
     <div class="grid">
-      <div v-for="item in itens" :key="item.id" class="card">
-        <h2>{{ item.nome }}</h2>
-        <p>{{ item.descricao }}</p>
-        <p><strong>{{ item.preco }} pontos</strong></p>
-        <button @click="abrirModal(item)">Comprar</button>
+      <div v-for="item in itens" :key="item.id" class="itens">
+        <img :src="item.img" alt="Imagem do item" />
+         <div class="box-description">
+           <h2>{{ item.nome }}</h2>
+          <p>{{ item.descricao }}</p>
+        <div class="box-info">
+          <p><span class="mdi mdi-star-outline"></span> {{ item.preco }} pontos</p>
+          <p class="disp">{{ item.disponivel }} disponíveis</p>
+        </div>
+         </div>
       </div>
     </div>
 
-    <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
+   <!-- <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
       <div class="modal">
         <h2>Confirmar compra</h2>
         <p><strong>{{ itemSelecionado?.nome }}</strong></p>
@@ -112,6 +115,8 @@ const confirmarCompra = () => {
         </div>
       </div>
     </div>
+    
+    <button @click="abrirModal(item)">Comprar</button>-->
 
     <div class="box-win">
       <h2>Como Ganhar Pontos</h2>
@@ -172,7 +177,7 @@ section {
 }
 .total-pontos {
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   color: rgb(12, 124, 81);
   margin: 0;
 }
@@ -213,7 +218,6 @@ section {
 .list p {
   margin: 0;
 }
-
 .box-win {
   background: white;
   border-radius: 25px;
@@ -230,7 +234,7 @@ section {
   justify-content: center;
   text-align: center;
   list-style: none;
-  padding: 3vw 2vw 1vw 2vw;
+  padding: 2vw 2vw 1vw 2vw;
 }
 .box-win ul li span#heart {
   background: rgba(154, 184, 250, 0.3);
@@ -257,6 +261,53 @@ section {
 }
 .box-win li h3 {
   font-size: 1.3rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  margin-bottom: 4vw;
+}
+.itens {
+  display: flex;
+  flex-direction: column;
+  min-width: 26vw;
+  width: calc(100% / 4 - 42px);
+  border: 3px solid rgba(207, 205, 205, 0.5);
+  box-shadow: 0 10px 15px 5px rgba(182, 192, 192, 0.1);
+  border-radius: 25px;
+  overflow: hidden;
+  background: white;
+  margin: 1vw 1vw;
+}
+.itens img {
+  width: 100%; 
+  height: 15vw;
+  object-fit: cover; 
+  display: block;
+}
+.itens h2 {
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+.itens p {
+  color: rgb(88, 87, 87);
+  font-size: 1rem;
+}
+.box-description {
+  padding: 2vw;
+}
+.box-info {
+  display: flex;
+  justify-content: space-between;
+}
+.box-info .mdi-star-outline {
+  color: rgb(247, 212, 16);
+}
+.box-info p.disp {
+  border: 1px solid rgb(168, 164, 164);
+  padding: 10px;
+  border-radius: 15px;
 }
 </style>
 
