@@ -1,18 +1,26 @@
 <script setup>
 import { usuario } from '../store/user'
+import { sidebar } from '../store/sidebar' 
 import router from '@/router/'
-import { useAuth } from '@/composables/auth'
-
-// pega o user reativo do auth.js
-const { user } = useAuth()
 </script>
 
 <template>
 <header>
  <nav>
+
+    <div>
+       <button class="sidebar-button" @click="sidebar.toggleSidebar()">
+       <span class="mdi mdi-view-headline"></span>
+       </button>
+    </div>
+
+
     <h1>
-      <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
+        
+            <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
+        
     </h1>
+
 
     <ul>
         <li>
@@ -32,16 +40,17 @@ const { user } = useAuth()
       </li>
     </ul>
 
+
     <div class="user">
-      <div class="user-demo">
-        <!-- mostra nome do usuário logado ou "Visitante" -->
-        <strong>{{ user?.nome || "Visitante" }}</strong>
-        <p>{{ usuario.pontos }} pontos</p>
-      </div>
-      <router-link to="login" class="button-user">
-        <span class="mdi mdi-account-outline"></span>
-      </router-link>
-    </div>
+        <div class="user-demo">
+            <p id="user-negrito">{{ usuario.nome }}</p>
+            <p>{{ usuario.pontos }} pontos</p>
+        </div>
+          <router-link to="login" class="button-user">
+            <span class="mdi mdi-account-outline"></span>
+          </router-link>
+        </div>
+
 
     <button class="exit-button">Sair</button>
  </nav>
@@ -49,100 +58,101 @@ const { user } = useAuth()
 </template>
 
 <style scoped>
-/* seu CSS permanece exatamente igual */
-header {
-    width: 100%;
-    font-size: 1rem;
-    background: linear-gradient(to right, #43a86a 0%, #276394 75%, #1b2353 100%);
-    color: wheat;
-}
-header nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 4rem;
-    box-sizing: border-box;
-    color: wheat;
-}
-header img {
-    height: 40px;
-    width: auto;
-    margin: 0 7vw 0 2vw;
-}
-header nav ul {
-    display: flex;
-    justify-content: center;
-    flex: 1;
-    margin: 0;
-    padding: 0;
-    gap: 40px;
-}
-header nav ul li a {
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 10px;
-    text-align: center;
-    color: rgb(250, 249, 246);
-    transition: 0.2s;
-    font-weight: 600;
-}
-header nav ul li {
-    list-style: none;
-}
-nav a:active,
-nav a:hover,
-nav a:focus {
-    color: rgba(22, 74, 90, 1);
-    background: rgb(250, 249, 246, 0.3);
-}
-button {
-    background-color: transparent;
-    border: none;
-    border-radius: 20%;
-}
-.button-user, .sidebar-button {
-    font-size: 2rem;
-    width: 2.8vw;
-    height: 2.9vw;
-    color: #e6e5e2ff;
-    margin: 0.7vw 0 0.7vw 0;
-    transition: 0.2s;
-    text-align: center;
-    border-radius: 20%;
-}
-.button-user:hover, .sidebar-button:hover {
-    background-color: rgb(243, 242, 242, 0.3);
-    color: #ffffffff;
-}
-header nav div.user {
-    display: flex;
-    margin: 0 1vw;
-}
-header nav div.user div {
-    text-align: right;
-}
-.user-demo {
-    padding: 0.7vw 0.7vw 0 0;
-}
-.user-demo p {
-    margin: 0;
-    color: #faf9f6;
-    font-weight: 600;
-}
-#user-negrito {
-    font-weight: 700;
-}
-button.exit-button {
-    background: rgb(250, 249, 246, 0.5);
-    padding: 10px 15px;
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0.7vw 0 0.7vw 0;
-    color: #ffffff;
-    transition: 0.2s;
-}
-button.exit-button:hover {
-    color: rgba(22, 74, 90, 1);
-}
+    header {
+        width: 100%;
+        box-shadow: 0 5px 6px -4px rgba(17, 17, 17, 0.3);
+        font-size: 1rem;
+        background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
+        color: wheat;
+    }
+    header nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 4rem;
+        box-sizing: border-box;
+        color: wheat;
+    }
+    header img {
+        height: 40px;
+        width: auto;
+        margin: 0 7vw 0 2vw;
+    }
+    header nav ul {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        margin: 0;
+        padding: 0;
+        gap: 40px;
+    }
+    header nav ul li a {
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 10px;
+        text-align: center;
+        color: rgb(250, 249, 246);
+        transition: 0.2s;
+        font-weight: 600;
+    }
+   header nav ul li {
+        list-style: none;
+    }
+    nav a:active,
+    nav a:hover,
+    nav a:focus {
+        color: #113b74;
+        background:rgb(250, 249, 246, 0.3);
+    }
+    button {
+        background-color: transparent;
+        border: none;
+        border-radius: 10px;
+    }
+    .button-user, .sidebar-button {
+        font-size: 2rem;
+        width: 2.8vw;
+        height: 2.9vw;
+        color: #ffffff;
+        margin: 0.7vw 0 0.7vw 0;
+        transition: 0.2s;
+        text-align: center;
+        border-radius: 15px;
+    }
+    .button-user:hover, .sidebar-button:hover {
+         background-color: rgb(243, 242, 242, 0.3);
+         color: #113b74;
+    }
+    header nav div.user {
+        display: flex;
+        margin: 0 1vw;
+    }
+    header nav div.user div {
+        text-align: right;
+    }
+    .user-demo {
+        padding: 0.7vw 0.7vw 0 0;
+    }
+    .user-demo p {
+        margin: 0;
+        color: #faf9f6;
+        font-weight: 600;
+    }
+    #user-negrito {
+        font-weight: 700;
+    }
+    button.exit-button {
+        background:rgb(250, 249, 246, 0.5);
+        padding: 10px 15px;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0.7vw 0 0.7vw 0;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    button.exit-button:hover {
+        color: #113b74;
+    }
 </style>
