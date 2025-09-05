@@ -62,7 +62,7 @@ import router from '@/router/'
         width: 100%;
         box-shadow: 0 5px 6px -4px rgba(17, 17, 17, 0.3);
         font-size: 1rem;
-        background: linear-gradient(to right, #43a86a 0%, #276394 75%, #1b2353 100%);
+        background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
         color: wheat;
     }
     header nav {
@@ -78,9 +78,7 @@ import router from '@/router/'
         height: 40px;
         width: auto;
         margin: 0 7vw 0 2vw;
-        
     }
-  
     header nav ul {
         display: flex;
         justify-content: center;
@@ -104,27 +102,27 @@ import router from '@/router/'
     nav a:active,
     nav a:hover,
     nav a:focus {
-        color: rgba(22, 74, 90, 1);
+        color: #113b74;
         background:rgb(250, 249, 246, 0.3);
     }
     button {
         background-color: transparent;
         border: none;
-        border-radius: 20%;
+        border-radius: 10px;
     }
     .button-user, .sidebar-button {
         font-size: 2rem;
         width: 2.8vw;
         height: 2.9vw;
-        color: #e6e5e2ff;
+        color: #ffffff;
         margin: 0.7vw 0 0.7vw 0;
         transition: 0.2s;
         text-align: center;
-        border-radius: 20%;
+        border-radius: 15px;
     }
     .button-user:hover, .sidebar-button:hover {
          background-color: rgb(243, 242, 242, 0.3);
-         color: #ffffffff;
+         color: #113b74;
     }
     header nav div.user {
         display: flex;
@@ -148,12 +146,13 @@ import router from '@/router/'
         background:rgb(250, 249, 246, 0.5);
         padding: 10px 15px;
         font-size: 1rem;
-        font-weight: 500;
+        font-weight: 600;
         margin: 0.7vw 0 0.7vw 0;
-        color: #ffffff;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
         transition: 0.2s;
     }
     button.exit-button:hover {
-        color: rgba(22, 74, 90, 1);
+        color: #113b74;
     }
 </style>

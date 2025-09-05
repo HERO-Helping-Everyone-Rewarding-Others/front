@@ -9,7 +9,9 @@ const itens = ref([
   { id: 3, nome: "PIX R$ 50", preco: 300, descricao: "Tranferência PIX direto para sua conta", disponivel: 100, img: "/pix.png" },
   { id: 4, nome: "Doação para ONGs", preco: 100, descricao: "Doe seus pontos para ONGs parceiras", disponivel: 999, img:"/ong.png" },
   { id: 5, nome: "Gift Card Spotify R$ 30", preco: 350, descricao: "Assinatura premium do Spotify", disponivel: 15, img: "/spotify.png" },
-  { id: 6, nome: "Desconto 15% Uber", preco: 150, descricao: "Cupom de desconto para corridas Uber", disponivel: 75, img: "/uber.png" }
+  { id: 6, nome: "Desconto 15% Uber", preco: 150, descricao: "Cupom de desconto para corridas Uber", disponivel: 75, img: "/uber.png" },
+  { id: 7, nome: "Gift Card Google Play R$ 30", preco: 300, descricao: "Gift card de 30 reais na Google Play", disponivel: 40, img: "/play.png" },
+  { id: 8, nome: "Desconto 30% Starbucks", preco: 100, descricao: "Cupom de desconto para pedidos no Starbuks", disponivel: 100, img: "/starbucks.png" }
 ]);
 
 const itemSelecionado = ref(null);
@@ -89,7 +91,7 @@ const confirmarCompra = () => {
       </ul>
     </div>
 
-    <div class="grid">
+    <div class="flex">
       <div v-for="item in itens" :key="item.id" class="itens">
         <img :src="item.img" alt="Imagem do item" />
          <div class="box-description">
@@ -143,7 +145,7 @@ const confirmarCompra = () => {
 
 <style scoped>
 section {
-  padding: 7vw 8vw;
+  padding: 5vw 7vw;
   background: rgba(230, 242, 243, 0.5);
 }
 .pontos-user {
@@ -166,9 +168,9 @@ section {
   text-align: right;
 }
 .icon-line span {
-  color: rgb(12, 124, 81);
+  color: rgb(12, 88, 124);
   font-size: 2rem;
-  background: rgba(141, 233, 202, 0.5);
+  background: rgba(141, 215, 233, 0.5);
   border-radius: 100%;
   padding: 1vw 1.5vw;
 }
@@ -178,18 +180,17 @@ section {
 .total-pontos {
   font-weight: 700;
   font-size: 1.5rem;
-  color: rgb(12, 124, 81);
+  color: rgb(12, 88, 124);
   margin: 0;
 }
 .list ul {
   display: flex;
   gap: 10px;
   margin: 0;
-  padding: 0;
+  padding: 2vw 2vw 0 0;
 }
 .list ul li {
   list-style: none;
-  margin: 3vw 0;
 }
 .list button {
   display: flex;
@@ -209,7 +210,7 @@ section {
 .list button:hover,
 .list button:focus {
   color: white;
-  background: rgb(18, 18, 19);
+  background: rgb(25, 25, 26);
 }
 .list button span {
   font-size: 1.3rem;
@@ -262,52 +263,53 @@ section {
 .box-win li h3 {
   font-size: 1.3rem;
 }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+.flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin-bottom: 4vw;
 }
 .itens {
   display: flex;
   flex-direction: column;
-  min-width: 26vw;
-  width: calc(100% / 4 - 42px);
-  border: 3px solid rgba(207, 205, 205, 0.5);
-  box-shadow: 0 10px 15px 5px rgba(182, 192, 192, 0.1);
+  width: 19vw;
+  border: 3px solid rgba(131, 129, 129, 0.2);
   border-radius: 25px;
   overflow: hidden;
   background: white;
   margin: 1vw 1vw;
 }
 .itens img {
-  width: 100%; 
-  height: 15vw;
-  object-fit: cover; 
+  height: 12vw;
+  object-fit: cover;
   display: block;
 }
 .itens h2 {
   font-weight: 500;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-bottom: 0;
 }
 .itens p {
   color: rgb(88, 87, 87);
-  font-size: 1rem;
+  font-size: 0.9rem;
+  
 }
 .box-description {
-  padding: 2vw;
+  padding: 1vw;
 }
 .box-info {
   display: flex;
   justify-content: space-between;
+  font-weight: 600;
 }
 .box-info .mdi-star-outline {
   color: rgb(247, 212, 16);
+  font-size: 1.2rem;
 }
 .box-info p.disp {
-  border: 1px solid rgb(168, 164, 164);
-  padding: 10px;
-  border-radius: 15px;
+  border: 1px solid rgb(168, 164, 164, 0.5);
+  padding: 5px 8px;
+  border-radius: 10px;
 }
 </style>
 

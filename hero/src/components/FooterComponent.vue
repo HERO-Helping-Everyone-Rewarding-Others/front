@@ -47,15 +47,15 @@
 
 <style scoped>
     footer {    
-        padding: 4vw 0 0 0;
+        padding: 2vw 0 0 0;
         text-align: center;
-        background: linear-gradient(to right, #1b2353 0%, #276394 75%, #43a86a 100%);
+        background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
         font-weight: 500;
     }
     .logo-footer img {
         height: 70px;
         width: auto;
-        margin: 1vw 0 3vw 0;
+        margin: 1vw 0;
     }
     footer nav ul {
         display: flex;
