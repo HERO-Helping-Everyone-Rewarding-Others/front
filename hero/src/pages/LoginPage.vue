@@ -87,6 +87,7 @@ const showPassword = ref(false);
   padding: 0 8vw 0 8vw;
   color: #f5f5f5;
   background: linear-gradient(to right bottom, #1b2353 0%, #276394 75%, #43a86a 100%);
+  background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
   }
   .box1, .box2 {
     flex: 1;
