@@ -84,7 +84,7 @@ const showPassword = ref(false);
 </template>
 
 <style scoped>
-  section {
+   section {
   display: flex;
   height: 100vh;
   padding: 0 8vw 0 8vw;
@@ -92,8 +92,8 @@ const showPassword = ref(false);
   background: linear-gradient(to right bottom, #1b2353 0%, #276394 75%, #43a86a 100%);
   }
   .box1, .box2 {
-    flex: 1; 
-    margin-top: 5vw;
+    flex: 1;
+    margin-top: 3vw;
   }
   .box1 {
     margin-right: 5vw;
@@ -128,12 +128,12 @@ const showPassword = ref(false);
   }
   .box1 ul li {
     list-style: none;
-    border: 1px solid rgba(17, 17, 17, 0.2);
-    box-shadow: 1px 1px 10px 5px rgba(17, 17, 17, 0.2);
+    border: 1px solid rgba(177, 175, 175, 0.377);
+    box-shadow: 1px 1px 5px 2px rgba(177, 175, 175, 0.3);
     width: auto;
     text-align: center;
     border-radius: 5vw;
-    padding: 6px 20px 6px 20px;
+    padding: 7px 20px 7px 20px;
     font-weight: 600;
   }
   .box2 {
@@ -143,7 +143,7 @@ const showPassword = ref(false);
     border: 1px solid rgb(31, 30, 30, 0.3);
     box-shadow: 1px 1px 10px 5px rgba(17, 17, 17, 0.2);
     max-width: 40%;
-    max-height: 75%;
+    height: 90vh;
   }
  .box2 > *:not(.register) {
     padding: 2vw 0 0 4vw;
@@ -168,7 +168,8 @@ const showPassword = ref(false);
     padding: 20px;
     margin-bottom: 1.5vw;
     transition: 0.2s;
-  } 
+    font-size: 1.3rem;
+  }
   form input:focus,
   form input:hover {
     outline: none;
@@ -189,7 +190,7 @@ const showPassword = ref(false);
     border: none;
     color: rgb(228, 225, 225);
     font-weight: 700;
-    transition: 0.2s; 
+    transition: 0.2s;
     cursor: pointer;
   }
   .password-field {
@@ -210,8 +211,8 @@ const showPassword = ref(false);
   }
   .register {
     text-align: center;
-    margin: 2vw auto 0 auto;
-    padding-top: 1vw;
+    margin: 1vw auto 0 auto;
+    padding-top: 2vw;
     width: 70%;
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     }
@@ -239,16 +240,38 @@ const showPassword = ref(false);
   padding: 0 5vw;
   }
   .box1 h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
+  }
+  .box1 .logo,
+  .box1 h1 {
+    font-size: 2rem;
   }
   .box1 p {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   .box1 ul li {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
   .box2 label {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+  form input {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
+  form input::placeholder {
+    font-size: 0.9rem;
+  }
+  form button.submit {
+    padding: 0.5vw 1.4vw;
+    font-size: 0.9rem;
+  }
+  .register p {
+    font-size: 1rem;
+  }
+  .register a {
+    padding: 0.5vw 1.4vw;
+    font-size: 0.9rem;
   }
   }
 </style>

@@ -268,7 +268,7 @@ const selecionarCategoria = (categoria) => {
 <style scoped>
 /* O CSS que você forneceu, intacto */
 section {
-  padding: 5vw 7vw;
+  padding: 5vw 5vw;
   background: rgba(230, 242, 243, 0.5);
 }
 .pontos-user {
@@ -391,16 +391,16 @@ section {
   flex-direction: row;
   flex-wrap: wrap;
   margin-bottom: 4vw;
+  gap: 2vw;
 }
 .itens {
   display: flex;
   flex-direction: column;
-  width: 19vw;
+  width: 20vw;
   border: 3px solid rgba(131, 129, 129, 0.2);
   border-radius: 25px;
   overflow: hidden;
   background: white;
-  margin: 1vw 1vw;
 }
 .itens img {
   height: 12vw;
@@ -408,13 +408,12 @@ section {
   display: block;
 }
 .itens h2 {
-  font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 0;
 }
 .itens p {
   color: rgb(88, 87, 87);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
 }
 .box-description {
   padding: 1vw;
@@ -430,7 +429,7 @@ section {
 }
 .box-info p.disp {
   border: 1px solid rgb(168, 164, 164, 0.5);
-  padding: 5px 8px;
+  padding: 5px 7px;
   border-radius: 10px;
 }
 .progress-container {

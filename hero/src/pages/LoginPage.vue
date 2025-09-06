@@ -42,11 +42,11 @@ const showPassword = ref(false);
     </div>
     <div class="box2">
       <form @submit.prevent="handleLogin" >
-        <label for="user">Nome de usuário</label>
+        <label for="user">E-mail</label>
         <input
           id="user"
           type="email"
-          placeholder="user"
+          placeholder="seu e-mail"
           v-model="email"
         />
         <label for="password">Senha</label>
@@ -237,16 +237,38 @@ const showPassword = ref(false);
   padding: 0 5vw;
   }
   .box1 h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
+  }
+  .box1 .logo,
+  .box1 h1 {
+    font-size: 2rem;
   }
   .box1 p {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   .box1 ul li {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
   .box2 label {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+  form input {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
+  form input::placeholder {
+    font-size: 0.9rem;
+  }
+  form button.submit {
+    padding: 0.5vw 1.4vw;
+    font-size: 0.9rem;
+  }
+  .register p {
+    font-size: 1rem;
+  }
+  .register a {
+    padding: 0.5vw 1.4vw;
+    font-size: 0.9rem;
   }
   }
 </style>
