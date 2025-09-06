@@ -141,7 +141,6 @@ const selecionarCategoria = (categoria) => {
 
 <template>
   <section>
-    <!-- Pontos do usuário -->
     <div class="pontos-user">
       <div class="recom">
         <h2>Recompensas</h2>
@@ -158,7 +157,6 @@ const selecionarCategoria = (categoria) => {
       </div>
     </div>
 
-    <!-- Filtro de categorias -->
     <div class="list">
       <ul>
         <li>
@@ -194,7 +192,6 @@ const selecionarCategoria = (categoria) => {
       </ul>
     </div>
 
-    <!-- Itens -->
     <div class="flex">
       <div v-for="item in itensFiltrados" :key="item.id" class="itens">
         <img :src="item.img" alt="Imagem do item" />
@@ -207,7 +204,6 @@ const selecionarCategoria = (categoria) => {
             <p class="disp">{{ item.disponivel }} disponíveis</p>
           </div>
 
-          <!-- Barra de progresso animada -->
           <div class="progress-container">
             <p v-if="usuario.pontos < item.preco">
               Faltam {{ item.preco - usuario.pontos }} pontos
@@ -223,7 +219,6 @@ const selecionarCategoria = (categoria) => {
       </div>
     </div>
 
-    <!-- Modal de compra -->
     <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
       <div class="modal">
         <h2>Confirmar compra</h2>
@@ -241,7 +236,6 @@ const selecionarCategoria = (categoria) => {
       </div>
     </div>
 
-    <!-- Como ganhar pontos -->
     <div class="box-win">
       <h2>Como Ganhar Pontos</h2>
       <ul>
@@ -347,6 +341,7 @@ section {
   border-radius: 25px;
   border: 3px solid rgb(201, 199, 199, 0.3);
   padding: 0.5vw 2vw;
+  margin: 0 4vw;
 }
 .box-win h2 {
   font-size: 1.3rem;
@@ -390,8 +385,8 @@ section {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-bottom: 4vw;
   gap: 2vw;
+  margin: 4vw 0;
 }
 .itens {
   display: flex;
