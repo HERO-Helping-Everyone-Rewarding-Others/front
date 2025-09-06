@@ -9,7 +9,7 @@ import PostComponent from "../components/PostComponent.vue"
 
 const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
-const { entrouNaComunidade, entrarNaComunidade } = useCommunityState()
+const { entrouNaComunidade, entrarNaComunidade, todasComunidades } = useCommunityState()
 
 const comunidadeNome = route.params.nome
 const conteudo = ref("")
@@ -18,6 +18,11 @@ const arquivoImagem = ref(null)
 const previewImagem = ref("")
 const usuarioLogado = computed(() => user.value?.nome || "")
 const membro = ref(false)
+
+// 🔹 Usa as comunidades do state centralizado
+const comunidade = computed(() =>
+  todasComunidades.value.find(c => c.nome === comunidadeNome) || null
+)
 
 const postsDaComunidade = computed(() =>
   posts.value.filter(p => p.comunidade === comunidadeNome)
@@ -78,7 +83,30 @@ async function postar() {
 
 <template>
   <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-xl font-bold mb-4">{{ comunidadeNome }}</h1>
+    <h1 class="text-xl font-bold mb-2">{{ comunidadeNome }}</h1>
+
+    <!-- 🔹 Exibe detalhes da comunidade -->
+    <div v-if="comunidade" class="mb-6 border p-3 rounded bg-gray-50">
+      <p v-if="comunidade.descricao">
+        <span class="font-semibold">Descrição:</span> {{ comunidade.descricao }}
+      </p>
+      <p v-if="comunidade.motivacao">
+        <span class="font-semibold">Motivação:</span> {{ comunidade.motivacao }}
+      </p>
+      <p v-if="comunidade.maxMembros">
+        <span class="font-semibold">Máximo de membros:</span> {{ comunidade.maxMembros }}
+      </p>
+      <p v-if="comunidade.contato">
+        <span class="font-semibold">Contato:</span> {{ comunidade.contato }}
+      </p>
+      <p v-if="comunidade.doacoesInfo">
+        <span class="font-semibold">Doações:</span> {{ comunidade.doacoesInfo }}
+      </p>
+      <p v-if="comunidade.tiposDoacoes && comunidade.tiposDoacoes.length">
+        <span class="font-semibold">Tipos de Doações Aceitas:</span>
+        {{ comunidade.tiposDoacoes.join(", ") }}
+      </p>
+    </div>
 
     <div v-if="!membro">
       <button @click="entrar"

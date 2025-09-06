@@ -1,50 +1,49 @@
 <script setup>
-import { usuario } from '../store/user'
-import router from '@/router/'
+import { onMounted } from "vue"
+import { usuario } from "../store/user"
+import router from "@/router/"
+import { useAuth } from "@/composables/auth"
+
+const { user, accessToken, fetchUser, logout } = useAuth()
+
+onMounted(() => {
+  // Se já tem token salvo mas o user ainda não foi buscado
+  if (accessToken.value && !user.value) {
+    fetchUser().catch(() => {})
+  }
+})
+
+const handleLogout = () => {
+  logout()
+  router.push("/login")
+}
 </script>
 
 <template>
 <header>
  <nav>
-
     <h1>
-        
-            <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
-        
+      <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
     </h1>
 
-
     <ul>
-        <li>
-          <router-link to="/">
-            Início
-          </router-link>
-        </li>
-        <li>
-          <router-link to="/comunidades">
-            Comunidades
-          </router-link>
-        </li>
-       <li>
-        <router-link to="/loja">
-          Loja
-        </router-link>
-      </li>
+      <li><router-link to="/">Início</router-link></li>
+      <li><router-link to="/comunidades">Comunidades</router-link></li>
+      <li><router-link to="/loja">Loja</router-link></li>
     </ul>
 
-
     <div class="user">
-        <div class="user-demo">
-            <p id="user-negrito">{{ usuario.nome }}</p>
-            <p>{{ usuario.pontos }} pontos</p>
-        </div>
-          <router-link to="login" class="button-user">
-            <span class="mdi mdi-account-outline"></span>
-          </router-link>
-        </div>
+      <div class="user-demo">
+        <!-- Mostra nome real ou "Visitante" -->
+        <p id="user-negrito">{{ (user && (user.nome || user.username)) || "Visitante" }}</p>
+        <p>{{ usuario.pontos }} pontos</p>
+      </div>
+      <router-link to="login" class="button-user">
+        <span class="mdi mdi-account-outline"></span>
+      </router-link>
+    </div>
 
-
-    <button class="exit-button">Sair</button>
+    <button class="exit-button" @click="handleLogout">Sair</button>
  </nav>
 </header>
 </template>

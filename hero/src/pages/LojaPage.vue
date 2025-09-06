@@ -1,89 +1,192 @@
 <script setup>
-import { ref } from "vue";
-import { usuario, gastarPontos } from "../store/user";
+import { ref, computed, onMounted } from 'vue'
+import { usuario, gastarPontos } from '../store/user'
 
-
+// Itens disponíveis
 const itens = ref([
-  { id: 1, nome: "Gift Card Amazon R$ 50", preco: 500, descricao: "Vale-presente para compras na Amazon", disponivel: 280, img: "/amazon.png" },
-  { id: 2, nome: "Desconto 20% iFood", preco: 200, descricao: "Cupom de desconto para pedidos no iFood", disponivel: 50, img: "/ifood.png" },
-  { id: 3, nome: "PIX R$ 50", preco: 300, descricao: "Tranferência PIX direto para sua conta", disponivel: 100, img: "/pix.png" },
-  { id: 4, nome: "Doação para ONGs", preco: 100, descricao: "Doe seus pontos para ONGs parceiras", disponivel: 999, img:"/ong.png" },
-  { id: 5, nome: "Gift Card Spotify R$ 30", preco: 350, descricao: "Assinatura premium do Spotify", disponivel: 15, img: "/spotify.png" },
-  { id: 6, nome: "Desconto 15% Uber", preco: 150, descricao: "Cupom de desconto para corridas Uber", disponivel: 75, img: "/uber.png" },
-  { id: 7, nome: "Gift Card Google Play R$ 30", preco: 300, descricao: "Gift card de 30 reais na Google Play", disponivel: 40, img: "/play.png" },
-  { id: 8, nome: "Desconto 30% Starbucks", preco: 100, descricao: "Cupom de desconto para pedidos no Starbuks", disponivel: 100, img: "/starbucks.png" }
-]);
+  {
+    id: 1,
+    nome: 'Gift Card Amazon R$ 50',
+    preco: 500,
+    descricao: 'Vale-presente para compras na Amazon',
+    disponivel: 280,
+    img: '/amazon.png',
+    categoria: 'gift',
+  },
+  {
+    id: 2,
+    nome: 'Desconto 20% iFood',
+    preco: 200,
+    descricao: 'Cupom de desconto para pedidos no iFood',
+    disponivel: 50,
+    img: '/ifood.png',
+    categoria: 'desconto',
+  },
+  {
+    id: 3,
+    nome: 'PIX R$ 50',
+    preco: 300,
+    descricao: 'Tranferência PIX direto para sua conta',
+    disponivel: 100,
+    img: '/pix.png',
+    categoria: 'dinheiro',
+  },
+  {
+    id: 4,
+    nome: 'Doação para ONGs',
+    preco: 100,
+    descricao: 'Doe seus pontos para ONGs parceiras',
+    disponivel: 999,
+    img: '/ong.png',
+    categoria: 'doacao',
+  },
+  {
+    id: 5,
+    nome: 'Gift Card Spotify R$ 30',
+    preco: 350,
+    descricao: 'Assinatura premium do Spotify',
+    disponivel: 15,
+    img: '/spotify.png',
+    categoria: 'gift',
+  },
+  {
+    id: 6,
+    nome: 'Desconto 15% Uber',
+    preco: 150,
+    descricao: 'Cupom de desconto para corridas Uber',
+    disponivel: 75,
+    img: '/uber.png',
+    categoria: 'desconto',
+  },
+  {
+    id: 7,
+    nome: 'Gift Card Google Play R$ 30',
+    preco: 300,
+    descricao: 'Gift card de 30 reais na Google Play',
+    disponivel: 40,
+    img: '/play.png',
+    categoria: 'gift',
+  },
+  {
+    id: 8,
+    nome: 'Desconto 30% Starbucks',
+    preco: 100,
+    descricao: 'Cupom de desconto para pedidos no Starbuks',
+    disponivel: 100,
+    img: '/starbucks.png',
+    categoria: 'desconto',
+  },
+])
 
-const itemSelecionado = ref(null);
-const mostrarModal = ref(false);
+// Modal
+const itemSelecionado = ref(null)
+const mostrarModal = ref(false)
 
+// Categoria filtrada
+const categoriaSelecionada = ref('todos')
+const itensFiltrados = computed(() => {
+  if (categoriaSelecionada.value === 'todos') return itens.value
+  return itens.value.filter((item) => item.categoria === categoriaSelecionada.value)
+})
+
+// Barra de progresso animada
+const progressoAtual = ref({})
+itens.value.forEach((item) => (progressoAtual.value[item.id] = 0))
+
+const calcularProgresso = (item) => {
+  const pontos = usuario.pontos
+  return Math.min((pontos / item.preco) * 100, 100)
+}
+
+const animarProgresso = () => {
+  let precisaAtualizar = false
+  itens.value.forEach((item) => {
+    const alvo = calcularProgresso(item)
+    const atual = progressoAtual.value[item.id]
+    const diferenca = alvo - atual
+    if (Math.abs(diferenca) > 0.1) {
+      progressoAtual.value[item.id] += diferenca * 0.1
+      precisaAtualizar = true
+    }
+  })
+  if (precisaAtualizar) requestAnimationFrame(animarProgresso)
+}
+onMounted(() => animarProgresso())
+
+// Modal
 const abrirModal = (item) => {
-  itemSelecionado.value = item;
-  mostrarModal.value = true;
-};
-
+  itemSelecionado.value = item
+  mostrarModal.value = true
+}
 const fecharModal = () => {
-  itemSelecionado.value = null;
-  mostrarModal.value = false;
-};
+  itemSelecionado.value = null
+  mostrarModal.value = false
+}
 
+// Comprar
 const confirmarCompra = () => {
   if (gastarPontos(itemSelecionado.value.preco)) {
-    alert(`Você comprou ${itemSelecionado.value.nome}!`);
-    fecharModal();
+    alert(`Você comprou ${itemSelecionado.value.nome}!`)
+    fecharModal()
   } else {
-    alert("Pontos insuficientes.");
+    alert('Pontos insuficientes.')
   }
-};
+}
+
+// Filtrar categoria
+const selecionarCategoria = (categoria) => {
+  categoriaSelecionada.value = categoria
+}
 </script>
 
 <template>
   <section>
+    <!-- Pontos do usuário -->
     <div class="pontos-user">
       <div class="recom">
-      <h2>Recompensas</h2>
-      <p>Troque seus pontos por recompensas incríveis</p>
-    </div>
-
-    <div class="pontos">
-      <div class="box1-pontos">
-        <p class="text-ponto">Seus pontos</p>
-        <p class="total-pontos">{{ usuario.pontos }}</p>
+        <h2>Recompensas</h2>
+        <p>Troque seus pontos por recompensas incríveis</p>
       </div>
-      <div class="icon-line">
+      <div class="pontos">
+        <div class="box1-pontos">
+          <p class="text-ponto">Seus pontos</p>
+          <p class="total-pontos">{{ usuario.pontos }}</p>
+        </div>
+        <div class="icon-line">
           <span class="mdi mdi-chart-line"></span>
+        </div>
       </div>
     </div>
-    </div>
 
+    <!-- Filtro de categorias -->
     <div class="list">
       <ul>
         <li>
-          <button>
+          <button @click="selecionarCategoria('todos')">
             <span class="mdi mdi-star-outline"></span>
             <p>Todos</p>
           </button>
         </li>
         <li>
-          <button>
+          <button @click="selecionarCategoria('gift')">
             <span class="mdi mdi-gift-outline"></span>
             <p>Gift Cards</p>
           </button>
         </li>
         <li>
-          <button>
+          <button @click="selecionarCategoria('desconto')">
             <span class="mdi mdi-cart-outline"></span>
             <p>Descontos</p>
           </button>
         </li>
         <li>
-          <button>
+          <button @click="selecionarCategoria('dinheiro')">
             <span class="mdi mdi-currency-usd"></span>
             <p>Dinheiro</p>
           </button>
         </li>
         <li>
-          <button>
+          <button @click="selecionarCategoria('doacao')">
             <span class="mdi mdi-heart-outline"></span>
             <p>Doações</p>
           </button>
@@ -91,35 +194,54 @@ const confirmarCompra = () => {
       </ul>
     </div>
 
+    <!-- Itens -->
     <div class="flex">
-      <div v-for="item in itens" :key="item.id" class="itens">
+      <div v-for="item in itensFiltrados" :key="item.id" class="itens">
         <img :src="item.img" alt="Imagem do item" />
-         <div class="box-description">
-           <h2>{{ item.nome }}</h2>
+        <div class="box-description">
+          <h2>{{ item.nome }}</h2>
           <p>{{ item.descricao }}</p>
-        <div class="box-info">
-          <p><span class="mdi mdi-star-outline"></span> {{ item.preco }} pontos</p>
-          <p class="disp">{{ item.disponivel }} disponíveis</p>
+
+          <div class="box-info">
+            <p><span class="mdi mdi-star-outline"></span> {{ item.preco }} pontos</p>
+            <p class="disp">{{ item.disponivel }} disponíveis</p>
+          </div>
+
+          <!-- Barra de progresso animada -->
+          <div class="progress-container">
+            <p v-if="usuario.pontos < item.preco">
+              Faltam {{ item.preco - usuario.pontos }} pontos
+            </p>
+            <p v-else>Você já pode resgatar!</p>
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: progressoAtual[item.id] + '%' }"></div>
+            </div>
+          </div>
+
+          <button @click="abrirModal(item)">Comprar</button>
         </div>
-         </div>
       </div>
     </div>
 
-   <!-- <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
+    <!-- Modal de compra -->
+    <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
       <div class="modal">
         <h2>Confirmar compra</h2>
-        <p><strong>{{ itemSelecionado?.nome }}</strong></p>
+        <p>
+          <strong>{{ itemSelecionado?.nome }}</strong>
+        </p>
         <p>{{ itemSelecionado?.descricao }}</p>
-        <p>Preço: <strong>{{ itemSelecionado?.preco }} pontos</strong></p>
+        <p>
+          Preço: <strong>{{ itemSelecionado?.preco }} pontos</strong>
+        </p>
         <div class="botoes">
           <button class="cancelar" @click="fecharModal">Cancelar</button>
           <button class="confirmar" @click="confirmarCompra">Confirmar</button>
         </div>
       </div>
     </div>
-    
-    <button @click="abrirModal(item)">Comprar</button>-->
 
+    <!-- Como ganhar pontos -->
     <div class="box-win">
       <h2>Como Ganhar Pontos</h2>
       <ul>
@@ -144,6 +266,7 @@ const confirmarCompra = () => {
 </template>
 
 <style scoped>
+/* O CSS que você forneceu, intacto */
 section {
   padding: 5vw 7vw;
   background: rgba(230, 242, 243, 0.5);
@@ -292,7 +415,6 @@ section {
 .itens p {
   color: rgb(88, 87, 87);
   font-size: 0.9rem;
-  
 }
 .box-description {
   padding: 1vw;
@@ -311,5 +433,54 @@ section {
   padding: 5px 8px;
   border-radius: 10px;
 }
+.progress-container {
+  margin-top: 10px;
+}
+.progress-bar {
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.modal {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  width: 30vw;
+  max-width: 500px;
+}
+.botoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+button.cancelar {
+  background: #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+button.confirmar {
+  background: #4caf50;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
 </style>
-

@@ -4,17 +4,21 @@ import { RouterLink } from "vue-router"
 import { useCommunityState } from "../store/communities"
 
 const { todasComunidades, comunidadesEntradas } = useCommunityState()
-const comunidadesPopulares = computed(() => todasComunidades.value)
-const minhasComunidades = computed(() => comunidadesEntradas.value)
+const comunidadesPopulares = computed(() =>
+  todasComunidades.value.map(c => c.nome || "Comunidade sem nome")
+)
+const minhasComunidades = computed(() =>
+  comunidadesEntradas.value.map(c => typeof c === "string" ? c : (c.nome || "Comunidade sem nome"))
+)
 </script>
 
 <template>
   <aside class="sidebar-menu p-4 bg-gray-100 rounded-md shadow">
     <h2 class="font-bold mb-2">🌍 Comunidades Populares</h2>
     <ul class="mb-4">
-      <li v-for="c in comunidadesPopulares" :key="c.id" class="mb-1">
-        <RouterLink :to="`/comunidade/${c.nome}`" class="hover:underline">
-          {{ c.nome }}
+      <li v-for="nome in comunidadesPopulares" :key="nome" class="mb-1">
+        <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
+          {{ nome }}
         </RouterLink>
       </li>
     </ul>

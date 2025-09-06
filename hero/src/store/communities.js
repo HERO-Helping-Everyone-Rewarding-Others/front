@@ -1,4 +1,3 @@
-// src/store/communities.js
 import { ref } from "vue"
 
 const comunidadesEntradas = ref([])
