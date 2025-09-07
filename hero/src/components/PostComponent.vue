@@ -149,19 +149,14 @@ function getUserColor(name) {
         Publicar
       </button>
       </div>
-
     </div>
     </section>
-    <!--<span :class="c.liked ? 'text-red-500' : 'text-gray-500'">❤️</span> {{ c.curtidas }} <button @click="toggleCommentLike(c)" ></button>
-         <small >{{ c.tempo }}</small>-->
 </template>
 
 <style scoped>
 section {
-  background: rgb(253, 252, 252);
   padding-top: 3vw;
 }
-
 div.box-post {
   border: 2px solid rgb(218, 215, 215);
   width: 50vw;

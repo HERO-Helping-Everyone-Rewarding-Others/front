@@ -38,11 +38,10 @@ const handleLogout = () => {
         <p id="user-negrito">{{ (user && (user.nome || user.username)) || "Visitante" }}</p>
         <p>{{ usuario.pontos }} pontos</p>
       </div>
-      <router-link to="login" class="button-user">
-        <span class="mdi mdi-account-outline"></span>
+      <router-link to="/profile" class="button-user">
+       <span><font-awesome-icon :icon="['far', 'user']" /></span>
       </router-link>
     </div>
-
     <button class="exit-button" @click="handleLogout">Sair</button>
  </nav>
 </header>
@@ -90,9 +89,9 @@ const handleLogout = () => {
    header nav ul li {
         list-style: none;
     }
-    nav a:active,
-    nav a:hover,
-    nav a:focus {
+    nav ul li a:active,
+    nav ul li a:hover,
+    nav ul li a:focus {
         color: #113b74;
         background:rgb(250, 249, 246, 0.3);
     }
@@ -101,19 +100,19 @@ const handleLogout = () => {
         border: none;
         border-radius: 10px;
     }
-    .button-user, .sidebar-button {
-        font-size: 2rem;
-        width: 2.8vw;
-        height: 2.9vw;
+    .button-user {
+        font-size: 1.7rem;
+        align-items: center;
         color: #ffffff;
         margin: 0.7vw 0 0.7vw 0;
         transition: 0.2s;
         text-align: center;
-        border-radius: 15px;
+        padding: 5px 7px;
+        border-radius: 13px;
     }
-    .button-user:hover, .sidebar-button:hover {
-         background-color: rgb(243, 242, 242, 0.3);
-         color: #113b74;
+    .button-user:hover {
+        color: #1a509c;
+        background:rgb(250, 249, 246, 0.5);
     }
     header nav div.user {
         display: flex;
@@ -144,6 +143,6 @@ const handleLogout = () => {
         transition: 0.2s;
     }
     button.exit-button:hover {
-        color: #113b74;
+        color: #1a509c;
     }
 </style>

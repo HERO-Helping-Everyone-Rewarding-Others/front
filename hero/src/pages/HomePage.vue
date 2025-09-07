@@ -27,10 +27,8 @@ import SidebarCommunities from '@/components/SidebarCommunities.vue';
 
 <style scoped>
 section {
-  background: rgb(253, 252, 252);
   padding-top: 2vw;
 }
-
 div.welcome {
   text-align: center;
 }
@@ -43,34 +41,9 @@ div.welcome {
   color: rgb(104, 104, 103);
   margin: 0 0 1.5vw 0;
 }
-
-
 .content {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 1.5rem;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-
-.sidebar {
-  background: #f4f4f4;
-  padding: 0.8rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  max-height: calc(100vh - 180px);
-  overflow-y: auto;
-  font-size: 0.9rem;
-}
-
-
-.feed {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  font-size: 0.95rem; 
 }
 </style>

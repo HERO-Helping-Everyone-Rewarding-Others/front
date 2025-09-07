@@ -13,7 +13,6 @@ const minhasComunidades = computed(() =>
 </script>
 
 <template>
-  <aside class="sidebar-menu p-4 bg-gray-100 rounded-md shadow">
     <h2 class="font-bold mb-2">🌍 Comunidades Populares</h2>
     <ul class="mb-4">
       <li v-for="nome in comunidadesPopulares" :key="nome" class="mb-1">
@@ -34,12 +33,7 @@ const minhasComunidades = computed(() =>
         </RouterLink>
       </li>
     </ul>
-  </aside>
 </template>
 
 <style scoped>
-.sidebar-menu {
-  display: flex;
-  flex-direction: column;
-}
 </style>

@@ -7,6 +7,7 @@ import HomePage from '../pages/HomePage.vue'
 import CommunitiesPage from '../pages/CommunitiesPage.vue'
 import CommunityPage from '../pages/CommunityPage.vue'
 import LojaPage from '../pages/LojaPage.vue'
+import ProfilePage from '@/pages/ProfilePage.vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomePage },
@@ -15,6 +16,7 @@ const routes = [
   { path: '/comunidades', name: 'comunidades', component: CommunitiesPage },
   { path: '/comunidade/:nome', name: 'comunidade', component: CommunityPage, props: true },
   { path: '/loja', name: 'loja', component: LojaPage },
+  { path: '/profile', name: 'profile', component: ProfilePage }
 ]
 
 const router = createRouter({
