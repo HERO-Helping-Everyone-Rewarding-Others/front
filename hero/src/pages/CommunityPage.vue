@@ -85,7 +85,6 @@ async function postar() {
   <div class="max-w-2xl mx-auto p-4">
     <h1 class="text-xl font-bold mb-2">{{ comunidadeNome }}</h1>
 
-    <!-- 🔹 Exibe detalhes da comunidade -->
     <div v-if="comunidade" class="mb-6 border p-3 rounded bg-gray-50">
       <p v-if="comunidade.descricao">
         <span class="font-semibold">Descrição:</span> {{ comunidade.descricao }}

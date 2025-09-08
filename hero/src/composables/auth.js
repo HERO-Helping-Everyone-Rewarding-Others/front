@@ -29,6 +29,11 @@ const login = async (email, password) => {
 
 const fetchUser = async () => {
   try {
+    if (!accessToken.value) {
+      user.value = null;
+      return;
+    }
+
     const res = await api.get("/UsuarioLogado/", {
       headers: { Authorization: `Bearer ${accessToken.value}` },
     });
@@ -53,7 +58,6 @@ const register = async (nome, email, password, biografia) => {
   }
 };
 
-// (opcional) logout, caso queira ligar no botão Sair
 const logout = () => {
   accessToken.value = "";
   refreshToken.value = "";

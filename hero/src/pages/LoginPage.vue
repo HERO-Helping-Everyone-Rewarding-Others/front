@@ -1,86 +1,81 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/auth'
+
 const { login } = useAuth()
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
+const error = ref(null)
+
+const showPassword = ref(false)
 
 const handleLogin = async () => {
+  error.value = null
   try {
     await login(email.value, password.value)
-    alert('Login successful!')
-  } catch (error) {
-    alert('Login failed: ', error)
+    router.push('/')
+  } catch (err) {
+    error.value = "Email ou senha inválidos."
   }
 }
-
-const showPassword = ref(false);
 </script>
 
 <template>
 <section>
-    <div class="box1">
-      <div class="logo">
-        <img src="/he(1).png" alt="logo">
-        <h1>HERO</h1>
-      </div>
-      <h2>Seja o herói da sua comunidade!</h2>
-      <p>No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você encontra pessoas que compartilham da mesma vontade de ajudar e recebe reconhecimento por cada contribuição. Juntos, podemos provar que ser herói é um papel que cabe a todos nós!</p>
-      <ul>
-        <li>
-          Crie uma comunidade
-        </li>
-        <li>
-          Ajude o mundo
-        </li>
-        <li>
-          Seja um herói
-        </li>
-       <router-link to="/"> volta</router-link>
-      </ul>
+  <div class="box1">
+    <div class="logo">
+      <img src="/he(1).png" alt="logo">
+      <h1>HERO</h1>
     </div>
-    <div class="box2">
-      <form @submit.prevent="handleLogin" >
-        <label for="user">E-mail</label>
-        <input
-          id="user"
-          type="email"
-          placeholder="seu e-mail"
-          v-model="email"
-        />
-        <label for="password">Senha</label>
+    <h2>Seja o herói da sua comunidade!</h2>
+    <p>No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você encontra pessoas que compartilham da mesma vontade de ajudar e recebe reconhecimento por cada contribuição. Juntos, podemos provar que ser herói é um papel que cabe a todos nós!</p>
+    <ul>
+      <li>Crie uma comunidade</li>
+      <li>Ajude o mundo</li>
+      <li>Seja um herói</li>
+
+    </ul>
+  </div>
+
+  <div class="box2">
+    <form @submit.prevent="handleLogin">
+      <label for="user">E-mail</label>
+      <input id="user" type="email" placeholder="seu e-mail" v-model="email" required />
+
+      <label for="password">Senha</label>
       <div class="password-field">
         <input
           id="password"
           :type="showPassword ? 'text' : 'password'"
           placeholder="password"
           v-model="password"
+          required
         />
-          <span class="mdi"
+        <span
+          class="mdi"
           :class="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click="showPassword = !showPassword">
-          </span>
+        </span>
       </div>
-        <button
-          type="submit" class="submit"
-        >
-          Entrar
-        </button>
-      </form>
-      <div class="register">
-       <p>
-          Não possui uma conta?
-        </p>
-         <router-link to="register">
-        Criar conta
-      </router-link>
-      </div>
+
+      <div v-if="error" class="error">{{ error }}</div>
+
+      <button type="submit" class="submit">Entrar</button>
+    </form>
+
+    <div class="register">
+      <p>Não possui uma conta?</p>
+      <router-link to="register">Criar conta</router-link>
     </div>
+  </div>
 </section>
 </template>
 
 <style scoped>
+
   section {
   display: flex;
   height: 100vh;

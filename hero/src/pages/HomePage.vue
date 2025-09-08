@@ -13,7 +13,6 @@ import SidebarCommunities from '@/components/SidebarCommunities.vue';
     </div>
 
     <div class="content">
-
       <aside class="sidebar">
         <SidebarCommunities />
       </aside>

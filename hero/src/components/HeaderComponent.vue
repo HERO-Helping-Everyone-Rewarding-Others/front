@@ -34,7 +34,6 @@ const handleLogout = () => {
 
     <div class="user">
       <div class="user-demo">
-        <!-- Mostra nome real ou "Visitante" -->
         <p id="user-negrito">{{ (user && (user.nome || user.username)) || "Visitante" }}</p>
         <p>{{ usuario.pontos }} pontos</p>
       </div>

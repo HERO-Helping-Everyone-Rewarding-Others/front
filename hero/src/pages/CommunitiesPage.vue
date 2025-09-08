@@ -84,6 +84,14 @@ const comunidadesFiltradas = computed(() => {
     c.nome.toLowerCase().includes(filtro.value.toLowerCase())
   )
 })
+
+const isVisible = ref(false)
+
+function toggleDiv() {
+  isVisible.value = !isVisible.value
+}
+
+
 </script>
 
 
@@ -96,7 +104,7 @@ const comunidadesFiltradas = computed(() => {
       Encontre e participe de comunidades que fazem a diferença
     </p>
     </div>
-    <button><span class="mdi mdi-plus"></span> Criar Comunidade</button>
+    <button @click="toggleDiv"><span class="mdi mdi-plus"></span> Criar Comunidade</button>
   </div>
     <div class="search">
     <label for="lupa"><span class="mdi mdi-magnify"></span></label>
@@ -118,7 +126,8 @@ const comunidadesFiltradas = computed(() => {
 
 
 </section>
-  <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
+
+  <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow" v-if="isVisible">
     <h1 class="text-xl font-bold mb-4">Criar Nova Comunidade</h1>
 
     <div class="space-y-3">
@@ -152,7 +161,7 @@ const comunidadesFiltradas = computed(() => {
     </div>
 
 
-    
+
   </div>
 </template>
 
@@ -198,7 +207,7 @@ section {
   border: 2px solid rgba(197, 196, 196, 0.5);
   border-radius: 10px;
   padding: 0.4vw 1vw;
-  display: flex;       
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -229,7 +238,7 @@ span.mdi-magnify {
   gap: 1.6vw;
   padding: 0;
 }
-.comunidades ul li {  
+.comunidades ul li {
   padding: 0 2vw;
   flex-direction: column;
   width: 24vw;
