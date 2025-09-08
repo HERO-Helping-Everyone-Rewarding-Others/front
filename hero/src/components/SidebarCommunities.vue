@@ -2,6 +2,7 @@
 import { computed } from "vue"
 import { RouterLink } from "vue-router"
 import { useCommunityState } from "../store/communities"
+import router from "@/router"
 
 const { todasComunidades, comunidadesEntradas } = useCommunityState()
 const comunidadesPopulares = computed(() =>
@@ -13,38 +14,65 @@ const minhasComunidades = computed(() =>
 </script>
 
 <template>
+    <section>
+      <h2>Acesso Rápido</h2>
+      <p>
+        Suas comunidades
+      </p>
+      <div>
+        <p>
+          MINHAS COMUNIDADES
+        </p>
+        <font-awesome-icon :icon="['far', 'star']" />
+      </div>
+        <div>
+         <ul>
+      <li v-if="minhasComunidades.length === 0">
+        Você ainda não entrou em nenhuma comunidade.
+      </li>
+      <li v-for="nome in minhasComunidades" :key="nome">
+        <RouterLink :to="`/comunidade/${nome}`">
+          {{ nome }}
+        </RouterLink>
+      </li>
+    </ul>
+      </div>
 
-  <h2 class="font-bold mb-2">🌍 Comunidades Populares</h2>
-  <ul class="mb-4">
-    <li v-for="nome in comunidadesPopulares" :key="nome" class="mb-1">
-      <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
-        {{ nome }}
-      </RouterLink>
-    </li>
-  </ul>
+      <p>
+        COMUNIDADES POPULARES
+      </p>
+       <div>
+          <ul class="mb-4">
+          <li v-for="nome in                   comunidadesPopulares" :key="nome" class="mb-1">
+            <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
+            {{ nome }}
+            </RouterLink>
+          </li>
+      </ul>
+      </div>
 
-  <h2 class="font-bold mb-2">👥 Suas Comunidades</h2>
-  <ul>
-    <li v-if="minhasComunidades.length === 0" class="text-gray-500 text-sm">
-      Você ainda não entrou em nenhuma comunidade.
-    </li>
-    <li v-for="nome in minhasComunidades" :key="nome" class="mb-1">
-      <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
-        {{ nome }}
-      </RouterLink>
-    </li>
-  </ul>
-
-  <div class="mb-4">
-    <h3>Paginas</h3>
-    <ul>
-      <li><RouterLink to="/comunidades">🌍Comunidades</RouterLink></li>
-      <li><RouterLink to="/loja" class="block mb-1 text-blue-600 hover:underline">🛒 Loja</RouterLink></li>
-      <li><RouterLink to="/profile" class="block mb-2 text-blue-600 hover:underline">👤 Perfil</RouterLink></li>
-
-  </ul>
-  </div>
+      <div>
+        <div>
+        <font-awesome-icon :icon="['fas', 'users']" />
+        <RouterLink to="/comunidades">Ver todas as comunidades</RouterLink>
+        <RouterLink to="/loja" class="block mb-1 text-blue-600 hover:underline">🛒 Loja</RouterLink>
+        <RouterLink to="/profile" class="block mb-2 text-blue-600 hover:underline">👤 Perfil</RouterLink>
+      </div>
+      <button><span class="mdi mdi-plus"></span><p>Criar comunidade</p></button>
+      </div>
+     <p>
+      Helping Everyone Rewarding Others
+     </p>
+    </section>
 </template>
 
 <style scoped>
+section {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgb(218, 215, 215);
+
+}
+h2 {
+  margin: 0;
+}
 </style>

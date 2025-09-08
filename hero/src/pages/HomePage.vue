@@ -11,13 +11,17 @@ import SidebarCommunities from '@/components/SidebarCommunities.vue';
         Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
       </p>
     </div>
-
-    <div class="content">
       <aside class="sidebar">
         <SidebarCommunities />
       </aside>
 
       <main class="feed">
+        <div class="welcome">
+          <h1>Bem-vindo ao HERO</h1>
+          <p>
+            Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
+          </p>
+        </div>
         <FeedComponent />
       </main>
     </div>
@@ -25,24 +29,44 @@ import SidebarCommunities from '@/components/SidebarCommunities.vue';
 </template>
 
 <style scoped>
-section {
-  padding-top: 2vw;
+.layout {
+  display: flex;
 }
-div.welcome {
+
+/* container geral */
+.flex {
+  display: flex;
+}
+
+/* sidebar fixa mas respeita header/footer */
+.sidebar {
+  width: 20vw;
+  height: 100vh;
+  position: sticky;
+  top: 60px;   /* altura do header */
+  align-self: flex-start;
+  overflow-y: auto; /* se o conteúdo for maior que a tela */
+}
+
+/* conteúdo principal */
+.feed {
+  padding-left: 3vw;
+}
+
+.welcome {
   text-align: center;
+  margin: 2vw 0;
 }
+
 .welcome h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin: 0;
 }
+
 .welcome p {
-  font-size: 1.2rem;
-  color: rgb(104, 104, 103);
+  font-size: 1.4rem;
+  color: rgb(70, 70, 69);
   margin: 0 0 1.5vw 0;
 }
-.content {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 1.5rem;
-}
 </style>
+

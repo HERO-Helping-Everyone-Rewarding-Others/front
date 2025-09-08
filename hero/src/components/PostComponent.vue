@@ -92,7 +92,6 @@ function getUserColor(name) {
     <div class="box-post">
       <div class="info-box">
         <div class="perfil-user">
-          <!-- Avatar do autor do post: se autor for o usuário atual (ou o nome local editado), mostrar profileAvatar -->
           <template
             v-if="
               profileAvatar &&
@@ -143,7 +142,6 @@ function getUserColor(name) {
 
       <div v-for="c in comentarios" :key="c.id" class="comment-user">
         <div>
-          <!-- avatar do comentário: se for do usuário atual (ou do nome local), mostrar profileAvatar -->
           <template v-if="profileAvatar && (c.usuario === profileName || c.usuario === user?.nome)">
             <img :src="profileAvatar" class="comment-avatar-img" />
           </template>
@@ -173,9 +171,6 @@ function getUserColor(name) {
 </template>
 
 <style scoped>
-section {
-  padding-top: 3vw;
-}
 div.box-post {
   border: 2px solid rgb(218, 215, 215);
   width: 50vw;
@@ -185,6 +180,7 @@ div.box-post {
   padding: 2vw;
   box-sizing: border-box;
   box-shadow: 0 0 5px 1px rgb(204, 202, 202, 0.6);
+  background: rgba(255, 255, 255, 0.5);
 }
 .info-box {
   display: flex;
