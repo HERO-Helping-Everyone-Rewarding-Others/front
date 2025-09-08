@@ -6,6 +6,7 @@ import { ganharPontos } from "../store/user"
 import { useRouter } from "vue-router"
 import { useCommunityState } from "../store/communities"
 import PostComponent from "../components/PostComponent.vue"
+import { profileName } from "../store/user" // novo
 
 const router = useRouter()
 const { user, accessToken, fetchUser } = useAuth()
@@ -17,7 +18,8 @@ const arquivoImagem = ref(null)
 const previewImagem = ref("")
 const comunidade = ref("")
 
-const usuarioLogado = computed(() => user.value?.nome || "")
+// usa o nome local editado se houver, senão o nome do backend
+const usuarioLogado = computed(() => profileName.value || user.value?.nome || "")
 
 const postsFiltrados = computed(() => {
   if (!comunidade.value) return posts.value
@@ -128,4 +130,5 @@ async function postar() {
 </template>
 
 <style scoped>
+/* sem alterações necessárias aqui */
 </style>
