@@ -24,7 +24,7 @@ import SidebarCommunities from '@/components/SidebarCommunities.vue';
         </div>
         <FeedComponent />
       </main>
-    </div>
+  
   </section>
 </template>
 
