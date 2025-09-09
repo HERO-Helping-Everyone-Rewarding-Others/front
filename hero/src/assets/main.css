@@ -5,6 +5,6 @@ body, html{
   padding : 0;
   font-family: 'Open Sans', sans-serif;
   font-size: clamp(1rem, 1.5vw, 1.2rem);
-  background: rgba(230, 242, 243, 0.5);
+  background: rgba(241, 244, 245, 0.5);
 }
 
