@@ -4,6 +4,8 @@ import { usuario } from "../store/user"
 import router from "@/router/"
 import { useAuth } from "@/composables/auth"
 
+const emit = defineEmits(['toggleMenu'])
+
 const { user, accessToken, fetchUser, logout } = useAuth()
 
 onMounted(() => {
@@ -23,7 +25,8 @@ const handleLogout = () => {
 <header>
  <nav>
     <h1>
-      <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
+        <button @click="$emit('toggleMenu')">+++</button>
+        <img src="/he(1).png" alt="logo" @click="router.push('/')"/>
     </h1>
 
     <ul>

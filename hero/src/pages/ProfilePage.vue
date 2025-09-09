@@ -417,8 +417,9 @@ div .profile-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
   margin: 2vw 0 4vw 0;
-  gap: 1.6vw;
+  /* gap: 1.6vw; */
 }
 .box-stats {
   background: white;

@@ -67,11 +67,6 @@ const minhasComunidades = computed(() =>
 </template>
 
 <style scoped>
-section {
-  background: rgba(255, 255, 255, 0.8);
-  border: 2px solid rgb(218, 215, 215);
-
-}
 h2 {
   margin: 0;
 }

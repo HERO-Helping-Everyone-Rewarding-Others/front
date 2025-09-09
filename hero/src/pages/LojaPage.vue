@@ -244,15 +244,16 @@ section {
 .flex {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   flex-wrap: wrap;
   margin: 2vw 0 4vw 0;
-  gap: 1.6vw;
+  /* gap: 1.6vw; */
 }
 .itens {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 21vw;
+  width: 20vw;
   border: 3px solid rgb(201, 199, 199, 0.3);
   border-radius: 25px;
   overflow: hidden;
