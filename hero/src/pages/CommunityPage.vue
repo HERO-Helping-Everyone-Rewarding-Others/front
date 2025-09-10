@@ -6,6 +6,8 @@ import { addPost, posts } from "../store/posts"
 import { ganharPontos } from "../store/user"
 import { useCommunityState } from "../store/communities"
 import PostComponent from "../components/PostComponent.vue"
+import { novaComunidade} from "../composables/useComunidades";
+
 
 const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
@@ -39,6 +41,7 @@ function entrar() {
   membro.value = true
   alert(`Você entrou na comunidade ${comunidadeNome}! Agora você pode postar.`)
 }
+
 
 function selecionarImagem(event) {
   const file = event.target.files[0]
@@ -79,11 +82,16 @@ async function postar() {
   arquivoImagem.value = null
   previewImagem.value = ""
 }
+
+
 </script>
 
 <template>
   <div class="max-w-2xl mx-auto p-4">
     <h1 class="text-xl font-bold mb-2">{{ comunidadeNome }}</h1>
+    <p>{{ novaComunidade.descricao }}</p>
+
+
 
     <div v-if="comunidade" class="mb-6 border p-3 rounded bg-gray-50">
       <p v-if="comunidade.descricao">

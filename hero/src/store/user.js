@@ -3,7 +3,7 @@ import { ref } from "vue";
 export const usuario = ref({
   nome: "Usuário demo",
   pontos: 120,
-  comunidades: [], 
+  comunidades: [],
 });
 export const profileName = ref("");
 export const profileBio = ref("");
@@ -22,4 +22,10 @@ export function gastarPontos(qtd) {
     return true;
   }
   return false;
+}
+
+export const pontosGanhos = ref(0)
+
+export function adicionarPontosPost() {
+  pontosGanhos.value += 20
 }
