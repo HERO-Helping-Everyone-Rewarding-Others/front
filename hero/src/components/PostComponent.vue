@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useAuth } from '../composables/auth'
-import { profileName, profileAvatar } from '../store/user' // novo
+import { profileName, profileAvatar } from '../store/user'
+import { toggleSave, isSaved } from '../store/saved' // novo
 
 const props = defineProps({ post: Object })
-// ... mantive o resto igual, com pequenas alterações
 
-const { user, accessToken, fetchUser } = useAuth() // usuário logado
+const { user, accessToken, fetchUser } = useAuth()
 
 const postId = computed(() => {
   if (props.post.id) return props.post.id
@@ -60,7 +60,6 @@ const toggleLike = () => {
 const addComment = () => {
   if (!newComment.value.trim()) return
 
-  // usa o nome editado localmente se houver (para comentários feitos após a edição)
   const usuarioNome = profileName.value || user.value?.nome || 'Usuário Anônimo'
 
   comentarios.value.push({
@@ -85,6 +84,10 @@ function getUserColor(name) {
   const index = Math.abs(hash) % colors.length
   return colors[index]
 }
+
+function handleSave() {
+  toggleSave(props.post)
+}
 </script>
 
 <template>
@@ -92,12 +95,7 @@ function getUserColor(name) {
     <div class="box-post">
       <div class="info-box">
         <div class="perfil-user">
-          <template
-            v-if="
-              profileAvatar &&
-              (post.usuario === (profileName || user?.nome) || post.usuario === profileName)
-            "
-          >
+          <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
             <img :src="profileAvatar" class="avatar-img-small" />
           </template>
           <template v-else>
@@ -109,7 +107,13 @@ function getUserColor(name) {
 
         <div class="info-post">
           <div class="post-user">
-            <span id="user">{{ post.usuario }}</span>
+            <span id="user">
+              {{
+                post.usuario === user?.nome || post.usuario === profileName
+                  ? profileName || user?.nome
+                  : post.usuario
+              }}
+            </span>
             <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
           </div>
           <div v-if="post.verificado" class="pontos-info">
@@ -133,11 +137,17 @@ function getUserColor(name) {
           />
           {{ likes }}
         </a>
-        <a
-          ><font-awesome-icon :icon="['far', 'comment']" class="comment" />
-          {{ comentarios.length }}</a
-        >
+        <a>
+          <font-awesome-icon :icon="['far', 'comment']" class="comment" />
+          {{ comentarios.length }}
+        </a>
         <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
+
+        <!-- novo botão salvar -->
+        <a @click="handleSave">
+          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'bookmark']" />
+          {{ isSaved(post) ? 'Salvo' : 'Salvar' }}
+        </a>
       </div>
 
       <div v-for="c in comentarios" :key="c.id" class="comment-user">
@@ -169,6 +179,7 @@ function getUserColor(name) {
     </div>
   </section>
 </template>
+
 
 <style scoped>
 div.box-post {
