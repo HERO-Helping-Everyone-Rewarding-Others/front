@@ -35,7 +35,7 @@ const minhasComunidades = computed(() =>
         </p>
         <ul>
           <li v-for="nome in minhasComunidades" :key="nome">
-            <RouterLink :to="`/comunidade/${nome}`">
+            <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
               {{ nome }}
             </RouterLink>
           </li>

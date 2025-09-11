@@ -280,6 +280,7 @@ section {
   border-radius: 25px;
   overflow: hidden;
   background: white;
+  margin-bottom: 2vw;
 }
 
 .itens img {
