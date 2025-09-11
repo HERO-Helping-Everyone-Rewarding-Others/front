@@ -10,8 +10,22 @@ import FeedComponent from '../components/FeedComponent.vue'
       <p>
         Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
       </p>
+      <ul>
+        <li>
+          <p>5</p>
+          <p>Comunidades Ativas</p>
+        </li>
+        <li>
+          <p>92</p>
+          <p>Voluntários</p>
+        </li>
+        <li>
+          <p>3</p>
+          <p>Ações Realizadas</p>
+        </li>
+      </ul>
     </div>
-    
+
     <main class="feed">
       <FeedComponent />
     </main>
@@ -21,47 +35,9 @@ import FeedComponent from '../components/FeedComponent.vue'
 
 <style scoped>
 
-main {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: 1fr auto;
-  grid-template-areas: 
-    "welcome"
-    "feed";
-  /* height: 100; */
-}
-
-.layout {
-  display: flex;
-}
-
-/* container geral */
-.flex {
-  display: flex;
-}
-
-/* sidebar fixa mas respeita header/footer */
-.sidebar {
-  width: 20vw;
-  height: calc(100vh-60px);
-  position: sticky;
-  top: 60px;
-  /* altura do header */
-  /* align-self: flex-start; */
-  /* overflow-y: auto; */
-  /* se o conteúdo for maior que a tela */
-  /* grid-area: sidebar; */
-}
-
-/* conteúdo principal */
-.feed {
-  padding-left: 3vw;
-  grid-area: feed;
-}
-
 .welcome {
   text-align: center;
-  margin: 2vw 0;
+  margin: 3vw 0 5vw 0;
   grid-area: welcome;
 }
 
@@ -72,7 +48,12 @@ main {
 
 .welcome p {
   font-size: 1.4rem;
-  color: rgb(70, 70, 69);
-  margin: 0 0 1.5vw 0;
+  color: rgb(94, 94, 93);
+  margin: 1vw 0;
+}
+.welcome ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
 }
 </style>
