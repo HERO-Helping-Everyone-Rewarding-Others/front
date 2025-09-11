@@ -146,5 +146,4 @@ async function postar() {
 </template>
 
 <style scoped>
-/* sem alterações necessárias aqui */
 </style>

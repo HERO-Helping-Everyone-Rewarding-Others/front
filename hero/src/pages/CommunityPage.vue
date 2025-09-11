@@ -116,8 +116,7 @@ async function postar() {
     </div>
 
     <div v-if="!membro">
-      <button @click="entrar"
-        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">
+      <button @click="entrar" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">
         Entrar na comunidade
       </button>
     </div>
@@ -125,20 +124,16 @@ async function postar() {
     <p v-else class="text-gray-500 mb-4">Você é membro desta comunidade e pode criar posts!</p>
 
     <div v-if="membro" class="mb-6">
-      <textarea v-model="conteudo" placeholder="Escreva algo..."
-        class="w-full border p-2 rounded mb-2"></textarea>
+      <textarea v-model="conteudo" placeholder="Escreva algo..." class="w-full border p-2 rounded mb-2"></textarea>
 
       <input v-model="imagemLink" type="text" placeholder="URL da imagem (opcional)"
         class="w-full border p-2 rounded mb-2" />
 
-      <input type="file" accept="image/*"
-             @change="selecionarImagem"
-             class="w-full border p-2 rounded mb-2" />
+      <input type="file" accept="image/*" @change="selecionarImagem" class="w-full border p-2 rounded mb-2" />
 
       <img v-if="previewImagem" :src="previewImagem" class="max-h-40 mt-2 mb-2 rounded" />
 
-      <button @click="postar"
-        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 mb-4">
+      <button @click="postar" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 mb-4">
         Postar
       </button>
     </div>
@@ -153,5 +148,4 @@ async function postar() {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

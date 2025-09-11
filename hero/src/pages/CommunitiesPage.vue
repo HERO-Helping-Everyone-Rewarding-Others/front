@@ -107,16 +107,16 @@ function toggleDiv() {
 
 
 <template>
-<section>
-  <div class="box-text">
-    <div>
-      <h2>Comunidades</h2>
-    <p>
-      Encontre e participe de comunidades que fazem a diferença
-    </p>
+  <section>
+    <div class="box-text">
+      <div>
+        <h2>Comunidades</h2>
+        <p>
+          Encontre e participe de comunidades que fazem a diferença
+        </p>
+      </div>
+      <button @click="toggleDiv"><span class="mdi mdi-plus"></span> Criar Comunidade</button>
     </div>
-    <button @click="toggleDiv"><span class="mdi mdi-plus"></span> Criar Comunidade</button>
-  </div>
     <div class="search">
     <label for="lupa"><span class="mdi mdi-magnify"></span></label>
     <input
@@ -136,9 +136,7 @@ function toggleDiv() {
       </li>
     </ul>
   </div>
-
-
-</section>
+  </section>
 
   <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow" v-if="isVisible">
     <h1 class="text-xl font-bold mb-4">Criar Nova Comunidade</h1>
@@ -147,11 +145,9 @@ function toggleDiv() {
       <input v-model="novaComunidade.nome" type="text" placeholder="Nome da Comunidade"
         class="border p-2 rounded w-full" />
 
-      <textarea v-model="novaComunidade.descricao" placeholder="Descrição"
-        class="border p-2 rounded w-full"></textarea>
+      <textarea v-model="novaComunidade.descricao" placeholder="Descrição" class="border p-2 rounded w-full"></textarea>
 
-      <textarea v-model="novaComunidade.motivacao" placeholder="Motivação"
-        class="border p-2 rounded w-full"></textarea>
+      <textarea v-model="novaComunidade.motivacao" placeholder="Motivação" class="border p-2 rounded w-full"></textarea>
 
       <input v-model.number="novaComunidade.maxMembros" type="number" placeholder="Máximo de Membros"
         class="border p-2 rounded w-full" />
@@ -182,20 +178,24 @@ function toggleDiv() {
 section {
   padding: 5vw;
 }
+
 .box-text {
   display: flex;
   justify-content: space-between;
 }
+
 .box-text h2 {
   font-size: 1.7rem;
   margin: 0 0 0.5vw 0;
 }
+
 .box-text p {
   color: rgb(88, 87, 87);
   font-weight: 600;
   margin: 0;
   font-size: 1.2rem;
 }
+
 .box-text button {
   color: white;
   background: rgb(25, 25, 26);
@@ -209,12 +209,14 @@ section {
   border-radius: 10px;
   align-items: center;
 }
+
 .box-text span.mdi-plus {
   color: white;
   font-size: 1.2rem;
   padding: 0;
   margin: 0;
 }
+
 .search {
   background: rgb(255, 255, 255);
   border: 2px solid rgba(197, 196, 196, 0.5);
@@ -226,6 +228,7 @@ section {
   gap: 10px;
   margin: 2vw 0;
 }
+
 .search input {
   border: none;
   background: transparent;
@@ -236,13 +239,16 @@ section {
   font-size: 1rem;
   color: grey;
 }
+
 .search input::placeholder {
   font-size: 1rem;
   color: rgb(70, 68, 68);
 }
+
 span.mdi-magnify {
   color: rgb(70, 68, 68);
 }
+
 .comunidades ul {
   list-style: none;
   display: flex;
@@ -251,6 +257,7 @@ span.mdi-magnify {
   gap: 1.6vw;
   padding: 0;
 }
+
 .comunidades ul li {
   padding: 0 2vw;
   flex-direction: column;
@@ -259,5 +266,4 @@ span.mdi-magnify {
   border-radius: 25px;
   background: white;
 }
-
 </style>

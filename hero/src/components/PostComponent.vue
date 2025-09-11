@@ -95,7 +95,9 @@ function handleSave() {
     <div class="box-post">
       <div class="info-box">
         <div class="perfil-user">
+
           <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
+
             <img :src="profileAvatar" class="avatar-img-small" />
           </template>
           <template v-else>
@@ -130,17 +132,16 @@ function handleSave() {
 
       <div class="social">
         <a @click="toggleLike" class="like-btn">
-          <font-awesome-icon
-            :icon="[liked ? 'fas' : 'far', 'heart']"
-            :class="['heart-icon', liked ? 'liked' : '']"
-            class="heart-icon"
-          />
+          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
+            class="heart-icon" />
           {{ likes }}
         </a>
+
         <a>
           <font-awesome-icon :icon="['far', 'comment']" class="comment" />
           {{ comentarios.length }}
         </a>
+
         <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
 
         <!-- novo botão salvar -->
@@ -168,12 +169,7 @@ function handleSave() {
       </div>
 
       <div class="comment-box">
-        <input
-          v-model="newComment"
-          type="text"
-          placeholder="Escreva um comentário…"
-          @keyup.enter="addComment"
-        />
+        <input v-model="newComment" type="text" placeholder="Escreva um comentário…" @keyup.enter="addComment" />
         <button @click="addComment">Publicar</button>
       </div>
     </div>
@@ -193,10 +189,12 @@ div.box-post {
   box-shadow: 0 0 5px 1px rgb(204, 202, 202, 0.6);
   background: rgba(255, 255, 255, 0.5);
 }
+
 .info-box {
   display: flex;
   margin-bottom: 4vw;
 }
+
 .perfil-user p {
   width: 4vw;
   height: 4vw;
@@ -208,18 +206,22 @@ div.box-post {
   color: white;
   font-weight: 700;
 }
+
 #user,
 .c-user {
   font-weight: 600;
   color: black;
 }
+
 .info-post .post-user span,
 .c-conteudo {
   color: rgb(81, 81, 82);
 }
+
 .pontos-info {
   display: flex;
 }
+
 div.pontos-info .verificado,
 div.pontos-info .pontos {
   padding: 8px;
@@ -228,15 +230,19 @@ div.pontos-info .pontos {
   margin: 0.7vw 1vw 0 0;
   font-size: 1rem;
 }
+
 div.pontos-info .verificado {
   background: rgba(53, 231, 178, 0.4);
 }
+
 div.pontos-info .pontos {
   background: rgba(238, 240, 146, 0.6);
 }
+
 .post-img p {
   font-size: 1rem;
 }
+
 .post-img img {
   width: 100%;
   height: auto;
@@ -244,6 +250,7 @@ div.pontos-info .pontos {
   border: 1px solid rgb(218, 215, 215, 0.5);
   border-radius: 12px;
 }
+
 .social {
   display: flex;
   font-size: 1.3rem;
@@ -251,23 +258,29 @@ div.pontos-info .pontos {
   gap: 15px;
   margin: 1vw 0;
 }
+
 .heart-icon,
 .comment,
 #link {
   cursor: pointer;
 }
+
 .social span:hover {
   color: rgb(13, 129, 66);
 }
+
 .comment:hover {
   color: blue;
 }
+
 .heart-icon:hover {
   color: red;
 }
+
 .heart-icon.liked {
   color: red;
 }
+
 .comment-user p.avatar {
   width: 3vw;
   height: 3vw;
@@ -280,13 +293,16 @@ div.pontos-info .pontos {
   font-weight: 700;
   margin-right: 1vw;
 }
+
 .comment-user {
   display: flex;
   margin-top: 0;
 }
+
 .c-user {
   margin: 1vw 0 0.2vw 0;
 }
+
 .comment-box {
   margin: 1vw 0;
   padding-bottom: 1vw;
@@ -294,12 +310,14 @@ div.pontos-info .pontos {
   display: flex;
   justify-content: space-between;
 }
+
 .comment-box input {
   border: none;
   width: 100%;
   outline: none;
   font-size: 1rem;
 }
+
 .comment-box button {
   border: none;
   background: none;
@@ -308,6 +326,7 @@ div.pontos-info .pontos {
   font-weight: 600;
   color: rgb(101, 143, 235);
 }
+
 .avatar-img-small {
   width: 3.2vw;
   height: 3.2vw;
@@ -315,6 +334,7 @@ div.pontos-info .pontos {
   object-fit: cover;
   margin-right: 1vw;
 }
+
 .comment-avatar-img {
   width: 3vw;
   height: 3vw;

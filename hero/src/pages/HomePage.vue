@@ -11,7 +11,7 @@ import FeedComponent from '../components/FeedComponent.vue'
         Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
       </p>
     </div>
-    
+
     <main class="feed">
       <FeedComponent />
     </main>
@@ -20,12 +20,11 @@ import FeedComponent from '../components/FeedComponent.vue'
 </template>
 
 <style scoped>
-
 main {
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: 1fr auto;
-  grid-template-areas: 
+  grid-template-areas:
     "welcome"
     "feed";
   /* height: 100; */
