@@ -4,10 +4,21 @@ import { comunidades, addCommunity } from "../store/posts"
 import { useRouter } from "vue-router"
 import { useAuth } from "../composables/auth"
 import { useCommunityState } from "../store/communities"
+import { posts } from '../store/posts'
+import { usuario, profileName} from '../store/user'
+
 
 const router = useRouter()
 const { user } = useAuth()
 const { adicionarComunidadeCriada } = useCommunityState()
+
+
+const userPosts = computed(() => {
+  const backendName = user.value?.nome || usuario.value.nome
+  const localName = profileName.value
+  return posts.value.filter((p) => p.usuario === backendName || p.usuario === localName)
+})
+const postsCount = computed(() => userPosts.value.length)
 
 const novaComunidade = ref({
   nome: "",
@@ -62,7 +73,7 @@ function criarComunidade() {
 
   adicionarComunidadeCriada(comunidade)
 
-  // Resetar form
+
   novaComunidade.value = {
     nome: "",
     descricao: "",
@@ -120,6 +131,8 @@ function toggleDiv() {
       <li v-for="c in comunidadesFiltradas" :key="c.nome" @click="router.push({ name: 'comunidade', params: { nome: c.nome } })">
         <h2>{{ c.nome }}</h2>
         <p>{{ c.descricao }}</p>
+        <p>{{ c.maxMembros }}</p>
+        <p class="stat-value">{{ postsCount }}</p>
       </li>
     </ul>
   </div>
