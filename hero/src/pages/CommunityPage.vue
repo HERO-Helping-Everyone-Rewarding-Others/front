@@ -6,7 +6,7 @@ import { addPost, posts } from "../store/posts"
 import { ganharPontos } from "../store/user"
 import { useCommunityState } from "../store/communities"
 import PostComponent from "../components/PostComponent.vue"
-import { novaComunidade} from "../composables/useComunidades";
+import { novaComunidade } from "../composables/useComunidades";
 
 
 const { user, accessToken, fetchUser } = useAuth()

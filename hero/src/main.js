@@ -5,10 +5,10 @@ import './assets/main.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTwitter, faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons'
-import { faHeart as fasHeart, faLink, faShareNodes, faXmark, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as fasHeart, faLink, faShareNodes, faXmark, faUsers, faBars } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as farHeart, faComment, faStar, faUser, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faTwitter, faFacebookF, faInstagram, fasHeart, farHeart, faComment, faLink, faShareNodes, faStar, faUser, faPenToSquare, faXmark, faUsers)
+library.add(faTwitter, faFacebookF, faInstagram, fasHeart, farHeart, faComment, faLink, faShareNodes, faStar, faUser, faPenToSquare, faXmark, faUsers, faBars)
 
 
 const app = createApp(App)

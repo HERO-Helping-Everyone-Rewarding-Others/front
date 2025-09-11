@@ -142,7 +142,7 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
             </li>
             <li>
               <p><strong>Restantes:</strong></p>
-              <p id="text-green"><strong>{{ itemSelecionado?.preco - usuario.pontos }} pontos</strong></p>
+              <p id="text-green"><strong>{{ usuario.pontos - itemSelecionado?.preco }} pontos</strong></p>
             </li>
           </ul>
         </div>

@@ -112,7 +112,7 @@ function resetLocal() {
 
           <div class="profile-main">
             <img v-if="profileAvatar" :src="profileAvatar" alt="avatar" class="avatar-img" />
-         <div v-else class="avatar-fallback" :style="{ background: avatarColor }"> {{ initials }}</div>
+            <div v-else class="avatar-fallback" :style="{ background: avatarColor }"> {{ initials }}</div>
             <h2>{{ displayName }}</h2>
             <p v-if="user?.email" class="profile-email">{{ user.email }}</p>
             <p class="profile-pontos">{{ usuario.pontos || 0 }} pontos</p>
@@ -123,14 +123,8 @@ function resetLocal() {
           <div class="profile-form">
             <div class="avatar-form" @click="$refs.avatarInput.click()">
               <label for="avatar">Clique ou arraste sua foto aqui</label>
-              <input
-                ref="avatarInput"
-                id="avatar"
-                type="file"
-                accept="image/*"
-                @change="onSelectAvatar"
-                style="display: none"
-              />
+              <input ref="avatarInput" id="avatar" type="file" accept="image/*" @change="onSelectAvatar"
+                style="display: none" />
             </div>
 
             <div>
@@ -140,12 +134,8 @@ function resetLocal() {
 
             <div>
               <label for="bio">Biografia</label>
-              <textarea
-                id="bio"
-                v-model="profileBio"
-                placeholder="Escreva uma biografia curta"
-                class="textarea"
-              ></textarea>
+              <textarea id="bio" v-model="profileBio" placeholder="Escreva uma biografia curta"
+                class="textarea"></textarea>
             </div>
           </div>
 
@@ -173,7 +163,7 @@ function resetLocal() {
         <!-- Estatísticas -->
         <div v-if="tab === 'stats'" class="stats">
           <div class="box-stats">
-              <div class="stat-item">
+            <div class="stat-item">
               <p id="azul" class="stat-value">{{ usuario.pontos || 0 }}</p>
               <p class="stat-label">Total de pontos</p>
             </div>
@@ -203,27 +193,24 @@ function resetLocal() {
             </div>
             <span class="mdi mdi-gift-outline" id="gift"></span>
           </div>
+        </div>
 
         <!-- Posts Salvos -->
-        <div v-if="tab === 'saved'">
-          <h3 class="mb-4">Posts Salvos</h3>
-          <div v-if="savedPosts.length" class="space-y-4">
+        <div v-if="tab === 'saved'" class="saved">
+          <div v-if="savedPosts.length" class="post">
             <PostComponent v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
           </div>
-          <p v-else class="text-gray-500">Nenhum post salvo ainda.</p>
+          <p v-else>Nenhum post salvo ainda.</p>
         </div>
 
         <!-- Atividade -->
-        <div v-if="tab === 'activity'">
-          <h3 class="mb-4">Suas Postagens</h3>
-          <div v-if="userPosts.length" class="space-y-4">
+        <div v-if="tab === 'activity'" class="activity">
+          <div v-if="userPosts.length" class="post">
             <PostComponent v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
           </div>
-          <p v-else class="text-gray-500">Você ainda não fez nenhuma postagem.</p>
-
+          <p v-else>Você ainda não fez nenhuma postagem.</p>
         </div>
       </div>
-    </div>
     </div>
   </section>
 </template>
@@ -241,7 +228,7 @@ div .profile-container {
   background: white;
   border: 3px solid rgb(201, 199, 199, 0.3);
   border-radius: 25px;
-  padding: 1vw 2vw;
+  padding: 1vw 2vw 3vw 2vw;
   min-width: 22vw;
 }
 
@@ -261,7 +248,8 @@ div .profile-container {
   font-size: 0.8rem;
 }
 
-.edit button:hover {
+.edit button:hover,
+.edit-actions button:hover {
   background: rgb(233, 232, 232, 0.5);
 }
 
@@ -283,6 +271,7 @@ div .profile-container {
   justify-content: center;
   font-weight: bold;
 }
+
 .avatar-fallback {
   color: white;
   font-weight: 700;
@@ -306,6 +295,7 @@ div .profile-container {
   padding: 4px 8px;
   border-radius: 8px;
   font-weight: 600;
+  font-size: 1rem;
 }
 
 .profile-bio {
@@ -332,6 +322,7 @@ div .profile-container {
   font-weight: 600;
   width: 100%;
   display: block;
+  padding: 0.8vw 0;
 }
 
 .avatar-form {
@@ -341,10 +332,12 @@ div .profile-container {
   cursor: pointer;
   text-align: center;
 }
+
 .edit-actions {
   display: flex;
   gap: 8px;
 }
+
 .btn-save,
 .btn-reset {
   padding: 4px 8px;
@@ -382,7 +375,7 @@ div .profile-container {
 .profile-form div input:focus,
 .profile-form div textarea:hover,
 .profile-form div textarea:focus {
-  background: rgb(233, 232, 232);
+  background: rgb(238, 237, 237);
 }
 
 .edit-actions button {
@@ -447,7 +440,7 @@ nav.nav-perfil button:active {
   border: 3px solid rgb(201, 199, 199, 0.3);
   width: 27vw;
   height: 10vw;
-  
+
 }
 
 .stat-item p {
@@ -474,6 +467,7 @@ nav.nav-perfil button:active {
 #azul {
   color: #066ccc;
 }
+
 .mdi-chart-line {
   background: rgba(6, 108, 204, 0.2);
 }
@@ -482,6 +476,7 @@ nav.nav-perfil button:active {
 #verde {
   color: rgb(6, 187, 0);
 }
+
 .mdi-account-group-outline {
   background: rgba(6, 187, 0, 0.2);
 }
@@ -490,6 +485,7 @@ nav.nav-perfil button:active {
 #roxo {
   color: rgb(177, 6, 177);
 }
+
 .mdi-heart-outline {
   background: rgba(177, 6, 177, 0.2);
 }
@@ -498,7 +494,23 @@ nav.nav-perfil button:active {
 #laranja {
   color: rgba(255, 166, 0, 0.856);
 }
+
 .mdi-gift-outline {
   background: rgba(255, 166, 0, 0.2);
+}
+
+.activity,
+.saved {
+  margin-top: 2vw;
+  width: 100%;
+  max-height: 28vw;
+  overflow-y: auto;
+}
+
+.activity p,
+.saved p {
+  color: rgb(103, 103, 104);
+  text-align: center;
+  margin-top: 4vw;
 }
 </style>

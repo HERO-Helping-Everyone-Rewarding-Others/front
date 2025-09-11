@@ -26,7 +26,7 @@ const handleLogout = () => {
     <header>
         <nav>
             <h1>
-                <button @click="$emit('toggleMenu')">+++</button>
+                <button @click="$emit('toggleMenu')" class="button-user"><font-awesome-icon :icon="['fas', 'bars']" /></button>
                 <img src="/he(1).png" alt="logo" @click="router.push('/')" />
             </h1>
 
@@ -57,6 +57,12 @@ header {
     font-size: 1rem;
     background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
     color: wheat;
+    height: 5vw;
+    padding-top: 1vw;
+}
+
+header h1 {
+    margin: 0;
 }
 
 header nav {
@@ -115,15 +121,15 @@ button {
     font-size: 1.7rem;
     align-items: center;
     color: #ffffff;
-    margin: 0.7vw 0 0.7vw 0;
     transition: 0.2s;
     text-align: center;
     padding: 5px 7px;
     border-radius: 13px;
+    margin-top: 0.7vw;
 }
 
 .button-user:hover {
-    color: #1a509c;
+    color: #ffffff;
     background: rgb(250, 249, 246, 0.5);
 }
 
@@ -151,7 +157,7 @@ header nav div.user div {
 }
 
 button.exit-button {
-    background: rgb(250, 249, 246, 0.5);
+    background: rgb(250, 249, 246, 0.3);
     padding: 10px 15px;
     font-size: 1rem;
     font-weight: 600;
@@ -162,6 +168,7 @@ button.exit-button {
 }
 
 button.exit-button:hover {
-    color: #1a509c;
+    color: #ffffff;
+    background: rgb(250, 249, 246, 0.5);
 }
 </style>

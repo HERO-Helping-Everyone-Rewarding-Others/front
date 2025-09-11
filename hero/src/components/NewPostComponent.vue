@@ -93,44 +93,25 @@ async function postar() {
 
       <div v-if="comunidade && !entrouNaComunidade(comunidade)">
         <p class="text-red-500 mb-2">Você precisa entrar na comunidade para poder postar.</p>
-        <button
-          @click="redirecionarParaComunidade"
-          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-2"
-        >
+        <button @click="redirecionarParaComunidade"
+          class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-2">
           Entrar na comunidade
         </button>
       </div>
 
-      <textarea
-        v-model="conteudo"
-        placeholder="Escreva algo..."
-        class="w-full border p-2 rounded mb-2"
-        :disabled="comunidade && !entrouNaComunidade(comunidade)"
-      ></textarea>
+      <textarea v-model="conteudo" placeholder="Escreva algo..." class="w-full border p-2 rounded mb-2"
+        :disabled="comunidade && !entrouNaComunidade(comunidade)"></textarea>
 
-      <input
-        v-model="imagemLink"
-        type="text"
-        placeholder="URL da imagem (opcional)"
-        class="w-full border p-2 rounded mb-2"
-        :disabled="comunidade && !entrouNaComunidade(comunidade)"
-      />
+      <input v-model="imagemLink" type="text" placeholder="URL da imagem (opcional)"
+        class="w-full border p-2 rounded mb-2" :disabled="comunidade && !entrouNaComunidade(comunidade)" />
 
-      <input
-        type="file"
-        accept="image/*"
-        @change="selecionarImagem"
-        class="w-full border p-2 rounded mb-2"
-        :disabled="comunidade && !entrouNaComunidade(comunidade)"
-      />
+      <input type="file" accept="image/*" @change="selecionarImagem" class="w-full border p-2 rounded mb-2"
+        :disabled="comunidade && !entrouNaComunidade(comunidade)" />
 
       <img v-if="previewImagem" :src="previewImagem" class="max-h-40 mt-2 mb-2 rounded" />
 
-      <button
-        @click="postar"
-        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-        :disabled="comunidade && !entrouNaComunidade(comunidade)"
-      >
+      <button @click="postar" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+        :disabled="comunidade && !entrouNaComunidade(comunidade)">
         Postar
       </button>
 
@@ -145,5 +126,4 @@ async function postar() {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

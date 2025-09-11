@@ -27,9 +27,11 @@ const showMenu = ref(false)
   position: absolute;
   left: 0;
   min-height: 100vh;
-  background: rgba(255, 255, 255, 0.8);
-  border: 2px solid rgb(218, 215, 215);
- 
+  background: rgba(255, 255, 255);
+  border: 2px solid rgb(167, 164, 164, 0.3);  
+  box-shadow: 3px 3px 15px 1px rgba(121, 120, 120, 0.2);
+  border-bottom-right-radius: 25px;
 }
+
 
 </style>

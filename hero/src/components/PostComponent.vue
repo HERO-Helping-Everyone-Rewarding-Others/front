@@ -91,8 +91,8 @@ function handleSave() {
 </script>
 
 <template>
-  <section>
-    <div class="box-post">
+<section>
+  <div class="box-post">
       <div class="info-box">
         <div class="perfil-user">
 
@@ -173,21 +173,20 @@ function handleSave() {
         <button @click="addComment">Publicar</button>
       </div>
     </div>
-  </section>
+</section>
 </template>
 
 
 <style scoped>
 div.box-post {
   border: 2px solid rgb(218, 215, 215);
-  width: 50vw;
-  height: auto;
-  margin: 0 auto;
   border-radius: 20px;
   padding: 2vw;
   box-sizing: border-box;
   box-shadow: 0 0 5px 1px rgb(204, 202, 202, 0.6);
   background: rgba(255, 255, 255, 0.5);
+  margin-bottom: 5vw;
+  width: 70vw;
 }
 
 .info-box {
@@ -245,7 +244,7 @@ div.pontos-info .pontos {
 
 .post-img img {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   border: 1px solid rgb(218, 215, 215, 0.5);
   border-radius: 12px;
@@ -309,6 +308,7 @@ div.pontos-info .pontos {
   border-bottom: 1px solid rgb(204, 196, 196, 0.5);
   display: flex;
   justify-content: space-between;
+  
 }
 
 .comment-box input {
@@ -316,6 +316,7 @@ div.pontos-info .pontos {
   width: 100%;
   outline: none;
   font-size: 1rem;
+  background: transparent;
 }
 
 .comment-box button {
