@@ -4,6 +4,17 @@ import { useAuth } from '../composables/auth'
 import { profileName, profileAvatar } from '../store/user'
 import { toggleSave, isSaved } from '../store/saved' // novo
 
+
+const imagemExpandida = ref(null)
+
+function abrirImagem(img) {
+  imagemExpandida.value = img
+}
+
+function fecharImagem() {
+  imagemExpandida.value = null
+}
+
 const props = defineProps({ post: Object })
 
 const { user, accessToken, fetchUser } = useAuth()
@@ -76,7 +87,7 @@ const addComment = () => {
 }
 
 function getUserColor(name) {
-  const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9' , '#EDC01C']
+  const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9', '#EDC01C']
   let hash = 0
   for (let i = 0; i < name.length; i++) {
     hash = name.charCodeAt(i) + ((hash << 5) - hash)
@@ -91,89 +102,92 @@ function handleSave() {
 </script>
 
 <template>
-<section>
   <div class="box-post">
-      <div class="info-box">
-        <div class="perfil-user">
+    <div class="info-box">
+      <div class="perfil-user">
 
-          <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
+        <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
 
-            <img :src="profileAvatar" class="avatar-img-small" />
-          </template>
-          <template v-else>
-            <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
-              {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
-            </p>
-          </template>
-        </div>
-
-        <div class="info-post">
-          <div class="post-user">
-            <span id="user">
-              {{
-                post.usuario === user?.nome || post.usuario === profileName
-                  ? profileName || user?.nome
-                  : post.usuario
-              }}
-            </span>
-            <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
-          </div>
-          <div v-if="post.verificado" class="pontos-info">
-            <p class="verificado">Verificado</p>
-            <p class="pontos">+{{ post.pontos }} pontos</p>
-          </div>
-        </div>
+          <img :src="profileAvatar" class="avatar-img-small" />
+        </template>
+        <template v-else>
+          <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
+            {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
+          </p>
+        </template>
       </div>
 
-      <div class="post-img">
-        <p>{{ post.conteudo }}</p>
-        <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" />
-      </div>
-
-      <div class="social">
-        <a @click="toggleLike" class="like-btn">
-          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
-            class="heart-icon" />
-          {{ likes }}
-        </a>
-
-        <a>
-          <font-awesome-icon :icon="['far', 'comment']" class="comment" />
-          {{ comentarios.length }}
-        </a>
-
-        <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
-
-        <!-- novo botão salvar -->
-        <a @click="handleSave">
-          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'bookmark']" />
-          {{ isSaved(post) ? 'Salvo' : 'Salvar' }}
-        </a>
-      </div>
-
-      <div v-for="c in comentarios" :key="c.id" class="comment-user">
-        <div>
-          <template v-if="profileAvatar && (c.usuario === profileName || c.usuario === user?.nome)">
-            <img :src="profileAvatar" class="comment-avatar-img" />
-          </template>
-          <template v-else>
-            <p class="avatar" :style="{ background: getUserColor(c.usuario) }">
-              {{ c.usuario.split(' ')[0][0] }}
-            </p>
-          </template>
+      <div class="info-post">
+        <div class="post-user">
+          <span id="user">
+            {{
+              post.usuario === user?.nome || post.usuario === profileName
+                ? profileName || user?.nome
+                : post.usuario
+            }}
+          </span>
+          <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
         </div>
-        <div class="c-post">
-          <p class="c-user">{{ c.usuario }}</p>
-          <span class="c-conteudo">{{ c.conteudo }}</span>
+        <div v-if="post.verificado" class="pontos-info">
+          <p class="verificado">Verificado</p>
+          <p class="pontos">+{{ post.pontos }} pontos</p>
         </div>
-      </div>
-
-      <div class="comment-box">
-        <input v-model="newComment" type="text" placeholder="Escreva um comentário…" @keyup.enter="addComment" />
-        <button @click="addComment">Publicar</button>
       </div>
     </div>
-</section>
+
+    <div class="post-img">
+      <p>{{ post.conteudo }}</p>
+      <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" @click="abrirImagem(post.imagem)" />
+    </div>
+
+    <div v-if="imagemExpandida" class="lightbox" @click.self="fecharImagem">
+      <img :src="imagemExpandida" class="lightbox-img" />
+      <button class="fechar" @click="fecharImagem">✕</button>
+    </div>
+
+    <div class="social">
+      <div class="likes">
+        <a @click="toggleLike" class="like-btn">
+        <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
+          class="heart-icon" />
+        {{ likes }}
+      </a>
+      <a>
+        <font-awesome-icon :icon="['far', 'comment']" class="comment" />
+        {{ comentarios.length }}
+      </a>
+      <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
+      </div>
+
+      <div class="salvos">
+        <a @click="handleSave">
+        <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'bookmark']" />
+      </a>
+      </div>
+    </div>
+
+    <div v-for="c in comentarios" :key="c.id" class="comment-user">
+      <div>
+        <template v-if="profileAvatar && (c.usuario === profileName || c.usuario === user?.nome)">
+          <img :src="profileAvatar" class="comment-avatar-img" />
+        </template>
+        <template v-else>
+          <p class="avatar" :style="{ background: getUserColor(c.usuario) }">
+            {{ c.usuario.split(' ')[0][0] }}
+          </p>
+        </template>
+      </div>
+      <div class="c-post">
+        <p class="c-user">{{ c.usuario }}</p>
+        <span class="c-conteudo">{{ c.conteudo }}</span>
+      </div>
+    </div>
+
+    <div class="comment-box">
+      <input v-model="newComment" type="text" placeholder="Escreva um comentário…" @keyup.enter="addComment" />
+      <button @click="addComment">Publicar</button>
+    </div>
+  </div>
 </template>
 
 
@@ -185,7 +199,7 @@ div.box-post {
   box-sizing: border-box;
   box-shadow: 0 0 5px 1px rgb(204, 202, 202, 0.6);
   background: rgba(255, 255, 255, 0.5);
-  margin-bottom: 5vw;
+  margin-bottom: 3vw;
   width: 70vw;
 }
 
@@ -244,14 +258,72 @@ div.pontos-info .pontos {
 
 .post-img img {
   width: 100%;
-  height: 100%;
+  max-height: 25vw;
   object-fit: cover;
   border: 1px solid rgb(218, 215, 215, 0.5);
   border-radius: 12px;
+  display: block;
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transform: scale(0.8);
+  animation: popIn 0.3s ease forwards;
+  cursor: zoom-out;
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+
+  to {
+    background: rgba(0, 0, 0, 0.7);
+  }
 }
 
 .social {
   display: flex;
+  justify-content: space-between;
   font-size: 1.3rem;
   color: grey;
   gap: 15px;
@@ -280,6 +352,15 @@ div.pontos-info .pontos {
   color: red;
 }
 
+.salvos {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+
+.salvos:hover {
+  color: rgb(230, 161, 13);
+}
 .comment-user p.avatar {
   width: 3vw;
   height: 3vw;
@@ -308,7 +389,7 @@ div.pontos-info .pontos {
   border-bottom: 1px solid rgb(204, 196, 196, 0.5);
   display: flex;
   justify-content: space-between;
-  
+
 }
 
 .comment-box input {

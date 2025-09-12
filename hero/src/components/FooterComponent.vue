@@ -51,6 +51,7 @@ footer {
     text-align: center;
     background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
     font-weight: 500;
+    margin-top: 8vw;
 }
 
 .logo-footer img {

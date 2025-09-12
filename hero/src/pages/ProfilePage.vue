@@ -8,12 +8,18 @@ import { savedPosts } from '../store/saved'
 import { useCommunityState } from '../store/communities'
 import PostComponent from '../components/PostComponent.vue'
 
+
 const router = useRouter()
 const { user, accessToken, fetchUser } = useAuth()
 const { comunidadesEntradas } = useCommunityState()
 
 const editing = ref(false)
 const tab = ref('stats')
+
+function selectTab(name) {
+  tab.value = name
+}
+
 
 // Atualiza campos locais com dados do usuário
 watch(
@@ -40,7 +46,7 @@ const initials = computed(() => {
 
 // Gera cores para avatar de acordo com o nome
 function getUserColor(name) {
-  const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9' , '#EDC01C']
+  const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9', '#EDC01C']
   let hash = 0
   for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
   return colors[Math.abs(hash) % colors.length]
@@ -155,9 +161,9 @@ function resetLocal() {
       <!-- Conteúdo -->
       <div class="profile-content">
         <nav class="nav-perfil">
-          <button :class="{ active: tab === 'stats' }" @click="tab = 'stats'">Estatísticas</button>
-          <button :class="{ active: tab === 'saved' }" @click="tab = 'saved'">Salvos</button>
-          <button :class="{ active: tab === 'activity' }" @click="tab = 'activity'">Atividade</button>
+          <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">Estatísticas</button>
+          <button :class="{ active: tab === 'saved' }" @click="selectTab('saved')">Salvos</button>
+          <button :class="{ active: tab === 'activity' }" @click="selectTab('activity')">Atividade</button>
         </nav>
 
         <!-- Estatísticas -->
@@ -282,6 +288,9 @@ div .profile-container {
 
 .profile-main h2 {
   margin: 0;
+  width: 20vw;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .profile-main p.profile-email {
@@ -402,7 +411,7 @@ div .profile-container {
   padding: 0.2vw;
 }
 
-.profile-content nav.nav-perfil button {
+.nav-perfil button {
   font-weight: 500;
   font-size: 1rem;
   border-radius: 20px;
@@ -414,10 +423,12 @@ div .profile-container {
   padding: 8px;
   width: 100%;
   color: rgb(124, 123, 126);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 nav.nav-perfil button:focus,
-nav.nav-perfil button:active {
+.nav-perfil button.active {
   border: 1px solid rgb(201, 199, 199, 0.3);
   background: rgba(233, 231, 231, 0.5);
   color: rgb(0, 0, 0);
@@ -511,5 +522,10 @@ nav.nav-perfil button:active {
   color: rgb(103, 103, 104);
   text-align: center;
   margin-top: 4vw;
+}
+
+.post {
+  width: 20vw;
+
 }
 </style>

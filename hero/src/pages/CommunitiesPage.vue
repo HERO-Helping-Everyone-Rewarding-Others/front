@@ -173,7 +173,7 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
 
           <div>
             <label for="doações">Informações para Doação</label>
-            <input v-model="novaComunidade.doacoesInfo" type="text" placeholder="PIX, conta bancária, ect." />
+            <input v-model="novaComunidade.doacoesInfo" type="text" placeholder="PIX, conta bancária, etc." />
           </div>
 
           <div>
@@ -284,6 +284,7 @@ span.mdi-magnify {
   border: 3px solid rgb(201, 199, 199, 0.3);
   border-radius: 25px;
   background: white;
+  cursor: pointer;
 }
 
 .modal-overlay {
@@ -292,7 +293,7 @@ span.mdi-magnify {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -318,14 +319,7 @@ span.mdi-magnify {
 .modal div h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  margin: 0 0 2vw 3vw;
-}
-
-.modal div.border {
-  border-bottom: 1px solid rgb(200, 201, 204);
-  width: calc(100% + 4vw);
-  margin-left: -3vw;
-  margin-bottom: 2vw;
+  margin: 0 0 3vw 0;
 }
 
 .form-comunidade {
@@ -352,6 +346,7 @@ div.form-comunidade label {
   outline: none;
   padding: 0.5vw;
   font-size: 0.9rem;
+  resize: none;
 }
 
 .form-comunidade input {

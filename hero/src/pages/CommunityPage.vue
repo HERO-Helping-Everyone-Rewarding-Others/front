@@ -82,18 +82,17 @@ async function postar() {
   arquivoImagem.value = null
   previewImagem.value = ""
 }
+const mostrarModal = ref(false)
 
-
+function togglePost() {
+  mostrarModal.value = !mostrarModal.value
+}
+const abrirModal = (item) => { itemSelecionado.value = item; mostrarModal.value = true }
+const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = false }
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto p-4">
-    <h1 class="text-xl font-bold mb-2">{{ comunidadeNome }}</h1>
-    <p>{{ novaComunidade.descricao }}</p>
-
-
-
-    <div v-if="comunidade" class="mb-6 border p-3 rounded bg-gray-50">
+    <!-- <div v-if="comunidade" class="mb-6 border p-3 rounded bg-gray-50">
       <p v-if="comunidade.descricao">
         <span class="font-semibold">Descrição:</span> {{ comunidade.descricao }}
       </p>
@@ -113,39 +112,118 @@ async function postar() {
         <span class="font-semibold">Tipos de Doações Aceitas:</span>
         {{ comunidade.tiposDoacoes.join(", ") }}
       </p>
+    </div> -->
+
+     
+    <div>
+      <button>
+        Voltar para Comunidades
+      </button>
     </div>
 
-    <div v-if="!membro">
-      <button @click="entrar" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">
+      <div v-if="!membro" class="box-user">
+      <div class="info">
+        <h2>{{ comunidadeNome }}</h2>
+        <p>Cuidado e resgate de cães abandonados</p>
+        <p>Ajudar animais abandonados a encontrar um lar</p>
+        <div class="numbers">
+          <p>25/50 membros</p>
+          <p>postagens</p>
+        </div>
+      </div>
+      
+      <div class="buttons">
+        <button>Doar</button>
+        <button @click="entrar" >
         Entrar na comunidade
       </button>
+      </div>
     </div>
 
-    <p v-else class="text-gray-500 mb-4">Você é membro desta comunidade e pode criar posts!</p>
-
-    <div v-if="membro" class="mb-6">
-      <textarea v-model="conteudo" placeholder="Escreva algo..." class="w-full border p-2 rounded mb-2"></textarea>
-
-      <input v-model="imagemLink" type="text" placeholder="URL da imagem (opcional)"
-        class="w-full border p-2 rounded mb-2" />
-
-      <input type="file" accept="image/*" @change="selecionarImagem" class="w-full border p-2 rounded mb-2" />
-
-      <img v-if="previewImagem" :src="previewImagem" class="max-h-40 mt-2 mb-2 rounded" />
-
-      <button @click="postar" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 mb-4">
+    <div v-else class="box-user">
+      <div class="info">
+        <h2>{{ comunidadeNome }}</h2>
+        <p>Cuidado e resgate de cães abandonados</p>
+        <p>Ajudar animais abandonados a encontrar um lar</p>
+        <div class="numbers">
+          <p>25/50 membros</p>
+          <p>postagens</p>
+        </div>
+      </div>
+      
+      <div class="buttons">
+        <p>Membro</p>
+        <button>Doar</button>
+        <button @click="togglePost">
         Postar
       </button>
+      </div>
+    </div>
+
+    <div v-if="mostrarModal" class="show-post" @click.self="fecharModal">
+      <div class="new-post">
+        <textarea v-model="conteudo" placeholder="Escreva algo..."></textarea>
+
+      <input v-model="imagemLink" type="text" placeholder="URL da imagem (opcional)" />
+
+      <input type="file" accept="image/*" @change="selecionarImagem" />
+
+      <img v-if="previewImagem" :src="previewImagem" />
+
+      <button @click="postar">
+        Postar
+      </button>
+      </div>
     </div>
 
     <div v-if="postsDaComunidade.length">
-      <h2 class="font-bold mb-2">Posts desta comunidade:</h2>
-      <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario">
+      <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario" class="feed">
         <PostComponent :post="p" />
       </div>
     </div>
     <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
-  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.feed {
+  display: flex;
+  justify-content: center;
+}
+.box-user {
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  width: 66vw;
+  margin: 0 auto 3vw auto;
+  padding: 1vw 2vw;
+  border-radius: 20px;
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  box-shadow: 0 2px 5px 1px rgb(204, 202, 202, 0.6);
+}
+
+.numbers {
+  display: flex;
+  gap: 4vw;
+}
+
+.show-post {
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-post {
+  background: white;
+  border-radius: 15px;
+  padding: 2vw 2vw;
+  width: 44vw;
+  height: 20vw;
+  z-index: 100;
+}
+</style>
