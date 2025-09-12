@@ -63,11 +63,21 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
 
     <div class="list">
       <ul>
-        <li><button @click="selecionarCategoria('todos')"><span class="mdi mdi-star-outline"></span><p>Todos</p></button></li>
-        <li><button @click="selecionarCategoria('gift')"><span class="mdi mdi-gift-outline"></span><p>Gift Cards</p></button></li>
-        <li><button @click="selecionarCategoria('desconto')"><span class="mdi mdi-cart-outline"></span><p>Descontos</p></button></li>
-        <li><button @click="selecionarCategoria('dinheiro')"><span class="mdi mdi-currency-usd"></span><p>Dinheiro</p></button></li>
-        <li><button @click="selecionarCategoria('doacao')"><span class="mdi mdi-heart-outline"></span><p>Doações</p></button></li>
+        <li><button @click="selecionarCategoria('todos')"><span class="mdi mdi-star-outline"></span>
+            <p>Todos</p>
+          </button></li>
+        <li><button @click="selecionarCategoria('gift')"><span class="mdi mdi-gift-outline"></span>
+            <p>Gift Cards</p>
+          </button></li>
+        <li><button @click="selecionarCategoria('desconto')"><span class="mdi mdi-cart-outline"></span>
+            <p>Descontos</p>
+          </button></li>
+        <li><button @click="selecionarCategoria('dinheiro')"><span class="mdi mdi-currency-usd"></span>
+            <p>Dinheiro</p>
+          </button></li>
+        <li><button @click="selecionarCategoria('doacao')"><span class="mdi mdi-heart-outline"></span>
+            <p>Doações</p>
+          </button></li>
       </ul>
     </div>
 
@@ -79,32 +89,30 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
           <p>{{ item.descricao }}</p>
         </div>
 
-     <div class="progress-box">
-      <div class="box-info">
-        <div class="text">
-          <font-awesome-icon :icon="['far', 'star']" class="star"/>
-            <p>{{ item.preco }} pontos</p>
-        </div>
+        <div class="progress-box">
+          <div class="box-info">
+            <div class="text">
+              <font-awesome-icon :icon="['far', 'star']" class="star" />
+              <p>{{ item.preco }} pontos</p>
+            </div>
             <p class="disp">{{ item.disponivel }} disponíveis</p>
           </div>
-      <div class="text-progress">
-        <p class="faltam">Progresso</p>
-        <p class="faltam">
-          {{ usuario.pontos >= item.preco 
-          ? 'Pronto!' 
-          : `Faltam ${item.preco - usuario.pontos} pontos` }}
-        </p>
-      </div>
-      <div class="progress-bar">
-        <div class="progress" 
-        :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }">
+          <div class="text-progress">
+            <p class="faltam">Progresso</p>
+            <p class="faltam">
+              {{ usuario.pontos >= item.preco
+                ? 'Pronto!'
+                : `Faltam ${item.preco - usuario.pontos} pontos` }}
+            </p>
+          </div>
+          <div class="progress-bar">
+            <div class="progress" :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }">
+            </div>
+          </div>
+          <button @click="abrirModal(item)" :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'">
+            {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
+          </button>
         </div>
-      </div>
-      <button @click="abrirModal(item)"
-        :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'" > 
-        {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
-      </button>
-     </div>
       </div>
     </div>
 
@@ -112,17 +120,17 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
       <div class="modal">
         <div class="info-modal">
           <h2>Confirmar Resgate</h2>
-        <p>
-          Você está prestes a resgatar uma recompensa. Confirme os detalhes abaixo.
-        </p>
-           <img :src="itemSelecionado?.img" :alt="itemSelecionado?.nome" class="modal-img">
-         <div class="text-modal">
-          <h2><strong>{{ itemSelecionado?.nome }}</strong></h2>
-          <p>{{ itemSelecionado?.descricao }}</p>
-         </div>
+          <p>
+            Você está prestes a resgatar uma recompensa. Confirme os detalhes abaixo.
+          </p>
+          <img :src="itemSelecionado?.img" :alt="itemSelecionado?.nome" class="modal-img">
+          <div class="text-modal">
+            <h2><strong>{{ itemSelecionado?.nome }}</strong></h2>
+            <p>{{ itemSelecionado?.descricao }}</p>
+          </div>
         </div>
 
-         <div class="modal-pontos">
+        <div class="modal-pontos">
           <ul>
             <li>
               <p>Custo:</p>
@@ -134,10 +142,10 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
             </li>
             <li>
               <p><strong>Restantes:</strong></p>
-              <p id="text-green"><strong>{{ itemSelecionado?.preco - usuario.pontos }} pontos</strong></p>
+              <p id="text-green"><strong>{{ usuario.pontos - itemSelecionado?.preco }} pontos</strong></p>
             </li>
           </ul>
-         </div>
+        </div>
 
         <div class="buttons">
           <button class="cancelar" @click="fecharModal">Cancelar</button>
@@ -173,14 +181,17 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
 section {
   padding: 5vw 5vw;
 }
+
 .pontos-user {
   display: flex;
   justify-content: space-between;
 }
+
 .recom h2 {
   font-size: 1.7rem;
   margin: 0 0 0.5vw 0;
 }
+
 .recom p,
 .box1-pontos p.text-ponto {
   color: rgb(88, 87, 87);
@@ -188,10 +199,12 @@ section {
   margin: 0;
   font-size: 1.2rem;
 }
+
 .pontos-user .pontos {
   display: flex;
   text-align: right;
 }
+
 .icon-line span {
   color: rgb(12, 88, 124);
   font-size: 2rem;
@@ -199,24 +212,29 @@ section {
   border-radius: 100%;
   padding: 1vw 1.5vw;
 }
+
 .icon-line {
   margin: 0.3vw 0 0 1.5vw;
 }
+
 .total-pontos {
   font-weight: 700;
   font-size: 1.5rem;
   color: rgb(12, 88, 124);
   margin: 0;
 }
+
 .list ul {
   display: flex;
   gap: 10px;
   margin: 0;
   padding: 2vw 2vw 0 0;
 }
+
 .list ul li {
   list-style: none;
 }
+
 .list button {
   display: flex;
   justify-content: center;
@@ -231,24 +249,28 @@ section {
   font-weight: 600;
   color: rgb(88, 87, 87);
 }
+
 .list button:focus {
   color: white;
   background: rgb(25, 25, 26);
 }
+
 .list button span {
   font-size: 1.3rem;
 }
+
 .list p {
   margin: 0;
 }
+
 .flex {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
   margin: 2vw 0 4vw 0;
-  /* gap: 1.6vw; */
 }
+
 .itens {
   display: flex;
   flex-direction: column;
@@ -258,24 +280,29 @@ section {
   border-radius: 25px;
   overflow: hidden;
   background: white;
+  margin-bottom: 2vw;
 }
+
 .itens img {
   height: 12vw;
   object-fit: cover;
   display: block;
 }
+
 .itens h2 {
   font-size: 1.2rem;
   margin-bottom: 0;
   color: #000000;
   font-weight: 500;
 }
+
 .box-description {
-  padding: 1vw; 
+  padding: 1vw;
   flex: 1;
   font-size: 1rem;
   color: #5f5f61;
 }
+
 .box-info {
   display: flex;
   justify-content: space-between;
@@ -283,34 +310,42 @@ section {
   align-items: center;
   font-size: 0.9rem;
 }
+
 .box-info p {
   font-size: 0.8rem;
 }
+
 .text {
   align-items: center;
   display: flex;
 }
+
 .text p {
   font-size: 1rem;
   color: #000000;
   font-weight: 600;
   padding-left: 7px;
 }
+
 .box-info .star {
   color: rgb(253, 215, 0);
   font-size: 1rem;
 }
+
 .box-info p.disp {
   border: 1px solid rgb(168, 164, 164, 0.5);
   padding: 5px 7px;
   border-radius: 10px;
 }
+
 .progress-box {
   margin: 0 1vw;
 }
+
 .progress-box p {
   margin: 0;
 }
+
 .progress-bar {
   width: 100%;
   height: 11px;
@@ -318,23 +353,28 @@ section {
   border-radius: 5px;
   overflow: hidden;
 }
+
 .progress {
   height: 100%;
   background: rgb(25, 25, 26);
   transition: width 0.3s ease;
 }
+
 p.faltam {
   font-size: 0.9rem;
   color: rgb(88, 87, 87);
   margin: 5px 0 0 0;
   font-weight: 500;
 }
+
 .progress-box div.text-progress {
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.8vw;
 }
-.btn-insuficiente, .btn-resgatar {
+
+.btn-insuficiente,
+.btn-resgatar {
   font-weight: 600;
   color: white;
   border: none;
@@ -344,29 +384,36 @@ p.faltam {
   font-size: 1rem;
   margin: 1vw 0 2.5vw 0;
 }
-.btn-resgatar, .confirmar {
+
+.btn-resgatar,
+.confirmar {
   background: rgb(25, 25, 26);
   cursor: pointer;
   transition: 0.2s;
 }
+
 .btn-resgatar:hover,
 .confirmar:hover {
   background: rgb(25, 25, 26, 0.9);
 }
+
 .btn-insuficiente {
   background: #a1a1a1;
 }
+
 .box-win {
   background: white;
   border-radius: 25px;
   border: 3px solid rgb(201, 199, 199, 0.3);
   padding: 0.5vw 2vw;
 }
+
 .box-win h2 {
   font-size: 1.3rem;
   font-weight: 500;
   color: rgb(88, 87, 87);
 }
+
 .box-win ul {
   display: flex;
   justify-content: center;
@@ -374,18 +421,22 @@ p.faltam {
   list-style: none;
   margin: 3vw 2vw;
 }
+
 .box-win ul li span#heart {
   background: rgba(154, 184, 250, 0.3);
   color: rgb(45, 84, 194);
 }
+
 .box-win ul li span#star {
   background: rgb(129, 247, 168, 0.3);
   color: rgb(27, 139, 64);
 }
+
 .box-win ul li span#gift {
   background: rgba(230, 167, 230, 0.3);
   color: rgb(165, 66, 165);
 }
+
 .box-win ul li span#gift,
 .box-win ul li span#star,
 .box-win ul li span#heart {
@@ -393,74 +444,90 @@ p.faltam {
   border-radius: 100%;
   font-size: 1.5rem;
 }
+
 .box-win li p {
   font-size: 1rem;
   color: rgb(88, 87, 87);
 }
+
 .box-win li h3 {
   font-size: 1.3rem;
 }
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
 }
+
 .modal {
   background: white;
   border-radius: 15px;
   padding: 2vw;
   width: 30vw;
 }
+
 .info-modal img {
   width: 100%;
   height: 10vw;
   object-fit: cover;
   border-radius: 20px;
 }
+
 .info-modal h2 {
   margin: 0;
   font-size: 1.2rem;
 }
+
 .info-modal p {
   font-size: 0.9rem;
   color: #5f5f61;
 }
+
 .text-modal {
   text-align: center;
   margin: 1vw 0;
 }
+
 .text-modal p {
   margin: 0.5vw 0;
 }
+
 .modal-pontos {
   background: rgb(241, 241, 241, 0.5);
   border-radius: 15px;
 }
+
 .modal-pontos ul {
   list-style: none;
   padding: 0.5vw 1.5vw;
 }
+
 .modal-pontos ul li {
   display: flex;
   justify-content: space-between;
 }
+
 .modal-pontos li p {
   margin: 0.5vw 0;
   font-size: 1rem;
 }
+
 #text-green {
   color: rgb(31, 146, 75);
 }
+
 .buttons {
   text-align: right;
 }
+
 .buttons button {
   border: 2px solid rgb(201, 199, 199, 0.3);
   border-radius: 10px;
@@ -470,11 +537,12 @@ p.faltam {
   font-weight: 600;
   cursor: pointer;
 }
+
 .cancelar {
   background: rgb(241, 241, 241, 0.5);
 }
+
 .confirmar {
   color: white;
 }
-
 </style>

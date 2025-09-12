@@ -6,14 +6,9 @@ import Post from "./PostComponent.vue"
 <template>
   <section>
     <div>
-    <Post
-      v-for="(p, i) in posts"
-      :key="p.id || p._localUid || (p._localUid = `${Date.now()}-${i}`)"
-      :post="p"
-    />
-  </div>
+      <Post v-for="(p, i) in posts" :key="p.id || p._localUid || (p._localUid = `${Date.now()}-${i}`)" :post="p" />
+    </div>
   </section>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

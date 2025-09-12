@@ -14,60 +14,97 @@ const minhasComunidades = computed(() =>
 </script>
 
 <template>
-    <section>
+  <section>
+    <div class="acesso">
       <h2>Acesso Rápido</h2>
       <p>
         Suas comunidades
       </p>
-      <div>
+    </div>
+    <div class="comun-user">
+      <div class="plus">
         <p>
-          MINHAS COMUNIDADES
+        MINHAS COMUNIDADES
         </p>
-        <font-awesome-icon :icon="['far', 'star']" />
-      </div>
-        <div>
-         <ul>
-      <li v-if="minhasComunidades.length === 0">
-        Você ainda não entrou em nenhuma comunidade.
-      </li>
-      <li v-for="nome in minhasComunidades" :key="nome">
-        <RouterLink :to="`/comunidade/${nome}`">
-          {{ nome }}
-        </RouterLink>
-      </li>
-    </ul>
-      </div>
+      <span class="mdi mdi-plus"></span>
 
-      <p>
-        COMUNIDADES POPULARES
-      </p>
-       <div>
-          <ul class="mb-4">
-          <li v-for="nome in                   comunidadesPopulares" :key="nome" class="mb-1">
+      </div>
+      <div>
+        <p v-if="minhasComunidades.length === 0">
+          Você ainda não entrou em nenhuma comunidade.
+        </p>
+        <ul>
+          <li v-for="nome in minhasComunidades" :key="nome">
             <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
-            {{ nome }}
+              {{ nome }}
             </RouterLink>
           </li>
-      </ul>
+        </ul>
       </div>
+    </div>
 
+    <p>
+      COMUNIDADES POPULARES
+    </p>
+    <div>
+      <ul class="mb-4">
+        <li v-for="nome in comunidadesPopulares" :key="nome" class="mb-1">
+          <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
+            {{ nome }}
+          </RouterLink>
+        </li>
+      </ul>
+    </div>
+
+    <div>
       <div>
-        <div>
         <font-awesome-icon :icon="['fas', 'users']" />
         <RouterLink to="/comunidades">Ver todas as comunidades</RouterLink>
-        <RouterLink to="/loja" class="block mb-1 text-blue-600 hover:underline">🛒 Loja</RouterLink>
-        <RouterLink to="/profile" class="block mb-2 text-blue-600 hover:underline">👤 Perfil</RouterLink>
+        <RouterLink to="/profile">👤 Perfil</RouterLink>
       </div>
-      <button><span class="mdi mdi-plus"></span><p>Criar comunidade</p></button>
-      </div>
-     <p>
+    </div>
+    <p>
       Helping Everyone Rewarding Others
-     </p>
-    </section>
+    </p>
+  </section>
 </template>
 
 <style scoped>
-h2 {
+section {
+  background: white;
+  padding: 0 0 0 1.5vw;
+  width: 22vw;
+}
+
+.acesso h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5vw;
+}
+
+section p {
+  color: rgb(86, 85, 87);
+}
+
+.acesso p {
+  font-size: 1.1rem;
   margin: 0;
+}
+
+.plus {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plus p {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.plus .mdi-plus {
+  color: rgb(116, 116, 117);
+  font-size: 1.5rem;
+  margin-right: 2vw;
 }
 </style>
