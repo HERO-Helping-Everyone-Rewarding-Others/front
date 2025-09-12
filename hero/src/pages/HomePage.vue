@@ -12,14 +12,17 @@ import FeedComponent from '../components/FeedComponent.vue'
       </p>
       <ul>
         <li>
+          <span class="mdi mdi-account-group-outline"></span>
           <p>5</p>
           <p>Comunidades Ativas</p>
         </li>
         <li>
+          <span><font-awesome-icon :icon="['far', 'hand']"></font-awesome-icon></span>
           <p>92</p>
           <p>Voluntários</p>
         </li>
         <li>
+          <span class="mdi mdi-eye-outline"></span>
           <p>3</p>
           <p>Ações Realizadas</p>
         </li>
@@ -55,5 +58,8 @@ import FeedComponent from '../components/FeedComponent.vue'
   display: flex;
   justify-content: center;
   list-style: none;
+}
+.welcome ul li {
+  background: white;
 }
 </style>

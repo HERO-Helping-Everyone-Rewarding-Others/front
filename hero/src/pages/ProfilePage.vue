@@ -40,7 +40,7 @@ const initials = computed(() => {
 
 // Gera cores para avatar de acordo com o nome
 function getUserColor(name) {
-  const colors = ['#FF5733', '#33FF57', '#3357FF', '#F39C12', '#8E44AD', '#E74C3C']
+  const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9' , '#EDC01C']
   let hash = 0
   for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
   return colors[Math.abs(hash) % colors.length]
@@ -428,7 +428,6 @@ nav.nav-perfil button:active {
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 2vw;
-  gap: 1vw;
 }
 
 .box-stats {
@@ -440,7 +439,7 @@ nav.nav-perfil button:active {
   border: 3px solid rgb(201, 199, 199, 0.3);
   width: 27vw;
   height: 10vw;
-
+  margin-bottom: 1vw;
 }
 
 .stat-item p {
