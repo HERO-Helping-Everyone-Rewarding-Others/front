@@ -2,7 +2,7 @@ import { ref } from "vue"
 
 const comunidadesEntradas = ref([])
 const todasComunidades = ref([
-  { id: 1, nome: "Canil Amor Animal"}
+  { id: 1, nome: "Canil Amor Animal",  maxMembros: "30" }
 ])
 
 export function useCommunityState() {

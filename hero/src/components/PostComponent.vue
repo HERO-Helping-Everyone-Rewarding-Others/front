@@ -116,7 +116,7 @@ function handleSave() {
                   : post.usuario
               }}
             </span>
-            <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
+            <span> • <RouterLink :to="`/comunidade/${post.comunidade}`" > {{post.comunidade }} </RouterLink> - {{ new Date(post.tempo).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
           </div>
           <div v-if="post.verificado" class="pontos-info">
             <p class="verificado">Verificado</p>
@@ -308,7 +308,7 @@ div.pontos-info .pontos {
   border-bottom: 1px solid rgb(204, 196, 196, 0.5);
   display: flex;
   justify-content: space-between;
-  
+
 }
 
 .comment-box input {

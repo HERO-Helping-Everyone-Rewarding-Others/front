@@ -96,11 +96,7 @@ const comunidadesFiltradas = computed(() => {
   )
 })
 
-const isVisible = ref(false)
 
-function toggleDiv() {
-  isVisible.value = !isVisible.value
-}
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
@@ -133,7 +129,7 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
           <h2>{{ c.nome }}</h2>
           <p>{{ c.descricao }}</p>
           <p>{{ c.maxMembros }}</p>
-          <p class="stat-value">{{ postsCount }}</p>
+
         </li>
       </ul>
     </div>

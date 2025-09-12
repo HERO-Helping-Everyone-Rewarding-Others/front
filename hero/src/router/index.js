@@ -24,7 +24,7 @@ const router = createRouter({
   routes,
 })
 
-// === Guard global para autenticação ===
+
 router.beforeEach(async (to, from, next) => {
   const { user, fetchUser, accessToken } = useAuth()
 

@@ -6,14 +6,14 @@ export const posts = ref([
     comunidade: "Canil Amor Animal",
     pontos: 50,
     verificado: true,
-    tempo: "13d",
+    tempo: "16:20",
     conteudo: "Resgatamos mais 3 cães hoje! Precisamos de ajuda para castração.",
     imagem: "https://static9.depositphotos.com/1594920/1087/i/450/depositphotos_10875445-stock-photo-cavalier-king-charles-spaniel-3.jpg",
     curtidas: 0,
     comentarios: 1,
     compartilhamentos: 1,
     comentariosLista: [
-      { usuario: "João Santos", conteudo: "Posso ajudar com transporte!", tempo: "13d" }
+      { usuario: "João Santos", conteudo: "Posso ajudar com transporte!", tempo: "16:20" }
     ]
   }
 ])
@@ -21,10 +21,10 @@ export const posts = ref([
 
 
 export const comunidades = ref([
-  { nome: "Canil Amor Animal", descricao: "Resgate e adoção de cães." }
+  { nome: "Canil Amor Animal", descricao: "Resgate e adoção de cães.", maxMembros:30}
 ])
 
-// função para adicionar novo post
+
 export function addPost(novoPost) {
   posts.value.unshift(novoPost) // adiciona no topo do feed
 }
