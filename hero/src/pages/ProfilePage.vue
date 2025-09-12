@@ -525,7 +525,7 @@ nav.nav-perfil button:focus,
 }
 
 .post {
-  width: 20vw;
-
+  max-width: 20vw;
+  max-height: 28vw;
 }
 </style>

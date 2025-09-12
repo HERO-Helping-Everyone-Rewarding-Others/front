@@ -82,39 +82,15 @@ async function postar() {
   arquivoImagem.value = null
   previewImagem.value = ""
 }
+
+const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
-function togglePost() {
-  mostrarModal.value = !mostrarModal.value
-}
 const abrirModal = (item) => { itemSelecionado.value = item; mostrarModal.value = true }
 const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = false }
 </script>
 
 <template>
-    <!-- <div v-if="comunidade" class="mb-6 border p-3 rounded bg-gray-50">
-      <p v-if="comunidade.descricao">
-        <span class="font-semibold">Descrição:</span> {{ comunidade.descricao }}
-      </p>
-      <p v-if="comunidade.motivacao">
-        <span class="font-semibold">Motivação:</span> {{ comunidade.motivacao }}
-      </p>
-      <p v-if="comunidade.maxMembros">
-        <span class="font-semibold">Máximo de membros:</span> {{ comunidade.maxMembros }}
-      </p>
-      <p v-if="comunidade.contato">
-        <span class="font-semibold">Contato:</span> {{ comunidade.contato }}
-      </p>
-      <p v-if="comunidade.doacoesInfo">
-        <span class="font-semibold">Doações:</span> {{ comunidade.doacoesInfo }}
-      </p>
-      <p v-if="comunidade.tiposDoacoes && comunidade.tiposDoacoes.length">
-        <span class="font-semibold">Tipos de Doações Aceitas:</span>
-        {{ comunidade.tiposDoacoes.join(", ") }}
-      </p>
-    </div> -->
-
-     
     <div>
       <button>
         Voltar para Comunidades
@@ -154,7 +130,7 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
       <div class="buttons">
         <p>Membro</p>
         <button>Doar</button>
-        <button @click="togglePost">
+        <button @click="abrirModal">
         Postar
       </button>
       </div>

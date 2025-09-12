@@ -96,11 +96,6 @@ const comunidadesFiltradas = computed(() => {
   )
 })
 
-const isVisible = ref(false)
-
-function toggleDiv() {
-  isVisible.value = !isVisible.value
-}
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
@@ -137,9 +132,8 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
         </li>
       </ul>
     </div>
+
     <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
-
-
       <div class="modal">
         <div class="border">
           <h2>Criar Nova Comunidade</h2>

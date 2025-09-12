@@ -68,6 +68,13 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString())
 }
 
+
+
+function handleSave() {
+  toggleSave(props.post)
+}
+
+
 const addComment = () => {
   if (!newComment.value.trim()) return
 
@@ -94,10 +101,6 @@ function getUserColor(name) {
   }
   const index = Math.abs(hash) % colors.length
   return colors[index]
-}
-
-function handleSave() {
-  toggleSave(props.post)
 }
 </script>
 
@@ -153,15 +156,16 @@ function handleSave() {
         {{ likes }}
       </a>
       <a>
-        <font-awesome-icon :icon="['far', 'comment']" class="comment" />
-        {{ comentarios.length }}
+        <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
       </a>
       <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
       </div>
 
       <div class="salvos">
         <a @click="handleSave">
-        <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'bookmark']" />
+        <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'bookmark']"
+    :class="['bookmark', isSaved(post) ? 'saved' : '']"
+    class="bookmark"/>
       </a>
       </div>
     </div>
@@ -237,15 +241,15 @@ div.box-post {
 
 div.pontos-info .verificado,
 div.pontos-info .pontos {
-  padding: 8px;
+  padding: 5px 8px;
   border-radius: 12px;
   font-weight: 600;
-  margin: 0.7vw 1vw 0 0;
+  margin: 0.3vw 0.5vw 0 0;
   font-size: 1rem;
 }
 
 div.pontos-info .verificado {
-  background: rgba(53, 231, 178, 0.4);
+  background: rgba(53, 231, 178, 0.3);
 }
 
 div.pontos-info .pontos {
@@ -326,8 +330,16 @@ div.pontos-info .pontos {
   justify-content: space-between;
   font-size: 1.3rem;
   color: grey;
-  gap: 15px;
   margin: 1vw 0;
+}
+
+.likes {
+  display: flex;
+  gap: 15px;
+}
+
+.likes a {
+  display: block;
 }
 
 .heart-icon,
@@ -341,7 +353,7 @@ div.pontos-info .pontos {
 }
 
 .comment:hover {
-  color: blue;
+  color: rgb(38, 97, 207);
 }
 
 .heart-icon:hover {
@@ -357,10 +369,14 @@ div.pontos-info .pontos {
   cursor: pointer;
 }
 
-
-.salvos:hover {
+.bookmark:hover {
   color: rgb(230, 161, 13);
 }
+
+.bookmark.saved {
+  color: rgb(230, 161, 13);
+}
+
 .comment-user p.avatar {
   width: 3vw;
   height: 3vw;
