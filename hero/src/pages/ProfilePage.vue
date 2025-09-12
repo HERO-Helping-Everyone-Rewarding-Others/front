@@ -6,7 +6,7 @@ import { usuario, profileName, profileBio, profileAvatar, pontosGanhos } from '.
 import { posts } from '../store/posts'
 import { savedPosts } from '../store/saved'
 import { useCommunityState } from '../store/communities'
-import PostComponent from '../components/PostComponent.vue'
+import PostComponentSaved from '../components/PostComponentSaved.vue'
 
 
 const router = useRouter()
@@ -204,7 +204,7 @@ function resetLocal() {
         <!-- Posts Salvos -->
         <div v-if="tab === 'saved'" class="saved">
           <div v-if="savedPosts.length" class="post">
-            <PostComponent v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
+            <PostComponentSaved v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
           </div>
           <p v-else>Nenhum post salvo ainda.</p>
         </div>

@@ -19,9 +19,10 @@ export const posts = ref([
 ])
 
 
-
+// aqui cria as comunidades para mostrar na pagina de comunidades
 export const comunidades = ref([
-  { nome: "Canil Amor Animal", descricao: "Resgate e adoção de cães." }
+  { nome: "Canil Amor Animal", descricao: "Resgate e adoção de cães." },
+  { nome: "Animais carentes", descricao: "ajudando diferentes tipos de animais em situação de necessidade"}
 ])
 
 // função para adicionar novo post
@@ -31,5 +32,6 @@ export function addPost(novoPost) {
 
 // função para adicionar nova comunidade
 export function addCommunity(novaComunidade) {
-  comunidades.value.push(novaComunidade)
+  console.log(novaComunidade)
+  comunidades.value.push({...novaComunidade})
 }

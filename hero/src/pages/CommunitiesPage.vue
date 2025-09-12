@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue" // <-- ADICIONE 'computed'
+import { ref, computed } from "vue" 
 import { comunidades, addCommunity } from "../store/posts"
 import { useRouter } from "vue-router"
 import { useAuth } from "../composables/auth"
@@ -71,7 +71,7 @@ function criarComunidade() {
     user.value.comunidades.push(comunidade.nome)
   }
 
-  adicionarComunidadeCriada(comunidade)
+  adicionarComunidadeCriada(comunidade.nome)
 
 
   novaComunidade.value = {

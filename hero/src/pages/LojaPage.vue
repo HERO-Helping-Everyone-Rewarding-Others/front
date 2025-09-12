@@ -255,6 +255,7 @@ section {
   background: rgb(25, 25, 26);
 }
 
+
 .list button span {
   font-size: 1.3rem;
 }
@@ -266,8 +267,9 @@ section {
 .flex {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  gap: 2vw;
   margin: 2vw 0 4vw 0;
 }
 
@@ -280,8 +282,8 @@ section {
   border-radius: 25px;
   overflow: hidden;
   background: white;
-  margin-bottom: 2vw;
 }
+
 
 .itens img {
   height: 12vw;
