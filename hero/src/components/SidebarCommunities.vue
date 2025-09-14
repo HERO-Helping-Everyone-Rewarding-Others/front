@@ -26,7 +26,9 @@ const minhasComunidades = computed(() =>
         <p>
         MINHAS COMUNIDADES
         </p>
+        <RouterLink to="/comunidades">
       <span class="mdi mdi-plus"></span>
+    </RouterLink>
 
       </div>
       <div>
