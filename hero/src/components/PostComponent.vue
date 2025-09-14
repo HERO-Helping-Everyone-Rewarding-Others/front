@@ -129,7 +129,9 @@ function getUserColor(name) {
                 : post.usuario
             }}
           </span>
-          <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
+          <span> •  <RouterLink :to="`/comunidade/${post.comunidade}`" class="text-indigo-600 hover:underline">
+    {{ post.comunidade }}
+  </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) }}</span>
         </div>
         <div v-if="post.verificado" class="pontos-info">
           <p class="verificado">Verificado</p>

@@ -2,7 +2,10 @@
 import { useAuth } from '@/composables/auth'
 const { register } = useAuth()
 import { ref } from 'vue'
+import { useRouter } from "vue-router";
 
+
+const router = useRouter();
 
 const nome = ref(``)
 const email = ref(``)
@@ -13,6 +16,7 @@ const handleRegister = async () => {
   try {
     await register(nome.value, email.value, password.value, biografia.value)
     alert(`registro realizado com sucesso`)
+    router.push("/login");
   }
   catch (error) {
     alert(JSON.stringify(error.response?.data))

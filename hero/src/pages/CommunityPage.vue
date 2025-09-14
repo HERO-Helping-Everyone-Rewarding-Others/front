@@ -1,16 +1,15 @@
 <script setup>
 import { ref, computed, onMounted } from "vue"
 import { useAuth } from "../composables/auth"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { addPost, posts } from "../store/posts"
 import { ganharPontos } from "../store/user"
 import { useCommunityState } from "../store/communities"
 import PostComponent from "../components/PostComponent.vue"
-import { novaComunidade } from "../composables/useComunidades";
-
 
 const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
+const router = useRouter()
 const { entrouNaComunidade, entrarNaComunidade, todasComunidades } = useCommunityState()
 
 const comunidadeNome = route.params.nome
@@ -21,7 +20,7 @@ const previewImagem = ref("")
 const usuarioLogado = computed(() => user.value?.nome || "")
 const membro = ref(false)
 
-// 🔹 Usa as comunidades do state centralizado
+// 🔹 comunidade atual
 const comunidade = computed(() =>
   todasComunidades.value.find(c => c.nome === comunidadeNome) || null
 )
@@ -41,7 +40,6 @@ function entrar() {
   membro.value = true
   alert(`Você entrou na comunidade ${comunidadeNome}! Agora você pode postar.`)
 }
-
 
 function selecionarImagem(event) {
   const file = event.target.files[0]
@@ -86,79 +84,60 @@ async function postar() {
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
-const abrirModal = (item) => { itemSelecionado.value = item; mostrarModal.value = true }
-const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = false }
+const abrirModal = () => { mostrarModal.value = true }
+const fecharModal = () => { mostrarModal.value = false }
 </script>
 
 <template>
-    <div>
-      <button>
-        Voltar para Comunidades
-      </button>
-    </div>
+  <div>
+    <button @click="router.push({ name: 'comunidades' })">
+      Voltar para Comunidades
+    </button>
+  </div>
 
-      <div v-if="!membro" class="box-user">
-      <div class="info">
-        <h2>{{ comunidadeNome }}</h2>
-        <p>Cuidado e resgate de cães abandonados</p>
-        <p>Ajudar animais abandonados a encontrar um lar</p>
-        <div class="numbers">
-          <p>25/50 membros</p>
-          <p>postagens</p>
-        </div>
-      </div>
-      
-      <div class="buttons">
-        <button>Doar</button>
-        <button @click="entrar" >
-        Entrar na comunidade
-      </button>
+  <div v-if="comunidade" class="box-user">
+
+    <div class="info">
+      <h2>{{ comunidade.nome }}</h2>
+      <p>{{ comunidade.descricao }}</p>
+      <p><b>Motivação:</b> {{ comunidade.motivacao }}</p>
+      <p><b>Contato:</b> {{ comunidade.contato }}</p>
+      <p><b>Doações:</b> {{ comunidade.doacao }}</p>
+
+      <div class="numbers">
+        <p>Membros: {{ membro ? 'Você já faz parte' : 'Entre para participar' }} (máx {{ comunidade.maxMembros }})</p>
+        <p>Postagens: {{ postsDaComunidade.length }}</p>
       </div>
     </div>
 
-    <div v-else class="box-user">
-      <div class="info">
-        <h2>{{ comunidadeNome }}</h2>
-        <p>Cuidado e resgate de cães abandonados</p>
-        <p>Ajudar animais abandonados a encontrar um lar</p>
-        <div class="numbers">
-          <p>25/50 membros</p>
-          <p>postagens</p>
-        </div>
-      </div>
-      
-      <div class="buttons">
+    <div class="buttons">
+      <button>Doar</button>
+      <button v-if="!membro" @click="entrar">Entrar na comunidade</button>
+      <div v-else>
         <p>Membro</p>
-        <button>Doar</button>
-        <button @click="abrirModal">
-        Postar
-      </button>
+        <button @click="abrirModal">Postar</button>
       </div>
     </div>
+  </div>
 
-    <div v-if="mostrarModal" class="show-post" @click.self="fecharModal">
-      <div class="new-post">
-        <textarea v-model="conteudo" placeholder="Escreva algo..."></textarea>
-
+  <div v-if="mostrarModal" class="show-post" @click.self="fecharModal">
+    <div class="new-post">
+      <textarea v-model="conteudo" placeholder="Escreva algo..."></textarea>
       <input v-model="imagemLink" type="text" placeholder="URL da imagem (opcional)" />
-
       <input type="file" accept="image/*" @change="selecionarImagem" />
-
       <img v-if="previewImagem" :src="previewImagem" />
-
-      <button @click="postar">
-        Postar
-      </button>
-      </div>
+      <button @click="postar">Postar</button>
     </div>
+  </div>
 
-    <div v-if="postsDaComunidade.length">
-      <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario" class="feed">
-        <PostComponent :post="p" />
-      </div>
+  <div v-if="postsDaComunidade.length">
+    <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario" class="feed">
+      <PostComponent :post="p" />
     </div>
-    <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
+  </div>
+  <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
 </template>
+
 
 <style scoped>
 .feed {

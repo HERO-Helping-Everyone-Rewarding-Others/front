@@ -1,17 +1,15 @@
 <script setup>
-import { ref, computed } from "vue" 
-import { comunidades, addCommunity } from "../store/posts"
-import { useRouter } from "vue-router"
-import { useAuth } from "../composables/auth"
-import { useCommunityState } from "../store/communities"
+import { ref, computed } from 'vue'
+import { comunidades, addCommunity } from '../store/posts'
+import { useRouter } from 'vue-router'
+import { useAuth } from '../composables/auth'
+import { useCommunityState } from '../store/communities'
 import { posts } from '../store/posts'
 import { usuario, profileName } from '../store/user'
-
 
 const router = useRouter()
 const { user } = useAuth()
 const { adicionarComunidadeCriada } = useCommunityState()
-
 
 const userPosts = computed(() => {
   const backendName = user.value?.nome || usuario.value.nome
@@ -21,34 +19,34 @@ const userPosts = computed(() => {
 const postsCount = computed(() => userPosts.value.length)
 
 const novaComunidade = ref({
-  nome: "",
-  descricao: "",
-  motivacao: "",
+  nome: '',
+  descricao: '',
+  motivacao: '',
   maxMembros: 30,
-  contato: "",
-  doacoesInfo: "",
-  tiposDoacoes: ""
+  contato: '',
+  doacoesInfo: '',
+  tiposDoacoes: '',
 })
 
-const erro = ref("")
+const erro = ref('')
 
 function criarComunidade() {
-  erro.value = ""
+  erro.value = ''
 
   if (!novaComunidade.value.nome.trim()) {
-    erro.value = "O nome da comunidade é obrigatório."
+    erro.value = 'O nome da comunidade é obrigatório.'
     return
   }
   if (!novaComunidade.value.descricao.trim()) {
-    erro.value = "A descrição é obrigatória."
+    erro.value = 'A descrição é obrigatória.'
     return
   }
   if (!novaComunidade.value.motivacao.trim()) {
-    erro.value = "A motivação é obrigatória."
+    erro.value = 'A motivação é obrigatória.'
     return
   }
   if (!novaComunidade.value.maxMembros || novaComunidade.value.maxMembros < 1) {
-    erro.value = "O número máximo de membros deve ser no mínimo 1."
+    erro.value = 'O número máximo de membros deve ser no mínimo 1.'
     return
   }
 
@@ -60,8 +58,8 @@ function criarComunidade() {
     contato: novaComunidade.value.contato.trim(),
     doacoesInfo: novaComunidade.value.doacoesInfo.trim(),
     tiposDoacoes: novaComunidade.value.tiposDoacoes
-      ? novaComunidade.value.tiposDoacoes.split(",").map(d => d.trim())
-      : []
+      ? novaComunidade.value.tiposDoacoes.split(',').map((d) => d.trim())
+      : [],
   }
 
   addCommunity(comunidade)
@@ -73,62 +71,67 @@ function criarComunidade() {
 
   adicionarComunidadeCriada(comunidade.nome)
 
-
   novaComunidade.value = {
-    nome: "",
-    descricao: "",
-    motivacao: "",
+    nome: '',
+    descricao: '',
+    motivacao: '',
     maxMembros: 30,
-    contato: "",
-    doacoesInfo: "",
-    tiposDoacoes: ""
+    contato: '',
+    doacoesInfo: '',
+    tiposDoacoes: '',
   }
 }
 
-const filtro = ref("")
+const filtro = ref('')
 
 const comunidadesFiltradas = computed(() => {
   if (!filtro.value.trim()) {
     return comunidades.value
   }
-  return comunidades.value.filter(c =>
-    c.nome.toLowerCase().includes(filtro.value.toLowerCase())
-  )
+  return comunidades.value.filter((c) => c.nome.toLowerCase().includes(filtro.value.toLowerCase()))
 })
 
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
-const abrirModal = (item) => { itemSelecionado.value = item; mostrarModal.value = true }
-const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = false }
-
-
+const abrirModal = (item) => {
+  itemSelecionado.value = item
+  mostrarModal.value = true
+}
+const fecharModal = () => {
+  itemSelecionado.value = null
+  mostrarModal.value = false
+}
 </script>
-
 
 <template>
   <section>
     <div class="box-text">
       <div>
         <h2>Comunidades</h2>
-        <p>
-          Encontre e participe de comunidades que fazem a diferença
-        </p>
+        <p>Encontre e participe de comunidades que fazem a diferença</p>
       </div>
       <button @click="abrirModal"><span class="mdi mdi-plus"></span> Criar Comunidade</button>
     </div>
     <div class="search">
       <label for="lupa"><span class="mdi mdi-magnify"></span></label>
-      <input type="text" v-model="filtro" placeholder="Buscar comunidades..." class="search-input" />
+      <input
+        type="text"
+        v-model="filtro"
+        placeholder="Buscar comunidades..."
+        class="search-input"
+      />
     </div>
     <div class="comunidades">
       <ul>
-        <li v-for="c in comunidadesFiltradas" :key="c.nome"
-          @click="router.push({ name: 'comunidade', params: { nome: c.nome } })">
+        <li
+          v-for="c in comunidadesFiltradas"
+          :key="c.nome"
+          @click="router.push({ name: 'comunidade', params: { nome: c.nome } })"
+        >
           <h2>{{ c.nome }}</h2>
           <p>{{ c.descricao }}</p>
-          <p>{{ c.maxMembros }}</p>
-          <p class="stat-value">{{ postsCount }}</p>
+          <p><b>Máx. membros:</b> {{ c.maxMembros }}</p>
         </li>
       </ul>
     </div>
@@ -162,25 +165,34 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
 
           <div>
             <label for="contato">Informações de Contato</label>
-            <input v-model="novaComunidade.contato" type="text" placeholder="email@exemplo.com ou telefone" />
+            <input
+              v-model="novaComunidade.contato"
+              type="text"
+              placeholder="email@exemplo.com ou telefone"
+            />
           </div>
 
           <div>
             <label for="doações">Informações para Doação</label>
-            <input v-model="novaComunidade.doacoesInfo" type="text" placeholder="PIX, conta bancária, etc." />
+            <input
+              v-model="novaComunidade.doacoesInfo"
+              type="text"
+              placeholder="PIX, conta bancária, etc."
+            />
           </div>
 
           <div>
             <label for="tipos">Tipos de Doações aceitas</label>
-            <input v-model="novaComunidade.tiposDoacoes" type="text"
-              placeholder="Dinheiro, roupas, alimentos (separados por vírgula)" />
+            <input
+              v-model="novaComunidade.tiposDoacoes"
+              type="text"
+              placeholder="Dinheiro, roupas, alimentos (separados por vírgula)"
+            />
           </div>
 
           <p v-if="erro">{{ erro }}</p>
 
-          <button @click="criarComunidade">
-            Criar Comunidade
-          </button>
+          <button @click="criarComunidade">Criar Comunidade</button>
         </div>
       </div>
     </div>
