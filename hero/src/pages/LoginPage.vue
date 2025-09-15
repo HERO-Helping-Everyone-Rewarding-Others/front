@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/auth'
-
+import ParallaxSection from '../pages/ParallaxSection.vue'
 const { login } = useAuth()
 const router = useRouter()
 
@@ -65,6 +65,13 @@ const handleLogin = async () => {
         <router-link to="register">Criar conta</router-link>
       </div>
     </div>
+  </section>
+  <section class="teste">
+    <ParallaxSection>
+      <div style="background:#113b74; color:white; padding:2rem; text-align:center;">
+        Eu apareço quando entro na tela!
+      </div>
+    </ParallaxSection>
   </section>
 </template>
 

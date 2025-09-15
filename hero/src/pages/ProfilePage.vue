@@ -102,6 +102,36 @@ function resetLocal() {
   profileBio.value = user.value?.biografia || ''
   profileAvatar.value = ''
 }
+
+const isDragging = ref(false)
+
+function handleDragOver(e) {
+  e.preventDefault() // obrigatório para permitir drop
+  isDragging.value = true
+}
+
+function handleDragLeave(e) {
+  isDragging.value = false
+}
+
+function handleDrop(e) {
+  e.preventDefault()
+  isDragging.value = false
+
+  const file = e.dataTransfer.files[0]
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    alert('Apenas arquivos de imagem são permitidos.')
+    return
+  }
+
+  const reader = new FileReader()
+  reader.onload = (ev) => {
+    profileAvatar.value = ev.target.result
+  }
+  reader.readAsDataURL(file)
+}
 </script>
 
 <template>
@@ -111,8 +141,8 @@ function resetLocal() {
         <div class="profile-header">
           <div class="edit">
             <p>Perfil</p>
-            <button class="edit-toggle" @click="editing = !editing">
-              {{ editing ? 'Cancelar' : 'Editar' }}
+            <button @click="editing = !editing"><font-awesome-icon
+                :icon="editing ? ['fas', 'xmark'] : ['fas', 'pen-to-square']" />
             </button>
           </div>
 
@@ -127,7 +157,9 @@ function resetLocal() {
 
         <div v-if="editing" class="profile-edit">
           <div class="profile-form">
-            <div class="avatar-form" @click="$refs.avatarInput.click()">
+            <div class="avatar-form" @click="$refs.avatarInput.click()" @dragover.prevent="handleDragOver"
+              @dragenter.prevent="handleDragOver" @dragleave="handleDragLeave" @drop="handleDrop"
+              :class="{ 'dragging': isDragging }">
               <label for="avatar">Clique ou arraste sua foto aqui</label>
               <input ref="avatarInput" id="avatar" type="file" accept="image/*" @change="onSelectAvatar"
                 style="display: none" />
@@ -246,17 +278,17 @@ div .profile-container {
 
 .edit button {
   border: 2px solid rgb(201, 199, 199, 0.3);
-  background: rgb(233, 232, 232, 0.3);
+  background: none;
   border-radius: 10px;
-  padding: 0.5vw;
+  padding: 0.5vw 0.7vw;
   color: rgb(86, 85, 87);
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 1.4rem;
 }
 
 .edit button:hover,
 .edit-actions button:hover {
-  background: rgb(233, 232, 232, 0.5);
+  background: rgba(247, 246, 246, 0.5);
 }
 
 .profile-main {
@@ -340,6 +372,11 @@ div .profile-container {
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
+}
+
+.avatar-form.dragging {
+  border-color: #1b2353;
+  background: rgba(27, 35, 83, 0.1);
 }
 
 .edit-actions {
@@ -448,7 +485,7 @@ nav.nav-perfil button:focus,
   align-items: center;
   border-radius: 20px;
   border: 3px solid rgb(201, 199, 199, 0.3);
-  width: 27vw;
+  width: 48%;
   height: 10vw;
   margin-bottom: 1vw;
 }

@@ -144,6 +144,7 @@ const fecharModal = () => { mostrarModal.value = false }
   display: flex;
   justify-content: center;
 }
+
 .box-user {
   background: white;
   display: flex;

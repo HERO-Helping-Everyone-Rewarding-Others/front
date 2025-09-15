@@ -129,9 +129,10 @@ function getUserColor(name) {
                 : post.usuario
             }}
           </span>
-          <span> •  <RouterLink :to="`/comunidade/${post.comunidade}`" class="text-indigo-600 hover:underline">
-    {{ post.comunidade }}
-  </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) }}</span>
+          <span> • <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
+              {{ post.comunidade }}
+            </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+            }}</span>
         </div>
         <div v-if="post.verificado" class="pontos-info">
           <p class="verificado">Verificado</p>
@@ -153,22 +154,21 @@ function getUserColor(name) {
     <div class="social">
       <div class="likes">
         <a @click="toggleLike" class="like-btn">
-        <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
-          class="heart-icon" />
-        {{ likes }}
-      </a>
-      <a>
-        <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
-      </a>
-      <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
+          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
+            class="heart-icon" />
+          {{ likes }}
+        </a>
+        <a>
+          <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
+        </a>
+        <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
       </div>
 
       <div class="salvos">
         <a @click="handleSave">
-        <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'bookmark']"
-    :class="['bookmark', isSaved(post) ? 'saved' : '']"
-    class="bookmark"/>
-      </a>
+          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
+            :class="['star', isSaved(post) ? 'saved' : '']" class="bookmark" />
+        </a>
       </div>
     </div>
 
@@ -199,14 +199,14 @@ function getUserColor(name) {
 
 <style scoped>
 div.box-post {
-  border: 2px solid rgb(218, 215, 215);
+  border: 3px solid rgb(201, 199, 199, 0.3);
+  box-shadow: 0 5px 10px 1px rgba(158, 157, 157, 0.1);
   border-radius: 20px;
   padding: 2vw;
   box-sizing: border-box;
-  box-shadow: 0 0 5px 1px rgb(204, 202, 202, 0.6);
   background: rgba(255, 255, 255, 0.5);
   margin-bottom: 3vw;
-  width: 70vw;
+  width: 100%;
 }
 
 .info-box {
@@ -229,7 +229,7 @@ div.box-post {
 #user,
 .c-user {
   font-weight: 600;
-  color: black;
+  color: #1a1f24;
 }
 
 .info-post .post-user span,
@@ -243,10 +243,10 @@ div.box-post {
 
 div.pontos-info .verificado,
 div.pontos-info .pontos {
-  padding: 5px 8px;
-  border-radius: 12px;
+  padding: 6px 10px;
+  border-radius: 10px;
   font-weight: 600;
-  margin: 0.3vw 0.5vw 0 0;
+  margin: 0.5vw 0.5vw 0 0;
   font-size: 1rem;
 }
 
@@ -259,7 +259,7 @@ div.pontos-info .pontos {
 }
 
 .post-img p {
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 .post-img img {
@@ -277,16 +277,15 @@ div.pontos-info .pontos {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 0.3s ease;
 }
 
 .lightbox-img {
-  max-width: 90vw;
-  max-height: 90vh;
+  max-width: 70vw;
+  max-height: 70vh;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   transform: scale(0.8);
@@ -314,16 +313,6 @@ div.pontos-info .pontos {
   to {
     transform: scale(1);
     opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    background: rgba(0, 0, 0, 0);
-  }
-
-  to {
-    background: rgba(0, 0, 0, 0.7);
   }
 }
 
@@ -372,11 +361,11 @@ div.pontos-info .pontos {
 }
 
 .bookmark:hover {
-  color: rgb(230, 161, 13);
+  color: rgba(243, 227, 6, 0.925);
 }
 
 .bookmark.saved {
-  color: rgb(230, 161, 13);
+  color: rgba(243, 227, 6, 0.925);
 }
 
 .comment-user p.avatar {
@@ -441,5 +430,10 @@ div.pontos-info .pontos {
   border-radius: 50%;
   object-fit: cover;
   margin-right: 1vw;
+}
+
+.link-comunidade {
+  color: rgb(88, 88, 88);
+  text-decoration: none;
 }
 </style>

@@ -68,8 +68,6 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString())
 }
 
-
-
 function handleSave() {
   toggleSave(props.post)
 }
@@ -106,37 +104,51 @@ function getUserColor(name) {
 
 <template>
   <div class="box-post">
-    <div class="info-box">
-      <div class="perfil-user">
-
-        <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
-
-          <img :src="profileAvatar" class="avatar-img-small" />
-        </template>
-        <template v-else>
-          <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
-            {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
-          </p>
-        </template>
-      </div>
-
-      <div class="info-post">
-        <div class="post-user">
-          <span id="user">
-            {{
-              post.usuario === user?.nome || post.usuario === profileName
-                ? profileName || user?.nome
-                : post.usuario
-            }}
-          </span>
-          <span> • {{ post.comunidade }} • {{ post.tempo }}</span>
+    <div class="head-post">
+      <div class="info-box">
+        <div class="perfil-user">
+          <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
+            <img :src="profileAvatar" class="avatar-img-small" />
+          </template>
+          <template v-else>
+            <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
+              {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
+            </p>
+          </template>
         </div>
+
+        <div class="info-post">
+          <div class="post-user">
+            <span id="user">
+              {{
+                post.usuario === user?.nome || post.usuario === profileName
+                  ? profileName || user?.nome
+                  : post.usuario
+              }}
+            </span>
+            <span> • <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
+                {{ post.comunidade }}
+              </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', {
+                hour: '2-digit', minute: '2-digit'
+              })
+              }}</span>
+          </div>
+          <div v-if="post.verificado" class="pontos-info">
+            <p class="verificado">Verificado</p>
+            <p class="pontos">+{{ post.pontos }} pontos</p>
+          </div>
+        </div>
+      </div>
+      <div class="salvos">
+        <a @click="handleSave">
+          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
+            :class="['star', isSaved(post) ? 'saved' : '']" class="bookmark" />
+        </a>
       </div>
     </div>
 
     <div class="post-img">
       <p>{{ post.conteudo }}</p>
-      <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" @click="abrirImagem(post.imagem)" />
     </div>
 
     <div v-if="imagemExpandida" class="lightbox" @click.self="fecharImagem">
@@ -147,22 +159,29 @@ function getUserColor(name) {
     <div class="social">
       <div class="likes">
         <a @click="toggleLike" class="like-btn">
-        <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
-          class="heart-icon" />
-        {{ likes }}
-      </a>
-      <a>
-        <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
-      </a>
-      <a><span id="link" class="mdi mdi-share-variant-outline"></span> Compartilhar</a>
+          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
+            class="heart-icon" />
+          {{ likes }}
+        </a>
+        <a>
+          <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
+        </a>
+        <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
       </div>
+    </div>
 
-      <div class="salvos">
-        <a @click="handleSave">
-        <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'bookmark']"
-    :class="['bookmark', isSaved(post) ? 'saved' : '']"
-    class="bookmark"/>
-      </a>
+    <div v-for="c in comentarios" :key="c.id" class="comment-user">
+      <div>
+        <template v-if="profileAvatar && (c.usuario === profileName || c.usuario === user?.nome)">
+          <img :src="profileAvatar" class="comment-avatar-img" />
+        </template>
+        <template v-else>
+
+        </template>
+      </div>
+      <div class="c-post">
+        <p class="c-user">{{ c.usuario }}</p>
+        <span class="c-conteudo">{{ c.conteudo }}</span>
       </div>
     </div>
   </div>
@@ -171,24 +190,22 @@ function getUserColor(name) {
 
 <style scoped>
 div.box-post {
-  border: 2px solid rgb(218, 215, 215);
+  border: 3px solid rgb(201, 199, 199, 0.3);
   border-radius: 20px;
-  padding: 2vw;
+  padding: 1.5vw;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.5);
-  margin-bottom: 3vw;
+  margin-bottom: 1vw;
   width: 55.5vw;
-  max-height: 20vw;
 }
 
 .info-box {
   display: flex;
-  margin-bottom: 4vw;
 }
 
 .perfil-user p {
-  width: 4vw;
-  height: 4vw;
+  width: 3.5vw;
+  height: 3.5vw;
   border-radius: 100%;
   margin: 0 1vw 0 0;
   display: flex;
@@ -202,11 +219,15 @@ div.box-post {
 .c-user {
   font-weight: 600;
   color: black;
+  font-size: 1.1rem;
 }
 
 .info-post .post-user span,
-.c-conteudo {
+.c-conteudo,
+.link-comunidade {
   color: rgb(81, 81, 82);
+  text-decoration: none;
+  font-size: 1.1rem;
 }
 
 .pontos-info {
@@ -231,7 +252,8 @@ div.pontos-info .pontos {
 }
 
 .post-img p {
-  font-size: 1rem;
+  font-size: 1.2rem;
+  margin: 0.5vw 0;
 }
 
 .post-img img {
@@ -370,7 +392,7 @@ div.pontos-info .pontos {
 }
 
 .c-user {
-  margin: 1vw 0 0.2vw 0;
+  margin: 0 0 0.2vw 0;
 }
 
 .comment-box {
@@ -413,5 +435,15 @@ div.pontos-info .pontos {
   border-radius: 50%;
   object-fit: cover;
   margin-right: 1vw;
+}
+
+.head-post {
+  display: flex;
+  justify-content: space-between;
+  height: 5vw;
+}
+
+.c-post {
+  font-size: 1rem;
 }
 </style>

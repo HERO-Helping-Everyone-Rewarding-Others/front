@@ -115,25 +115,21 @@ const fecharModal = () => {
     </div>
     <div class="search">
       <label for="lupa"><span class="mdi mdi-magnify"></span></label>
-      <input
-        type="text"
-        v-model="filtro"
-        placeholder="Buscar comunidades..."
-        class="search-input"
-      />
+      <input type="text" v-model="filtro" placeholder="Buscar comunidades..." class="search-input" />
     </div>
     <div class="comunidades">
-      <ul>
-        <li
-          v-for="c in comunidadesFiltradas"
-          :key="c.nome"
-          @click="router.push({ name: 'comunidade', params: { nome: c.nome } })"
-        >
+      <transition-group name="fade-slide" tag="ul">
+        <li v-for="c in comunidadesFiltradas" :key="c.nome"
+          @click="router.push({ name: 'comunidade', params: { nome: c.nome } })">
           <h2>{{ c.nome }}</h2>
-          <p>{{ c.descricao }}</p>
-          <p><b>Máx. membros:</b> {{ c.maxMembros }}</p>
+          <p class="desc">{{ c.descricao }}</p>
+          <div class="max-posts">
+            <p class="max-memb">Máx. membros: {{ c.maxMembros }}</p>
+            <p class="posts"><font-awesome-icon :icon="['far', 'heart']" class="heart-icon" /> posts</p>
+          </div>
+          <p class="lider"><span>Líder:</span></p>
         </li>
-      </ul>
+      </transition-group>
     </div>
 
     <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
@@ -165,29 +161,18 @@ const fecharModal = () => {
 
           <div>
             <label for="contato">Informações de Contato</label>
-            <input
-              v-model="novaComunidade.contato"
-              type="text"
-              placeholder="email@exemplo.com ou telefone"
-            />
+            <input v-model="novaComunidade.contato" type="text" placeholder="email@exemplo.com ou telefone" />
           </div>
 
           <div>
             <label for="doações">Informações para Doação</label>
-            <input
-              v-model="novaComunidade.doacoesInfo"
-              type="text"
-              placeholder="PIX, conta bancária, etc."
-            />
+            <input v-model="novaComunidade.doacoesInfo" type="text" placeholder="PIX, conta bancária, etc." />
           </div>
 
           <div>
             <label for="tipos">Tipos de Doações aceitas</label>
-            <input
-              v-model="novaComunidade.tiposDoacoes"
-              type="text"
-              placeholder="Dinheiro, roupas, alimentos (separados por vírgula)"
-            />
+            <input v-model="novaComunidade.tiposDoacoes" type="text"
+              placeholder="Dinheiro, roupas, alimentos (separados por vírgula)" />
           </div>
 
           <p v-if="erro">{{ erro }}</p>
@@ -195,6 +180,7 @@ const fecharModal = () => {
           <button @click="criarComunidade">Criar Comunidade</button>
         </div>
       </div>
+      <button class="fechar" @click.self="fecharModal">✕</button>
     </div>
   </section>
 </template>
@@ -212,18 +198,19 @@ section {
 .box-text h2 {
   font-size: 1.7rem;
   margin: 0 0 0.5vw 0;
+  color: #1a1f1a;
 }
 
 .box-text p {
   color: rgb(88, 87, 87);
-  font-weight: 600;
   margin: 0;
   font-size: 1.2rem;
 }
 
 .box-text button {
   color: white;
-  background: rgb(25, 25, 26);
+  background: #1a1f1a;
+  ;
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
@@ -245,6 +232,7 @@ section {
 .search {
   background: rgb(255, 255, 255);
   border: 2px solid rgba(197, 196, 196, 0.5);
+  box-shadow: 0 1px 10px 1px rgba(194, 192, 192, 0.1);
   border-radius: 10px;
   padding: 0.4vw 1vw;
   display: flex;
@@ -262,7 +250,7 @@ section {
   margin: 0;
   padding: 0;
   font-size: 1rem;
-  color: grey;
+  color: rgb(70, 68, 68);
 }
 
 .search input::placeholder {
@@ -272,6 +260,36 @@ section {
 
 span.mdi-magnify {
   color: rgb(70, 68, 68);
+}
+
+/* Transição inicial */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+/* Estado inicial ao aparecer */
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Estado final ao aparecer */
+.fade-slide-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estado inicial ao desaparecer */
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estado final ao desaparecer */
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 .comunidades ul {
@@ -288,9 +306,35 @@ span.mdi-magnify {
   flex-direction: column;
   width: 24vw;
   border: 3px solid rgb(201, 199, 199, 0.3);
+  box-shadow: 0 5px 10px 1px rgba(158, 157, 157, 0.1);
   border-radius: 25px;
   background: white;
   cursor: pointer;
+}
+
+.comunidades ul li h2 {
+  font-weight: 600;
+  color: #1a1f1a;
+  font-size: 1.5rem;
+  margin: 2vw 0 0.5rem 0;
+}
+
+.comunidades p.desc {
+  color: rgb(81, 81, 82);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.comunidades div.max-posts,
+.comunidades .lider {
+  display: flex;
+  justify-content: space-between;
+  color: rgb(81, 81, 82);
+  font-size: 1rem;
+}
+
+.lider span {
+  font-weight: 600;
 }
 
 .modal-overlay {
@@ -313,6 +357,7 @@ span.mdi-magnify {
   width: 44vw;
   height: 38vw;
   overflow-y: auto;
+  animation: popIn 0.3s ease forwards;
 }
 
 .modal label,
@@ -326,6 +371,29 @@ span.mdi-magnify {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0 0 3vw 0;
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .form-comunidade {

@@ -152,6 +152,7 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
           <button class="confirmar" @click="confirmarCompra">Confirmar Resgate</button>
         </div>
       </div>
+      <button class="fechar" @click.self="fecharModal">✕</button>
     </div>
 
     <div class="box-win">
@@ -190,12 +191,12 @@ section {
 .recom h2 {
   font-size: 1.7rem;
   margin: 0 0 0.5vw 0;
+  color: #1a1f1a;
 }
 
 .recom p,
 .box1-pontos p.text-ponto {
   color: rgb(88, 87, 87);
-  font-weight: 600;
   margin: 0;
   font-size: 1.2rem;
 }
@@ -233,6 +234,7 @@ section {
 
 .list ul li {
   list-style: none;
+  transition: all 0.2s ease;
 }
 
 .list button {
@@ -253,6 +255,10 @@ section {
 .list button:focus {
   color: white;
   background: rgb(25, 25, 26);
+}
+
+.list ul li:hover {
+  scale: 1.05;
 }
 
 
@@ -454,6 +460,7 @@ p.faltam {
 
 .box-win li h3 {
   font-size: 1.3rem;
+  color: #1a1f1a;
 }
 
 .modal-overlay {
@@ -474,6 +481,30 @@ p.faltam {
   border-radius: 15px;
   padding: 2vw;
   width: 30vw;
+  animation: popIn 0.3s ease forwards;
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .info-modal img {
