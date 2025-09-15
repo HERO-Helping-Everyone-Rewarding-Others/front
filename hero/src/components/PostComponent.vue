@@ -204,7 +204,7 @@ div.box-post {
   border-radius: 20px;
   padding: 2vw;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255);
   margin-bottom: 3vw;
   width: 100%;
 }
