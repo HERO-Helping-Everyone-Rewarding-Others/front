@@ -27,7 +27,7 @@ const handleLogin = async () => {
   <section>
     <div class="box1">
       <div class="logo">
-        <img src="/he(1).png" alt="logo">
+        <!-- <img src="" alt="logo"> -->
         <h1>HERO</h1>
       </div>
       <h2>Seja o herói da sua comunidade!</h2>
