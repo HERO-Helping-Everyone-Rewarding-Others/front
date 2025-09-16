@@ -33,7 +33,6 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
 // Comprar
 const confirmarCompra = () => {
   if (gastarPontos(itemSelecionado.value.preco)) {
-    alert(`Você comprou ${itemSelecionado.value.nome}!`)
     fecharModal()
   } else {
     alert('Pontos insuficientes.')

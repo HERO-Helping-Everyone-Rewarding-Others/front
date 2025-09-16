@@ -188,6 +188,12 @@ div.box-post {
   margin-bottom: 4vw;
 }
 
+.head-post {
+  display: flex;
+  justify-content: space-between;
+  height: 3vw;
+}
+
 .perfil-user p {
   width: 4vw;
   height: 4vw;

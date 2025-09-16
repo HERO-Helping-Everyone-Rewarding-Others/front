@@ -10,7 +10,7 @@ const totalPosts = computed(() => posts.value.length)
 <template>
   <main>
     <div class="welcome">
-      <h1>Bem-vindo ao <span>HERO</span></h1>
+      <h1>Bem-vindo ao HERO</h1>
       <p>
         Junte-se a comunidades que fazem a diferença e seja recompensado por ajudar!
       </p>
@@ -60,12 +60,6 @@ main {
   font-size: 2.5rem;
   margin: 0;
   color: #1a1f24;
-}
-
-.welcome h1 span {
-  background: linear-gradient(90deg, #1f1675, #2b60b0, #48a4e2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 .welcome p {

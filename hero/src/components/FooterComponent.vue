@@ -33,7 +33,7 @@
                     </li>
                 </ul>
                 <div class="logo-footer">
-                    <img src="/he(1).png" alt="logo">
+                    <!-- <img src="/he(1).png" alt="logo"> -->
                 </div>
             </section>
             <section class="footer2">

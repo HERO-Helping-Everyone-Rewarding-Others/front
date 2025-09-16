@@ -150,12 +150,6 @@ function getUserColor(name) {
     <div class="post-img">
       <p>{{ post.conteudo }}</p>
     </div>
-
-    <div v-if="imagemExpandida" class="lightbox" @click.self="fecharImagem">
-      <img :src="imagemExpandida" class="lightbox-img" />
-      <button class="fechar" @click="fecharImagem">✕</button>
-    </div>
-
     <div class="social">
       <div class="likes">
         <a @click="toggleLike" class="like-btn">
@@ -195,11 +189,18 @@ div.box-post {
 
 .info-box {
   display: flex;
+  margin-bottom: 4vw;
+}
+
+.head-post {
+  display: flex;
+  justify-content: space-between;
+  height: 3vw;
 }
 
 .perfil-user p {
-  width: 3.5vw;
-  height: 3.5vw;
+  width: 4vw;
+  height: 4vw;
   border-radius: 100%;
   margin: 0 1vw 0 0;
   display: flex;
@@ -212,16 +213,12 @@ div.box-post {
 #user,
 .c-user {
   font-weight: 600;
-  color: black;
-  font-size: 1.1rem;
+  color: #1a1f24;
 }
 
 .info-post .post-user span,
-.c-conteudo,
-.link-comunidade {
+.c-conteudo {
   color: rgb(81, 81, 82);
-  text-decoration: none;
-  font-size: 1.1rem;
 }
 
 .pontos-info {
@@ -230,10 +227,10 @@ div.box-post {
 
 div.pontos-info .verificado,
 div.pontos-info .pontos {
-  padding: 5px 8px;
-  border-radius: 12px;
+  padding: 6px 10px;
+  border-radius: 10px;
   font-weight: 600;
-  margin: 0.3vw 0.5vw 0 0;
+  margin: 0.5vw 0.5vw 0 0;
   font-size: 1rem;
 }
 
@@ -246,8 +243,61 @@ div.pontos-info .pontos {
 }
 
 .post-img p {
-  font-size: 1.2rem;
-  margin: 0.5vw 0;
+  font-size: 1.3rem;
+}
+
+.post-img img {
+  width: 100%;
+  max-height: 25vw;
+  object-fit: cover;
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  border-radius: 12px;
+  display: block;
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-img {
+  max-width: 70vw;
+  max-height: 70vh;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transform: scale(0.8);
+  animation: popIn 0.3s ease forwards;
+  cursor: zoom-out;
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .social {
@@ -255,12 +305,12 @@ div.pontos-info .pontos {
   justify-content: space-between;
   font-size: 1.3rem;
   color: grey;
-  margin: 1vw 0 0 0;
+  margin: 1vw 0;
 }
 
 .likes {
   display: flex;
-  column-gap: 15px;
+  gap: 15px;
 }
 
 .likes a {
@@ -295,16 +345,79 @@ div.pontos-info .pontos {
 }
 
 .bookmark:hover {
-  color: rgb(230, 161, 13);
+  color: rgba(243, 227, 6, 0.925);
 }
 
 .bookmark.saved {
-  color: rgb(230, 161, 13);
+  color: rgba(243, 227, 6, 0.925);
 }
 
-.head-post {
+.comment-user p.avatar {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 100%;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: 700;
+  margin-right: 1vw;
+}
+
+.comment-user {
+  display: flex;
+  margin-top: 0;
+}
+
+.c-user {
+  margin: 1vw 0 0.2vw 0;
+}
+
+.comment-box {
+  margin: 1vw 0;
+  padding-bottom: 1vw;
+  border-bottom: 1px solid rgb(204, 196, 196, 0.5);
   display: flex;
   justify-content: space-between;
-  height: 5vw;
+
+}
+
+.comment-box input {
+  border: none;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+}
+
+.comment-box button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(101, 143, 235);
+}
+
+.avatar-img-small {
+  width: 3.2vw;
+  height: 3.2vw;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1vw;
+}
+
+.comment-avatar-img {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1vw;
+}
+
+.link-comunidade {
+  color: rgb(88, 88, 88);
+  text-decoration: none;
 }
 </style>

@@ -128,7 +128,6 @@ const fecharModal = () => { mostrarModal.value = false }
         </div>
       </div>
     </div>
-
     <div v-if="mostrarModal" class="show-post" @click.self="fecharModal">
       <div class="new-post">
         <h2>Nova Postagem</h2>
@@ -137,20 +136,21 @@ const fecharModal = () => { mostrarModal.value = false }
         </p>
         <textarea v-model="conteudo"
           placeholder="Compartilhe suas atividades e contribuições para a comunidade..."></textarea>
-        <div class="image-upload">
-          <label class="upload-label">
-            Escolher imagem
-            <input type="file" accept="image/*" @change="selecionarImagem" />
-          </label>
+        <div class="img-post">
+          <div class="image-upload">
+            <label class="upload-label">
+              Escolher imagem
+              <input type="file" accept="image/*" @change="selecionarImagem" />
+            </label>
+          </div>
           <img v-if="previewImagem" :src="previewImagem" class="preview-image" />
         </div>
+        <div class="buttons-post">
+          <button @click.self="fecharModal">Cancelar</button>
+          <button @click="postar">Publicar</button>
+        </div>
       </div>
-
-      <button>Cancelar</button>
-      <button @click="postar">Publicar</button>
     </div>
-    <button class="fechar" @click.self="fecharModal">✕</button>
-
 
     <div v-if="postsDaComunidade.length">
       <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario" class="feed">
@@ -187,27 +187,6 @@ section {
   gap: 4vw;
 }
 
-.show-post {
-  background: rgba(0, 0, 0, 0.3);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.new-post {
-  background: white;
-  border-radius: 15px;
-  padding: 2vw 2vw;
-  width: 44vw;
-  height: 20vw;
-  z-index: 100;
-  animation: popIn 0.3s ease forwards;
-}
 
 .fechar {
   position: absolute;
@@ -231,7 +210,6 @@ section {
     opacity: 1;
   }
 }
-
 
 .button-back button {
   background: rgba(168, 168, 168, 0.1);
@@ -287,6 +265,7 @@ section {
   font-size: 1.1rem;
   padding: 10px 15px;
   margin-left: 0.5vw;
+  cursor: pointer;
 }
 
 .doar {
@@ -338,6 +317,16 @@ section {
   background: rgba(27, 35, 83, 0.1);
 }
 
+.new-post {
+  background: white;
+  border-radius: 15px;
+  padding: 2vw 2vw;
+  width: 35vw;
+  height: 25vw;
+  z-index: 100;
+  animation: popIn 0.3s ease forwards;
+}
+
 .new-post h2 {
   font-size: 1.5rem;
   margin: 0;
@@ -349,22 +338,75 @@ section {
   margin: 0.5vw 0 1vw 0;
 }
 
+.show-post {
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .image-upload {
   gap: 0.8rem;
-
+  margin: 1vw 0;
 }
 
 .upload-label input[type="file"] {
   display: none;
-  /* esconde o input real */
 }
 
 .preview-image {
-  max-width: 15vw;
-  max-height: 10vw;
+  max-width: 20vw;
+  max-height: 5vw;
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid rgb(204, 204, 204, 0.5);
 }
 
+textarea {
+  resize: none;
+  outline: none;
+  border: 2px solid rgb(201, 199, 199, 0.6);
+  background: rgb(233, 232, 232, 0.3);
+  border-radius: 5px;
+  width: 95%;
+  padding: 0.5vw;
+  font-size: 0.9rem;
+}
+
+textarea::placeholder {
+  color: grey;
+}
+
+.show-post label {
+  border: 2px dashed #aaa;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.buttons-post {
+  column-gap: 10px;
+}
+
+.new-post button {
+  font-size: 0.9rem;
+  padding: 5px 15px;
+  cursor: pointer;
+  background: rgba(168, 168, 168, 0.1);
+  border: 1px solid rgb(218, 215, 215, 0.9);
+  border-radius: 8px;
+  font-weight: 500;
+  color: #1a1f1a;
+}
+
+.new-post button:hover {
+  background: rgba(168, 168, 168, 0.4);
+}
 </style>
