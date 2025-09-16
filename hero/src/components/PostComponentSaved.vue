@@ -169,16 +169,6 @@ function getUserColor(name) {
         <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
       </div>
     </div>
-
-    <div v-for="c in comentarios" :key="c.id" class="comment-user">
-      <div>
-        <template v-if="profileAvatar && (c.usuario === profileName || c.usuario === user?.nome)">
-          <img :src="profileAvatar" class="comment-avatar-img" />
-        </template>
-        <template v-else>
-        </template>
-      </div>
-    </div>
   </div>
 </template>
 
