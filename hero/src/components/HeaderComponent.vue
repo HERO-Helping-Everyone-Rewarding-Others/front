@@ -26,8 +26,9 @@ const handleLogout = () => {
     <header>
         <nav>
             <h1>
-                <button @click="$emit('toggleMenu')" class="button-user"><font-awesome-icon :icon="['fas', 'bars']" /></button>
-                <img src="/he(1).png" alt="logo" @click="router.push('/')" />
+                <button @click="$emit('toggleMenu')" class="button-user"><font-awesome-icon
+                        :icon="['fas', 'bars']" /></button>
+                <!-- <img src="/he(1).png" alt="logo" @click="router.push('/')" /> -->
             </h1>
 
             <ul>

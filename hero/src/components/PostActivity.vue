@@ -68,8 +68,6 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString())
 }
 
-
-
 function handleSave() {
   toggleSave(props.post)
 }
@@ -106,51 +104,52 @@ function getUserColor(name) {
 
 <template>
   <div class="box-post">
-    <div class="info-box">
-      <div class="perfil-user">
+    <div class="head-post">
+      <div class="info-box">
+        <div class="perfil-user">
+          <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
+            <img :src="profileAvatar" class="avatar-img-small" />
+          </template>
+          <template v-else>
+            <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
+              {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
+            </p>
+          </template>
+        </div>
 
-        <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
-
-          <img :src="profileAvatar" class="avatar-img-small" />
-        </template>
-        <template v-else>
-          <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
-            {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
-          </p>
-        </template>
+        <div class="info-post">
+          <div class="post-user">
+            <span id="user">
+              {{
+                post.usuario === user?.nome || post.usuario === profileName
+                  ? profileName || user?.nome
+                  : post.usuario
+              }}
+            </span>
+            <span> • <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
+                {{ post.comunidade }}
+              </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', {
+                hour: '2-digit', minute: '2-digit'
+              })
+              }}</span>
+          </div>
+          <div v-if="post.verificado" class="pontos-info">
+            <p class="verificado">Verificado</p>
+            <p class="pontos">+{{ post.pontos }} pontos</p>
+          </div>
+        </div>
       </div>
-
-      <div class="info-post">
-        <div class="post-user">
-          <span id="user">
-            {{
-              post.usuario === user?.nome || post.usuario === profileName
-                ? profileName || user?.nome
-                : post.usuario
-            }}
-          </span>
-          <span> • <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
-              {{ post.comunidade }}
-            </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-            }}</span>
-        </div>
-        <div v-if="post.verificado" class="pontos-info">
-          <p class="verificado">Verificado</p>
-          <p class="pontos">+{{ post.pontos }} pontos</p>
-        </div>
+      <div class="salvos">
+        <a @click="handleSave">
+          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
+            :class="['star', isSaved(post) ? 'saved' : '']" class="bookmark" />
+        </a>
       </div>
     </div>
 
     <div class="post-img">
       <p>{{ post.conteudo }}</p>
-      <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" @click="abrirImagem(post.imagem)" />
     </div>
-
-    <div v-if="imagemExpandida" class="lightbox" @click.self="fecharImagem">
-      <img :src="imagemExpandida" class="lightbox-img" />
-      <button class="fechar" @click="fecharImagem">✕</button>
-    </div>
-
     <div class="social">
       <div class="likes">
         <a @click="toggleLike" class="like-btn">
@@ -163,13 +162,6 @@ function getUserColor(name) {
         </a>
         <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
       </div>
-
-      <div class="salvos">
-        <a @click="handleSave">
-          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
-            :class="['star', isSaved(post) ? 'saved' : '']" class="bookmark" />
-        </a>
-      </div>
     </div>
 
     <div v-for="c in comentarios" :key="c.id" class="comment-user">
@@ -178,20 +170,8 @@ function getUserColor(name) {
           <img :src="profileAvatar" class="comment-avatar-img" />
         </template>
         <template v-else>
-          <p class="avatar" :style="{ background: getUserColor(c.usuario) }">
-            {{ c.usuario.split(' ')[0][0] }}
-          </p>
         </template>
       </div>
-      <div class="c-post">
-        <p class="c-user">{{ c.usuario }}</p>
-        <span class="c-conteudo">{{ c.conteudo }}</span>
-      </div>
-    </div>
-
-    <div class="comment-box">
-      <input v-model="newComment" type="text" placeholder="Escreva um comentário…" @keyup.enter="addComment" />
-      <button @click="addComment">Publicar</button>
     </div>
   </div>
 </template>
@@ -200,18 +180,22 @@ function getUserColor(name) {
 <style scoped>
 div.box-post {
   border: 3px solid rgb(201, 199, 199, 0.3);
-  box-shadow: 0 5px 10px 1px rgba(158, 157, 157, 0.1);
   border-radius: 20px;
-  padding: 2vw;
+  padding: 1.2vw 1.5vw;
   box-sizing: border-box;
   background: rgba(255, 255, 255);
-  margin-bottom: 3vw;
-  width: 100%;
+  margin-bottom: 1vw;
 }
 
 .info-box {
   display: flex;
   margin-bottom: 4vw;
+}
+
+.head-post {
+  display: flex;
+  justify-content: space-between;
+  height: 3vw;
 }
 
 .perfil-user p {

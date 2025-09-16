@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/auth'
-
+import ParallaxSection from '../pages/ParallaxSection.vue'
 const { login } = useAuth()
 const router = useRouter()
 
@@ -27,7 +27,7 @@ const handleLogin = async () => {
   <section>
     <div class="box1">
       <div class="logo">
-        <img src="/he(1).png" alt="logo">
+        <!-- <img src="" alt="logo"> -->
         <h1>HERO</h1>
       </div>
       <h2>Seja o herói da sua comunidade!</h2>
@@ -65,6 +65,13 @@ const handleLogin = async () => {
         <router-link to="register">Criar conta</router-link>
       </div>
     </div>
+  </section>
+  <section class="teste">
+    <ParallaxSection>
+      <div style="background:#113b74; color:white; padding:2rem; text-align:center;">
+        Eu apareço quando entro na tela!
+      </div>
+    </ParallaxSection>
   </section>
 </template>
 

@@ -1,17 +1,14 @@
 <script setup>
-import { ref, computed } from "vue" // <-- ADICIONE 'computed'
-import { comunidades, addCommunity } from "../store/posts"
-import { useRouter } from "vue-router"
-import { useAuth } from "../composables/auth"
-import { useCommunityState } from "../store/communities"
-import { posts } from '../store/posts'
+import { ref, computed } from 'vue'
+import { comunidades, addCommunity, posts } from '../store/posts'
+import { useRouter } from 'vue-router'
+import { useAuth } from '../composables/auth'
+import { useCommunityState } from '../store/communities'
 import { usuario, profileName } from '../store/user'
-
 
 const router = useRouter()
 const { user } = useAuth()
 const { adicionarComunidadeCriada } = useCommunityState()
-
 
 const userPosts = computed(() => {
   const backendName = user.value?.nome || usuario.value.nome
@@ -21,47 +18,47 @@ const userPosts = computed(() => {
 const postsCount = computed(() => userPosts.value.length)
 
 const novaComunidade = ref({
-  nome: "",
-  descricao: "",
-  motivacao: "",
+  nome: '',
+  descricao: '',
+  motivacao: '',
   maxMembros: 30,
-  contato: "",
-  doacoesInfo: "",
-  tiposDoacoes: ""
+  contato: '',
+  doacoesInfo: '',
+  tiposDoacoes: '',
 })
 
-const erro = ref("")
-
+const erro = ref('')
 function criarComunidade() {
-  erro.value = ""
+  erro.value = ''
 
   if (!novaComunidade.value.nome.trim()) {
-    erro.value = "O nome da comunidade é obrigatório."
+    erro.value = 'O nome da comunidade é obrigatório.'
     return
   }
   if (!novaComunidade.value.descricao.trim()) {
-    erro.value = "A descrição é obrigatória."
+    erro.value = 'A descrição é obrigatória.'
     return
   }
   if (!novaComunidade.value.motivacao.trim()) {
-    erro.value = "A motivação é obrigatória."
+    erro.value = 'A motivação é obrigatória.'
     return
   }
   if (!novaComunidade.value.maxMembros || novaComunidade.value.maxMembros < 1) {
-    erro.value = "O número máximo de membros deve ser no mínimo 1."
+    erro.value = 'O número máximo de membros deve ser no mínimo 1.'
     return
   }
 
+  // 🔹 Correção: montar campo doacao
   const comunidade = {
     nome: novaComunidade.value.nome.trim(),
     descricao: novaComunidade.value.descricao.trim(),
     motivacao: novaComunidade.value.motivacao.trim(),
     maxMembros: novaComunidade.value.maxMembros,
     contato: novaComunidade.value.contato.trim(),
-    doacoesInfo: novaComunidade.value.doacoesInfo.trim(),
-    tiposDoacoes: novaComunidade.value.tiposDoacoes
-      ? novaComunidade.value.tiposDoacoes.split(",").map(d => d.trim())
-      : []
+    doacao: novaComunidade.value.tiposDoacoes
+      ? novaComunidade.value.tiposDoacoes.split(',').map((d) => d.trim()).join(', ')
+      : novaComunidade.value.doacoesInfo.trim(),
+        lider: user.value?.nome || usuario.value.nome || 'Anônimo', // ← aqui definimos o líder
   }
 
   addCommunity(comunidade)
@@ -71,54 +68,53 @@ function criarComunidade() {
     user.value.comunidades.push(comunidade.nome)
   }
 
+  // 🔹 Correção: salvar objeto inteiro e não só o nome
   adicionarComunidadeCriada(comunidade)
 
-
   novaComunidade.value = {
-    nome: "",
-    descricao: "",
-    motivacao: "",
+    nome: '',
+    descricao: '',
+    motivacao: '',
     maxMembros: 30,
-    contato: "",
-    doacoesInfo: "",
-    tiposDoacoes: ""
+    contato: '',
+    doacoesInfo: '',
+    tiposDoacoes: '',
   }
 }
 
-const filtro = ref("")
+const filtro = ref('')
 
 const comunidadesFiltradas = computed(() => {
   if (!filtro.value.trim()) {
     return comunidades.value
   }
-  return comunidades.value.filter(c =>
-    c.nome.toLowerCase().includes(filtro.value.toLowerCase())
-  )
+  return comunidades.value.filter((c) => c.nome.toLowerCase().includes(filtro.value.toLowerCase()))
 })
 
-const isVisible = ref(false)
-
-function toggleDiv() {
-  isVisible.value = !isVisible.value
+// 🔹 Função para contar posts por comunidade
+const contarPosts = (nomeComunidade) => {
+  return posts.value.filter(p => p.comunidade === nomeComunidade).length
 }
+
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
-const abrirModal = (item) => { itemSelecionado.value = item; mostrarModal.value = true }
-const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = false }
-
-
+const abrirModal = (item) => {
+  itemSelecionado.value = item
+  mostrarModal.value = true
+}
+const fecharModal = () => {
+  itemSelecionado.value = null
+  mostrarModal.value = false
+}
 </script>
-
 
 <template>
   <section>
     <div class="box-text">
       <div>
         <h2>Comunidades</h2>
-        <p>
-          Encontre e participe de comunidades que fazem a diferença
-        </p>
+        <p>Encontre e participe de comunidades que fazem a diferença</p>
       </div>
       <button @click="abrirModal"><span class="mdi mdi-plus"></span> Criar Comunidade</button>
     </div>
@@ -127,19 +123,23 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
       <input type="text" v-model="filtro" placeholder="Buscar comunidades..." class="search-input" />
     </div>
     <div class="comunidades">
-      <ul>
+      <transition-group name="fade-slide" tag="ul">
         <li v-for="c in comunidadesFiltradas" :key="c.nome"
           @click="router.push({ name: 'comunidade', params: { nome: c.nome } })">
           <h2>{{ c.nome }}</h2>
-          <p>{{ c.descricao }}</p>
-          <p>{{ c.maxMembros }}</p>
-          <p class="stat-value">{{ postsCount }}</p>
+          <p class="desc">{{ c.descricao }}</p>
+          <div class="max-posts">
+            <p class="max-memb">Máx. membros: {{ c.maxMembros }}</p>
+            <p class="posts">
+              <font-awesome-icon :icon="['far', 'heart']" class="heart-icon" /> {{ contarPosts(c.nome) }} posts
+            </p>
+          </div>
+          <p class="lider"><span>Líder: {{ c.lider }}</span></p>
         </li>
-      </ul>
+      </transition-group>
     </div>
+
     <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
-
-
       <div class="modal">
         <div class="border">
           <h2>Criar Nova Comunidade</h2>
@@ -184,14 +184,14 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
 
           <p v-if="erro">{{ erro }}</p>
 
-          <button @click="criarComunidade">
-            Criar Comunidade
-          </button>
+          <button @click="criarComunidade">Criar Comunidade</button>
         </div>
       </div>
+      <button class="fechar" @click.self="fecharModal">✕</button>
     </div>
   </section>
 </template>
+
 
 <style scoped>
 section {
@@ -206,18 +206,19 @@ section {
 .box-text h2 {
   font-size: 1.7rem;
   margin: 0 0 0.5vw 0;
+  color: #1a1f1a;
 }
 
 .box-text p {
   color: rgb(88, 87, 87);
-  font-weight: 600;
   margin: 0;
   font-size: 1.2rem;
 }
 
 .box-text button {
   color: white;
-  background: rgb(25, 25, 26);
+  background: #1a1f1a;
+  ;
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
@@ -239,6 +240,7 @@ section {
 .search {
   background: rgb(255, 255, 255);
   border: 2px solid rgba(197, 196, 196, 0.5);
+  box-shadow: 0 1px 10px 1px rgba(194, 192, 192, 0.1);
   border-radius: 10px;
   padding: 0.4vw 1vw;
   display: flex;
@@ -256,7 +258,7 @@ section {
   margin: 0;
   padding: 0;
   font-size: 1rem;
-  color: grey;
+  color: rgb(70, 68, 68);
 }
 
 .search input::placeholder {
@@ -266,6 +268,36 @@ section {
 
 span.mdi-magnify {
   color: rgb(70, 68, 68);
+}
+
+/* Transição inicial */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+/* Estado inicial ao aparecer */
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Estado final ao aparecer */
+.fade-slide-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estado inicial ao desaparecer */
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estado final ao desaparecer */
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 .comunidades ul {
@@ -282,9 +314,35 @@ span.mdi-magnify {
   flex-direction: column;
   width: 24vw;
   border: 3px solid rgb(201, 199, 199, 0.3);
+  box-shadow: 0 5px 10px 1px rgba(158, 157, 157, 0.1);
   border-radius: 25px;
   background: white;
   cursor: pointer;
+}
+
+.comunidades ul li h2 {
+  font-weight: 600;
+  color: #1a1f1a;
+  font-size: 1.5rem;
+  margin: 2vw 0 0.5rem 0;
+}
+
+.comunidades p.desc {
+  color: rgb(81, 81, 82);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.comunidades div.max-posts,
+.comunidades .lider {
+  display: flex;
+  justify-content: space-between;
+  color: rgb(81, 81, 82);
+  font-size: 1rem;
+}
+
+.lider span {
+  font-weight: 600;
 }
 
 .modal-overlay {
@@ -307,6 +365,7 @@ span.mdi-magnify {
   width: 44vw;
   height: 38vw;
   overflow-y: auto;
+  animation: popIn 0.3s ease forwards;
 }
 
 .modal label,
@@ -320,6 +379,29 @@ span.mdi-magnify {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0 0 3vw 0;
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .form-comunidade {

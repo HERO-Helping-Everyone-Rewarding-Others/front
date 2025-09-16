@@ -1,16 +1,15 @@
 <script setup>
 import { ref, computed, onMounted } from "vue"
 import { useAuth } from "../composables/auth"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { addPost, posts } from "../store/posts"
 import { ganharPontos } from "../store/user"
 import { useCommunityState } from "../store/communities"
 import PostComponent from "../components/PostComponent.vue"
-import { novaComunidade } from "../composables/useComunidades";
-
 
 const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
+const router = useRouter()
 const { entrouNaComunidade, entrarNaComunidade, todasComunidades } = useCommunityState()
 
 const comunidadeNome = route.params.nome
@@ -21,7 +20,7 @@ const previewImagem = ref("")
 const usuarioLogado = computed(() => user.value?.nome || "")
 const membro = ref(false)
 
-// 🔹 Usa as comunidades do state centralizado
+// 🔹 comunidade atual
 const comunidade = computed(() =>
   todasComunidades.value.find(c => c.nome === comunidadeNome) || null
 )
@@ -41,6 +40,7 @@ function entrar() {
   membro.value = true
   alert(`Você entrou na comunidade ${comunidadeNome}! Agora você pode postar.`)
 }
+
 
 
 function selecionarImagem(event) {
@@ -82,97 +82,73 @@ async function postar() {
   arquivoImagem.value = null
   previewImagem.value = ""
 }
+
+const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
-function togglePost() {
-  mostrarModal.value = !mostrarModal.value
-}
-const abrirModal = (item) => { itemSelecionado.value = item; mostrarModal.value = true }
-const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = false }
+const abrirModal = () => { mostrarModal.value = true }
+const fecharModal = () => { mostrarModal.value = false }
 </script>
 
 <template>
-    <!-- <div v-if="comunidade" class="mb-6 border p-3 rounded bg-gray-50">
-      <p v-if="comunidade.descricao">
-        <span class="font-semibold">Descrição:</span> {{ comunidade.descricao }}
-      </p>
-      <p v-if="comunidade.motivacao">
-        <span class="font-semibold">Motivação:</span> {{ comunidade.motivacao }}
-      </p>
-      <p v-if="comunidade.maxMembros">
-        <span class="font-semibold">Máximo de membros:</span> {{ comunidade.maxMembros }}
-      </p>
-      <p v-if="comunidade.contato">
-        <span class="font-semibold">Contato:</span> {{ comunidade.contato }}
-      </p>
-      <p v-if="comunidade.doacoesInfo">
-        <span class="font-semibold">Doações:</span> {{ comunidade.doacoesInfo }}
-      </p>
-      <p v-if="comunidade.tiposDoacoes && comunidade.tiposDoacoes.length">
-        <span class="font-semibold">Tipos de Doações Aceitas:</span>
-        {{ comunidade.tiposDoacoes.join(", ") }}
-      </p>
-    </div> -->
-
-     
-    <div>
-      <button>
-        Voltar para Comunidades
+  <section>
+    <div class="button-back">
+      <button @click="router.push({ name: 'comunidades' })">
+        <font-awesome-icon :icon="['fas', 'arrow-left']" /> Voltar para Comunidades
       </button>
     </div>
 
-      <div v-if="!membro" class="box-user">
+    <div v-if="comunidade" class="box-user">
+
       <div class="info">
-        <h2>{{ comunidadeNome }}</h2>
-        <p>Cuidado e resgate de cães abandonados</p>
-        <p>Ajudar animais abandonados a encontrar um lar</p>
+        <h2>{{ comunidade.nome }}</h2>
+        <p class="desc">{{ comunidade.descricao }}</p>
+        <p class="motiv">{{ comunidade.motivacao }}</p>
+        <p class="infos"><strong>Contato:</strong> {{ comunidade.contato }}</p>
+        <p class="infos"><strong>Ajude com:</strong> {{ comunidade.doacao }}</p>
+
         <div class="numbers">
-          <p>25/50 membros</p>
-          <p>postagens</p>
+          <p>Membros: máx. {{ comunidade.maxMembros }}</p>
+          <p><font-awesome-icon :icon="['far', 'heart']" style="color: red;" /> {{ postsDaComunidade.length }} postagens
+          </p>
         </div>
       </div>
-      
-      <div class="buttons">
-        <button>Doar</button>
-        <button @click="entrar" >
-        Entrar na comunidade
-      </button>
-      </div>
-    </div>
 
-    <div v-else class="box-user">
-      <div class="info">
-        <h2>{{ comunidadeNome }}</h2>
-        <p>Cuidado e resgate de cães abandonados</p>
-        <p>Ajudar animais abandonados a encontrar um lar</p>
-        <div class="numbers">
-          <p>25/50 membros</p>
-          <p>postagens</p>
+      <div class="buttons">
+        <div v-if="!membro" class="in">
+          <button class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
+          <button @click="entrar" class="postar">Entrar</button>
+        </div>
+        <div v-else>
+          <div class="member">
+            <p>Membro</p>
+          </div>
+          <button class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
+          <button @click="abrirModal" class="postar"><span class="mdi mdi-plus"></span> Postar</button>
         </div>
       </div>
-      
-      <div class="buttons">
-        <p>Membro</p>
-        <button>Doar</button>
-        <button @click="togglePost">
-        Postar
-      </button>
-      </div>
     </div>
-
     <div v-if="mostrarModal" class="show-post" @click.self="fecharModal">
       <div class="new-post">
-        <textarea v-model="conteudo" placeholder="Escreva algo..."></textarea>
-
-      <input v-model="imagemLink" type="text" placeholder="URL da imagem (opcional)" />
-
-      <input type="file" accept="image/*" @change="selecionarImagem" />
-
-      <img v-if="previewImagem" :src="previewImagem" />
-
-      <button @click="postar">
-        Postar
-      </button>
+        <h2>Nova Postagem</h2>
+        <p>
+          Compartilhe suas atividades e contribuições para a comunidade.
+        </p>
+        <textarea v-model="conteudo"
+          placeholder="Compartilhe suas atividades e contribuições para a comunidade..."></textarea>
+        <div class="img-post">
+          <div class="image-upload">
+            <label class="upload-label">
+              Escolher imagem
+              <input type="file" accept="image/*" @change="selecionarImagem" />
+            </label>
+          </div>
+          <img v-if="previewImagem" :src="previewImagem" class="preview-image" />
+        </div>
+        <div class="buttons-post">
+          <button @click.self="fecharModal">Cancelar</button>
+          <button @click="postar">Publicar</button>
+        </div>
       </div>
     </div>
 
@@ -182,18 +158,23 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
       </div>
     </div>
     <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
+  </section>
 </template>
 
 <style scoped>
+section {
+  padding: 0 12vw;
+}
+
 .feed {
   display: flex;
   justify-content: center;
 }
+
 .box-user {
   background: white;
   display: flex;
   justify-content: space-between;
-  width: 66vw;
   margin: 0 auto 3vw auto;
   padding: 1vw 2vw;
   border-radius: 20px;
@@ -204,6 +185,157 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
 .numbers {
   display: flex;
   gap: 4vw;
+}
+
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.button-back button {
+  background: rgba(168, 168, 168, 0.1);
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  box-shadow: 0 1px 5px rgb(204, 202, 202, 0.2);
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 10px 25px;
+  border-radius: 10px;
+  color: #1a1f1a;
+  margin: 4vw 0 1.5vw 0;
+  cursor: pointer;
+}
+
+.info {
+  max-width: 55vw;
+}
+
+.info h2 {
+  font-weight: 600;
+  font-size: 1.6rem;
+  margin-bottom: 0.5vw;
+}
+
+.info p {
+  color: rgb(100, 99, 99);
+}
+
+.desc {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.motiv {
+  font-size: 1.1rem;
+  margin: 0.5vw 0 3vw 0;
+}
+
+.infos {
+  margin: 0.3vw 0;
+  font-size: 1rem;
+}
+
+.numbers {
+  font-size: 1.1rem;
+}
+
+.buttons {
+  text-align: right;
+}
+
+.buttons button {
+  font-size: 1.1rem;
+  padding: 10px 15px;
+  margin-left: 0.5vw;
+  cursor: pointer;
+}
+
+.doar {
+  color: #1a1f1a;
+  background: rgba(168, 168, 168, 0.1);
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.postar {
+  color: #ffffff;
+  background: #1a1f1a;
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.member {
+  display: flex;
+}
+
+.member p {
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: rgba(88, 166, 238, 0.12);
+  color: rgb(17, 135, 204);
+  width: 5vw;
+  text-align: center;
+  margin-left: auto;
+}
+
+.in {
+  margin-top: 2vw;
+}
+
+.avatar-form {
+  border: 2px dashed #aaa;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.avatar-form.dragging {
+  border-color: #1b2353;
+  background: rgba(27, 35, 83, 0.1);
+}
+
+.new-post {
+  background: white;
+  border-radius: 15px;
+  padding: 2vw 2vw;
+  width: 35vw;
+  height: 25vw;
+  z-index: 100;
+  animation: popIn 0.3s ease forwards;
+}
+
+.new-post h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.new-post p {
+  font-size: 1.2rem;
+  color: rgb(100, 99, 99);
+  margin: 0.5vw 0 1vw 0;
 }
 
 .show-post {
@@ -218,12 +350,63 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
   align-items: center;
 }
 
-.new-post {
-  background: white;
-  border-radius: 15px;
-  padding: 2vw 2vw;
-  width: 44vw;
-  height: 20vw;
-  z-index: 100;
+.image-upload {
+  gap: 0.8rem;
+  margin: 1vw 0;
+}
+
+.upload-label input[type="file"] {
+  display: none;
+}
+
+.preview-image {
+  max-width: 20vw;
+  max-height: 5vw;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid rgb(204, 204, 204, 0.5);
+}
+
+textarea {
+  resize: none;
+  outline: none;
+  border: 2px solid rgb(201, 199, 199, 0.6);
+  background: rgb(233, 232, 232, 0.3);
+  border-radius: 5px;
+  width: 95%;
+  padding: 0.5vw;
+  font-size: 0.9rem;
+}
+
+textarea::placeholder {
+  color: grey;
+}
+
+.show-post label {
+  border: 2px dashed #aaa;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.buttons-post {
+  column-gap: 10px;
+}
+
+.new-post button {
+  font-size: 0.9rem;
+  padding: 5px 15px;
+  cursor: pointer;
+  background: rgba(168, 168, 168, 0.1);
+  border: 1px solid rgb(218, 215, 215, 0.9);
+  border-radius: 8px;
+  font-weight: 500;
+  color: #1a1f1a;
+}
+
+.new-post button:hover {
+  background: rgba(168, 168, 168, 0.4);
 }
 </style>

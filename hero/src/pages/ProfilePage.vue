@@ -6,7 +6,8 @@ import { usuario, profileName, profileBio, profileAvatar, pontosGanhos } from '.
 import { posts } from '../store/posts'
 import { savedPosts } from '../store/saved'
 import { useCommunityState } from '../store/communities'
-import PostComponent from '../components/PostComponent.vue'
+import PostComponentSaved from '../components/PostComponentSaved.vue'
+import PostActivity from '../components/PostActivity.vue'
 
 
 const router = useRouter()
@@ -102,6 +103,36 @@ function resetLocal() {
   profileBio.value = user.value?.biografia || ''
   profileAvatar.value = ''
 }
+
+const isDragging = ref(false)
+
+function handleDragOver(e) {
+  e.preventDefault() // obrigatório para permitir drop
+  isDragging.value = true
+}
+
+function handleDragLeave(e) {
+  isDragging.value = false
+}
+
+function handleDrop(e) {
+  e.preventDefault()
+  isDragging.value = false
+
+  const file = e.dataTransfer.files[0]
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    alert('Apenas arquivos de imagem são permitidos.')
+    return
+  }
+
+  const reader = new FileReader()
+  reader.onload = (ev) => {
+    profileAvatar.value = ev.target.result
+  }
+  reader.readAsDataURL(file)
+}
 </script>
 
 <template>
@@ -111,8 +142,8 @@ function resetLocal() {
         <div class="profile-header">
           <div class="edit">
             <p>Perfil</p>
-            <button class="edit-toggle" @click="editing = !editing">
-              {{ editing ? 'Cancelar' : 'Editar' }}
+            <button @click="editing = !editing"><font-awesome-icon
+                :icon="editing ? ['fas', 'xmark'] : ['fas', 'pen-to-square']" />
             </button>
           </div>
 
@@ -124,38 +155,40 @@ function resetLocal() {
             <p class="profile-pontos">{{ usuario.pontos || 0 }} pontos</p>
           </div>
         </div>
+        <transition name="grow" mode="out-in">
+          <div v-if="editing" class="profile-edit">
+            <div class="profile-form">
+              <div class="avatar-form" @click="$refs.avatarInput.click()" @dragover.prevent="handleDragOver"
+                @dragenter.prevent="handleDragOver" @dragleave="handleDragLeave" @drop="handleDrop"
+                :class="{ 'dragging': isDragging }">
+                <label for="avatar">Clique ou arraste sua foto aqui</label>
+                <input ref="avatarInput" id="avatar" type="file" accept="image/*" @change="onSelectAvatar"
+                  style="display: none" />
+              </div>
 
-        <div v-if="editing" class="profile-edit">
-          <div class="profile-form">
-            <div class="avatar-form" @click="$refs.avatarInput.click()">
-              <label for="avatar">Clique ou arraste sua foto aqui</label>
-              <input ref="avatarInput" id="avatar" type="file" accept="image/*" @change="onSelectAvatar"
-                style="display: none" />
+              <div>
+                <label for="nome">Nome</label>
+                <input id="nome" v-model="profileName" type="text" placeholder="Seu nome" />
+              </div>
+
+              <div>
+                <label for="bio">Biografia</label>
+                <textarea id="bio" v-model="profileBio" placeholder="Escreva uma biografia curta"
+                  class="textarea"></textarea>
+              </div>
             </div>
 
-            <div>
-              <label for="nome">Nome</label>
-              <input id="nome" v-model="profileName" type="text" placeholder="Seu nome" />
-            </div>
-
-            <div>
-              <label for="bio">Biografia</label>
-              <textarea id="bio" v-model="profileBio" placeholder="Escreva uma biografia curta"
-                class="textarea"></textarea>
+            <div class="edit-actions">
+              <button @click="saveLocalChanges" class="btn-save">Salvar</button>
+              <button @click="resetLocal" class="btn-reset">Resetar</button>
             </div>
           </div>
-
-          <div class="edit-actions">
-            <button @click="saveLocalChanges" class="btn-save">Salvar</button>
-            <button @click="resetLocal" class="btn-reset">Resetar</button>
+          <div v-else class="profile-bio">
+            <h3>Bio</h3>
+            <p v-if="profileBio">{{ profileBio }}</p>
+            <p v-else class="muted">Sem biografia</p>
           </div>
-        </div>
-
-        <div v-else class="profile-bio">
-          <h3>Bio</h3>
-          <p v-if="profileBio">{{ profileBio }}</p>
-          <p v-else class="muted">Sem biografia</p>
-        </div>
+        </transition>
       </div>
 
       <!-- Conteúdo -->
@@ -167,6 +200,7 @@ function resetLocal() {
         </nav>
 
         <!-- Estatísticas -->
+         <transition name="come" mode="in-out">
         <div v-if="tab === 'stats'" class="stats">
           <div class="box-stats">
             <div class="stat-item">
@@ -200,22 +234,28 @@ function resetLocal() {
             <span class="mdi mdi-gift-outline" id="gift"></span>
           </div>
         </div>
+        </transition>
 
+        <transition name="come" mode="in-out">
         <!-- Posts Salvos -->
         <div v-if="tab === 'saved'" class="saved">
+          
           <div v-if="savedPosts.length" class="post">
-            <PostComponent v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
+            <PostComponentSaved v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
           </div>
           <p v-else>Nenhum post salvo ainda.</p>
         </div>
+        </transition>
 
+        <transition name="come" mode="in-out">
         <!-- Atividade -->
         <div v-if="tab === 'activity'" class="activity">
           <div v-if="userPosts.length" class="post">
-            <PostComponent v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
+            <PostActivity v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
           </div>
           <p v-else>Você ainda não fez nenhuma postagem.</p>
         </div>
+        </transition>
       </div>
     </div>
   </section>
@@ -246,17 +286,17 @@ div .profile-container {
 
 .edit button {
   border: 2px solid rgb(201, 199, 199, 0.3);
-  background: rgb(233, 232, 232, 0.3);
+  background: none;
   border-radius: 10px;
-  padding: 0.5vw;
+  padding: 0.5vw 0.7vw;
   color: rgb(86, 85, 87);
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 1.4rem;
 }
 
 .edit button:hover,
 .edit-actions button:hover {
-  background: rgb(233, 232, 232, 0.5);
+  background: rgba(247, 246, 246, 0.5);
 }
 
 .profile-main {
@@ -340,6 +380,11 @@ div .profile-container {
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
+}
+
+.avatar-form.dragging {
+  border-color: #1b2353;
+  background: rgba(27, 35, 83, 0.1);
 }
 
 .edit-actions {
@@ -448,7 +493,7 @@ nav.nav-perfil button:focus,
   align-items: center;
   border-radius: 20px;
   border: 3px solid rgb(201, 199, 199, 0.3);
-  width: 27vw;
+  width: 48%;
   height: 10vw;
   margin-bottom: 1vw;
 }
@@ -524,8 +569,40 @@ nav.nav-perfil button:focus,
   margin-top: 4vw;
 }
 
-.post {
-  width: 20vw;
+.grow-enter-active,
+.grow-leave-active {
+  transition: all 0.3s ease;
+}
 
+.grow-enter-from,
+.grow-leave-to {
+  opacity: 0;
+  transform: scaleY(0.8);
+}
+
+.grow-enter-to,
+.grow-leave-from {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.come-enter-active {
+  transition: transform 0.3s linear;
+}
+
+.come-leave-active {
+  transition: 0s;
+}
+
+.come-enter-from,
+.come-leave-to {
+  opacity: 0;
+  transform: translateX(-5px);
+}
+
+.come-enter-to,
+.come-leave-from {
+  opacity: 1;
+  transform: translateX(0);
 }
 </style>

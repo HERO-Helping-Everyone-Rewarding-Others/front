@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { usuario, gastarPontos } from '../store/user'
+import { TransitionGroup } from 'vue'
 
 // Itens disponíveis
 const itens = ref([
@@ -32,7 +33,6 @@ const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = f
 // Comprar
 const confirmarCompra = () => {
   if (gastarPontos(itemSelecionado.value.preco)) {
-    alert(`Você comprou ${itemSelecionado.value.nome}!`)
     fecharModal()
   } else {
     alert('Pontos insuficientes.')
@@ -82,38 +82,41 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
     </div>
 
     <div class="flex">
-      <div v-for="item in itensFiltrados" :key="item.id" class="itens">
-        <img :src="item.img" alt="Imagem do item" />
-        <div class="box-description">
-          <h2>{{ item.nome }}</h2>
-          <p>{{ item.descricao }}</p>
-        </div>
+      <transition-group name="fade-slide" tag="div" class="flex">
+        <div v-for="item in itensFiltrados" :key="item.id" class="itens">
+          <img :src="item.img" alt="Imagem do item" />
+          <div class="box-description">
+            <h2>{{ item.nome }}</h2>
+            <p>{{ item.descricao }}</p>
+          </div>
 
-        <div class="progress-box">
-          <div class="box-info">
-            <div class="text">
-              <font-awesome-icon :icon="['far', 'star']" class="star" />
-              <p>{{ item.preco }} pontos</p>
+          <div class="progress-box">
+            <div class="box-info">
+              <div class="text">
+                <font-awesome-icon :icon="['far', 'star']" class="star" />
+                <p>{{ item.preco }} pontos</p>
+              </div>
+              <p class="disp">{{ item.disponivel }} disponíveis</p>
             </div>
-            <p class="disp">{{ item.disponivel }} disponíveis</p>
-          </div>
-          <div class="text-progress">
-            <p class="faltam">Progresso</p>
-            <p class="faltam">
-              {{ usuario.pontos >= item.preco
-                ? 'Pronto!'
-                : `Faltam ${item.preco - usuario.pontos} pontos` }}
-            </p>
-          </div>
-          <div class="progress-bar">
-            <div class="progress" :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }">
+            <div class="text-progress">
+              <p class="faltam">Progresso</p>
+              <p class="faltam">
+                {{ usuario.pontos >= item.preco
+                  ? 'Pronto!'
+                  : `Faltam ${item.preco - usuario.pontos} pontos` }}
+              </p>
             </div>
+            <div class="progress-bar">
+              <div class="progress" :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }">
+              </div>
+            </div>
+            <button @click="abrirModal(item)"
+              :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'">
+              {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
+            </button>
           </div>
-          <button @click="abrirModal(item)" :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'">
-            {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
-          </button>
         </div>
-      </div>
+      </transition-group>
     </div>
 
     <div v-if="mostrarModal" class="modal-overlay" @click.self="fecharModal">
@@ -152,6 +155,7 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
           <button class="confirmar" @click="confirmarCompra">Confirmar Resgate</button>
         </div>
       </div>
+      <button class="fechar" @click.self="fecharModal">✕</button>
     </div>
 
     <div class="box-win">
@@ -190,12 +194,12 @@ section {
 .recom h2 {
   font-size: 1.7rem;
   margin: 0 0 0.5vw 0;
+  color: #1a1f1a;
 }
 
 .recom p,
 .box1-pontos p.text-ponto {
   color: rgb(88, 87, 87);
-  font-weight: 600;
   margin: 0;
   font-size: 1.2rem;
 }
@@ -233,6 +237,7 @@ section {
 
 .list ul li {
   list-style: none;
+  transition: all 0.2s ease;
 }
 
 .list button {
@@ -255,6 +260,11 @@ section {
   background: rgb(25, 25, 26);
 }
 
+.list ul li:hover {
+  scale: 1.05;
+}
+
+
 .list button span {
   font-size: 1.3rem;
 }
@@ -266,8 +276,9 @@ section {
 .flex {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  gap: 2vw;
   margin: 2vw 0 4vw 0;
 }
 
@@ -280,8 +291,8 @@ section {
   border-radius: 25px;
   overflow: hidden;
   background: white;
-  margin-bottom: 2vw;
 }
+
 
 .itens img {
   height: 12vw;
@@ -452,6 +463,7 @@ p.faltam {
 
 .box-win li h3 {
   font-size: 1.3rem;
+  color: #1a1f1a;
 }
 
 .modal-overlay {
@@ -472,6 +484,30 @@ p.faltam {
   border-radius: 15px;
   padding: 2vw;
   width: 30vw;
+  animation: popIn 0.3s ease forwards;
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .info-modal img {
@@ -544,5 +580,35 @@ p.faltam {
 
 .confirmar {
   color: white;
+}
+
+/* Transição inicial */
+.fade-slide-enter-active {
+  transition: transform 0.6s linear;
+}
+
+.fade-slide-leave-active {
+  transition: 0s;
+}
+
+.fade-slide-enter-active {
+  transition: transform 0.3s linear;
+}
+
+.fade-slide-leave-active {
+  transition: 0s;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
+}
+
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
