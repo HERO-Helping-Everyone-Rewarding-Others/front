@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export const posts = ref([
   {
@@ -38,7 +38,7 @@ export const posts = ref([
     verificado: true,
     tempo: '2025-09-13T15:10:12.000Z',
     conteudo: 'Organizamos a entrega de 50 cestas básicas esta semana.',
-    imagem: 'https://camaraacreuna.go.gov.br/wp-content/uploads/2021/05/Cestas.jpg',
+    imagem: 'https://camaraacreuna.go.gov.br/wp-content/uploads/sites/13/2021/05/Cestas.jpg',
     curtidas: 5,
     comentarios: 2,
     compartilhamentos: 1,
@@ -121,13 +121,16 @@ export const posts = ref([
   },
 ])
 
-
+// ==================
+// Comunidades
+// ==================
 export const comunidades = ref([
   {
     nome: 'Canil Amor Animal',
     descricao: 'Resgate e adoção de cães.',
     motivacao: 'Promover a adoção responsável e reduzir o número de cães abandonados.',
     maxMembros: 300,
+    lider: 'Norville Rogers',
     contato: 'canilamor@email.com / (11) 90000-0000',
     doacao: { pix: 'canilamor@pix.com', tipo: 'ração, remédios, doações em dinheiro' },
   },
@@ -136,6 +139,7 @@ export const comunidades = ref([
     descricao: 'Ajudando diferentes tipos de animais em situação de necessidade',
     motivacao: 'Apoiar animais em risco e garantir tratamento e acolhimento.',
     maxMembros: 400,
+    lider: 'John Dolittle',
     contato: 'animaiscarentes@email.com / (21) 95555-0000',
     doacao: { pix: 'animaiscarentes@pix.com', tipo: 'ração, casinhas, doações em dinheiro' },
   },
@@ -145,6 +149,7 @@ export const comunidades = ref([
       'Rede de voluntários para arrecadar e distribuir cestas básicas às famílias em vulnerabilidade social.',
     motivacao: 'Garantir alimentação digna para todos, principalmente em momentos de crise.',
     maxMembros: 500,
+    lider: 'Bruce Wayne',
     contato: 'maossolidarias@email.com / (11) 98888-0000',
     doacao: {
       pix: 'maossolidarias@pix.com',
@@ -158,6 +163,7 @@ export const comunidades = ref([
     motivacao:
       'Reduzir a evasão escolar e ampliar as oportunidades de aprendizado para jovens em situação de risco.',
     maxMembros: 300,
+    lider: 'Antony Stark',
     contato: 'educajovem@email.com / (21) 98888-0000',
     doacao: { pix: 'educajovem@pix.com', tipo: 'materiais escolares, livros, doações em dinheiro' },
   },
@@ -167,6 +173,7 @@ export const comunidades = ref([
       'Comunidade de apoio a idosos, oferecendo visitas, acompanhamento médico e atividades de convivência.',
     motivacao: 'Proporcionar carinho, dignidade e inclusão social para a terceira idade.',
     maxMembros: 200,
+    lider: 'Francisco José Dias de Almeida',
     contato: 'cuidadoresfuturo@email.com / (31) 97777-0000',
     doacao: {
       pix: 'cuidadoresfuturo@pix.com',
@@ -175,13 +182,16 @@ export const comunidades = ref([
   },
 ])
 
-// função para adicionar novo post
+// contador reativo de comunidades
+export const comunidadesCount = computed(() => comunidades.value.length)
+
+// ==================
+// Funções
+// ==================
 export function addPost(novoPost) {
   posts.value.unshift(novoPost) // adiciona no topo do feed
 }
 
-// função para adicionar nova comunidade
 export function addCommunity(novaComunidade) {
-  console.log(novaComunidade)
   comunidades.value.push({ ...novaComunidade })
 }

@@ -1,6 +1,10 @@
 <script setup>
+import { computed } from 'vue'
 import FeedComponent from '../components/FeedComponent.vue'
+import { comunidadesCount, posts } from "@/store/posts"
 
+// contador de ações realizadas (usa quantidade de posts do feed)
+const totalPosts = computed(() => posts.value.length)
 </script>
 
 <template>
@@ -13,28 +17,31 @@ import FeedComponent from '../components/FeedComponent.vue'
       <ul>
         <li>
           <span class="mdi mdi-account-group-outline"></span>
-          <p class="number">5</p>
+          <p class="number">{{ comunidadesCount }}</p>
           <p>Comunidades Ativas</p>
         </li>
         <li>
-          <span class="hand"><font-awesome-icon :icon="['far', 'hand']"></font-awesome-icon></span>
+          <span class="hand">
+            <font-awesome-icon :icon="['far', 'hand']"></font-awesome-icon>
+          </span>
           <p class="number">92</p>
           <p>Voluntários</p>
         </li>
         <li>
           <span class="mdi mdi-eye-outline"></span>
-          <p class="number">3</p>
+          <p class="number">{{ totalPosts }}</p>
           <p>Ações Realizadas</p>
         </li>
       </ul>
     </div>
+
     <div class="feed-text">
       <h2>Feed de Atividades</h2>
     </div>
+
     <main class="feed">
       <FeedComponent />
     </main>
-
   </main>
 </template>
 

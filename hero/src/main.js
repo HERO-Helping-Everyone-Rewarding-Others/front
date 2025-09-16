@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import './assets/main.css';
-import '@mdi/font/css/materialdesignicons.css'
+
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTwitter, faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons'

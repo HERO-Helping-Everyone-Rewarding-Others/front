@@ -7,7 +7,6 @@ import { ganharPontos } from "../store/user"
 import { useCommunityState } from "../store/communities"
 import PostComponent from "../components/PostComponent.vue"
 
-
 const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
 const router = useRouter()
@@ -41,6 +40,8 @@ function entrar() {
   membro.value = true
   alert(`Você entrou na comunidade ${comunidadeNome}! Agora você pode postar.`)
 }
+
+
 
 function selecionarImagem(event) {
   const file = event.target.files[0]
@@ -159,7 +160,6 @@ const fecharModal = () => { mostrarModal.value = false }
     <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
   </section>
 </template>
-
 
 <style scoped>
 section {
@@ -351,7 +351,7 @@ section {
 
 .image-upload {
   gap: 0.8rem;
- 
+
 }
 
 .upload-label input[type="file"] {

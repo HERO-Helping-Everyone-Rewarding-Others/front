@@ -1,10 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { comunidades, addCommunity } from '../store/posts'
+import { comunidades, addCommunity, posts } from '../store/posts'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/auth'
 import { useCommunityState } from '../store/communities'
-import { posts } from '../store/posts'
 import { usuario, profileName } from '../store/user'
 
 const router = useRouter()
@@ -29,7 +28,6 @@ const novaComunidade = ref({
 })
 
 const erro = ref('')
-
 function criarComunidade() {
   erro.value = ''
 
@@ -50,16 +48,17 @@ function criarComunidade() {
     return
   }
 
+  // 🔹 Correção: montar campo doacao
   const comunidade = {
     nome: novaComunidade.value.nome.trim(),
     descricao: novaComunidade.value.descricao.trim(),
     motivacao: novaComunidade.value.motivacao.trim(),
     maxMembros: novaComunidade.value.maxMembros,
     contato: novaComunidade.value.contato.trim(),
-    doacoesInfo: novaComunidade.value.doacoesInfo.trim(),
-    tiposDoacoes: novaComunidade.value.tiposDoacoes
-      ? novaComunidade.value.tiposDoacoes.split(',').map((d) => d.trim())
-      : [],
+    doacao: novaComunidade.value.tiposDoacoes
+      ? novaComunidade.value.tiposDoacoes.split(',').map((d) => d.trim()).join(', ')
+      : novaComunidade.value.doacoesInfo.trim(),
+        lider: user.value?.nome || usuario.value.nome || 'Anônimo', // ← aqui definimos o líder
   }
 
   addCommunity(comunidade)
@@ -69,7 +68,8 @@ function criarComunidade() {
     user.value.comunidades.push(comunidade.nome)
   }
 
-  adicionarComunidadeCriada(comunidade.nome)
+  // 🔹 Correção: salvar objeto inteiro e não só o nome
+  adicionarComunidadeCriada(comunidade)
 
   novaComunidade.value = {
     nome: '',
@@ -90,6 +90,11 @@ const comunidadesFiltradas = computed(() => {
   }
   return comunidades.value.filter((c) => c.nome.toLowerCase().includes(filtro.value.toLowerCase()))
 })
+
+// 🔹 Função para contar posts por comunidade
+const contarPosts = (nomeComunidade) => {
+  return posts.value.filter(p => p.comunidade === nomeComunidade).length
+}
 
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
@@ -125,9 +130,11 @@ const fecharModal = () => {
           <p class="desc">{{ c.descricao }}</p>
           <div class="max-posts">
             <p class="max-memb">Máx. membros: {{ c.maxMembros }}</p>
-            <p class="posts"><font-awesome-icon :icon="['far', 'heart']" class="heart-icon" /> posts</p>
+            <p class="posts">
+              <font-awesome-icon :icon="['far', 'heart']" class="heart-icon" /> {{ contarPosts(c.nome) }} posts
+            </p>
           </div>
-          <p class="lider"><span>Líder:</span></p>
+          <p class="lider"><span>Líder: {{ c.lider }}</span></p>
         </li>
       </transition-group>
     </div>
@@ -184,6 +191,7 @@ const fecharModal = () => {
     </div>
   </section>
 </template>
+
 
 <style scoped>
 section {

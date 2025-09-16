@@ -62,12 +62,16 @@ export function useCommunityState() {
     comunidadesEntradas.value.push(nome)
   }
 
-  function adicionarComunidadeCriada(nome) {
-    if (!todasComunidades.value.some(c => c.nome === nome)) {
-      todasComunidades.value.push({ id: Date.now(), nome })
+  // agora salva comunidade inteira
+  function adicionarComunidadeCriada(comunidade) {
+    if (!todasComunidades.value.some(c => c.nome === comunidade.nome)) {
+      todasComunidades.value.push({
+        ...comunidade,
+        id: Date.now()
+      })
     }
-    if (!comunidadesEntradas.value.includes(nome)) {
-      comunidadesEntradas.value.push(nome)
+    if (!comunidadesEntradas.value.includes(comunidade.nome)) {
+      comunidadesEntradas.value.push(comunidade.nome)
     }
   }
 
