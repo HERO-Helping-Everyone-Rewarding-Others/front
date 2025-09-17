@@ -159,7 +159,7 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
     </div>
 
     <div class="box-win">
-      <h2>Como Ganhar Pontos</h2>
+      <h2>Como ganhar pontos</h2>
       <ul>
         <li>
           <span class="mdi mdi-heart-outline" id="heart"></span>

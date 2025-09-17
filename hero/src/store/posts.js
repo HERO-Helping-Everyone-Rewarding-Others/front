@@ -38,7 +38,7 @@ export const posts = ref([
     verificado: true,
     tempo: '2025-09-13T15:10:12.000Z',
     conteudo: 'Organizamos a entrega de 50 cestas básicas esta semana.',
-    imagem: 'https://camaraacreuna.go.gov.br/wp-content/uploads/sites/13/2021/05/Cestas.jpg',
+    imagem: 'https://s2-g1.glbimg.com/SInmB-nwOowUty1ps6TmdmJEuBQ=/0x0:877x470/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2021/I/p/qbF3BBQBeDtWV0iJL7Ag/cestas-basicas-doacao-alimentos-uberaba-23-07-2021.jpg',
     curtidas: 5,
     comentarios: 2,
     compartilhamentos: 1,
