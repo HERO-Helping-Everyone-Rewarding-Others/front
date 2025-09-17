@@ -240,6 +240,7 @@ div.pontos-info .pontos {
 
 .post-img p {
   font-size: 1.3rem;
+  margin-top: 3vw;
 }
 
 .post-img img {

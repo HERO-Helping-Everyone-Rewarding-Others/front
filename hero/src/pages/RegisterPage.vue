@@ -15,11 +15,11 @@ const biografia = ref(``)
 const handleRegister = async () => {
   try {
     await register(nome.value, email.value, password.value, biografia.value)
-    alert(`registro realizado com sucesso`)
+    alert(`registro realizado com sucesso!`)
     router.push("/login");
   }
   catch (error) {
-    alert(JSON.stringify(error.response?.data))
+    alert(`não foi possível realizar o registro.`)
   }
 }
 
@@ -30,8 +30,7 @@ const showPassword = ref(false);
   <section>
     <div class="box1">
       <div class="logo">
-        <!-- <img src="/he(1).png" alt="logo"> -->
-        <h1>HERO</h1>
+        <img src="/logo-branca.png" alt="logo">
       </div>
       <h2>Seja o herói da sua comunidade!</h2>
       <p>No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você encontra pessoas
@@ -89,12 +88,13 @@ section {
   padding: 0 8vw 0 8vw;
   color: #f5f5f5;
   background: linear-gradient(to right bottom, #1b2353 0%, #276394 75%, #43a86a 100%);
+  background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
 }
 
 .box1,
 .box2 {
   flex: 1;
-  margin-top: 3vw;
+  margin-top: 5vw;
 }
 
 .box1 {
@@ -152,7 +152,7 @@ section .box1 .logo img {
   border: 1px solid rgb(31, 30, 30, 0.3);
   box-shadow: 1px 1px 10px 5px rgba(17, 17, 17, 0.2);
   max-width: 40%;
-  height: 90vh;
+  max-height: 80%;
 }
 
 .box2>*:not(.register) {
@@ -169,7 +169,7 @@ form input {
 form label {
   font-weight: 600;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  font-size: 1.6rem;
+  font-size: 1.1rem;
 }
 
 form input {
@@ -178,7 +178,7 @@ form input {
   border-radius: 25px;
   border: 1px solid rgb(204, 198, 198);
   box-shadow: 0 0 10px rgba(150, 148, 148, 0.5);
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 1.5vw;
   transition: 0.2s;
   font-size: 1.3rem;
@@ -194,13 +194,13 @@ form input:hover {
 
 form input::placeholder {
   color: rgb(243, 243, 243);
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 form button.submit {
   background: linear-gradient(135deg, #1720a1, #54cada);
   padding: 0.75vw 1.6vw;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin: 0 0 1vw 0;
   border-radius: 25px;
   border: none;
@@ -231,15 +231,14 @@ form button.submit {
 
 .register {
   text-align: center;
-  margin: 1vw auto 0 auto;
-  padding-top: 2vw;
+  margin: 0.5vw auto;
   width: 70%;
   border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .register p {
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 1.5vw;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }

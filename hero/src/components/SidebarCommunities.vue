@@ -4,6 +4,8 @@ import { RouterLink } from "vue-router"
 import { useCommunityState } from "../store/communities"
 import router from "@/router"
 
+const emit = defineEmits(['toggleMenu'])
+
 const { todasComunidades, comunidadesEntradas } = useCommunityState()
 const comunidadesPopulares = computed(() =>
   todasComunidades.value.map(c => c.nome || "Comunidade sem nome")
@@ -14,7 +16,7 @@ const minhasComunidades = computed(() =>
 </script>
 
 <template>
-  <section>
+  <section @click.stop>
     <div class="acesso">
       <h2>Acesso Rápido</h2>
       <p>
@@ -23,7 +25,7 @@ const minhasComunidades = computed(() =>
     </div>
     <div class="comun-user">
       <div class="plus">
-        <p>
+        <p class="p-text">
           MINHAS COMUNIDADES
         </p>
         <RouterLink to="/comunidades">
@@ -31,51 +33,58 @@ const minhasComunidades = computed(() =>
         </RouterLink>
 
       </div>
-      <div>
-        <p v-if="minhasComunidades.length === 0">
+      <div class="minhas-comun">
+        <p v-if="minhasComunidades.length === 0" class="none-comun">
           Você ainda não entrou em nenhuma comunidade.
         </p>
         <ul>
           <li v-for="nome in minhasComunidades" :key="nome">
             <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
-              {{ nome }}
+              <span>•</span> {{ nome }}
             </RouterLink>
           </li>
         </ul>
       </div>
     </div>
-
-    <p>
+    <p class="p-text">
       COMUNIDADES POPULARES
     </p>
-    <div>
+    <div class="minhas-comun">
       <ul class="mb-4">
         <li v-for="nome in comunidadesPopulares" :key="nome" class="mb-1">
           <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
-            {{ nome }}
+            <span>•</span> {{ nome }}
           </RouterLink>
         </li>
       </ul>
     </div>
 
     <div>
-      <div>
-        <font-awesome-icon :icon="['fas', 'users']" />
-        <RouterLink to="/comunidades">Ver todas as comunidades</RouterLink>
-        <RouterLink to="/profile">👤 Perfil</RouterLink>
+      <div class="comun-per">
+        <div>
+          <RouterLink to="/comunidades"><font-awesome-icon :icon="['fas', 'users']" /> Ver todas as comunidades
+          </RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/profile"><font-awesome-icon :icon="['far', 'user']" /> Perfil</RouterLink>
+        </div>
       </div>
     </div>
-    <p>
+    <p class="hero">
       Helping Everyone Rewarding Others
     </p>
   </section>
+  <div class="fechar">
+    <button @click="emit('toggleMenu')">✕</button>
+  </div>
 </template>
 
 <style scoped>
 section {
   background: white;
-  padding: 0 0 0 1.5vw;
-  width: 22vw;
+  padding: 0 0 0 1vw;
+  width: 20vw;
+
 }
 
 .acesso h2 {
@@ -99,14 +108,96 @@ section p {
   align-items: center;
 }
 
-.plus p {
+p.p-text {
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  color: #1a1f1a;
 }
 
 .plus .mdi-plus {
   color: rgb(116, 116, 117);
   font-size: 1.5rem;
   margin-right: 2vw;
+}
+
+.minhas-comun ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  align-items: center;
+}
+
+.minhas-comun ul li a {
+  text-decoration: none;
+  color: rgb(86, 85, 87);
+}
+
+.minhas-comun li {
+  padding: 5px 10px;
+  width: 70%;
+  border-radius: 10px;
+}
+
+.minhas-comun ul li:hover {
+  background: rgba(202, 203, 204, 0.2);
+}
+
+.none-comun {
+  margin: 0;
+  font-size: 1rem;
+  padding-right: 20px;
+}
+
+.hero {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 2vw 0 2vw 0.5vw;
+}
+
+.comun-per {
+  margin: 1vw 0;
+}
+
+.comun-per div {
+  margin-bottom: 10px;
+}
+
+.comun-per a {
+  text-decoration: none;
+  color: rgb(86, 85, 87);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+.comun-per a:hover {
+  background: rgba(202, 203, 204, 0.2);
+  color: rgb(57, 57, 58);
+}
+
+span {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.fechar {
+  position: absolute;
+  top: 0.7vw;
+  left: 17vw;
+}
+
+.fechar button {
+  border: none;
+  background: transparent;
+  font-size: 1.7rem;
+  cursor: pointer;
+  color: rgb(135, 135, 136);
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+
+.fechar button:hover {
+  background: rgb(135, 135, 136, 0.1);
 }
 </style>

@@ -85,9 +85,14 @@ async function postar() {
 
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
+const mostrarModalDoacao = ref(false)
 
 const abrirModal = () => { mostrarModal.value = true }
 const fecharModal = () => { mostrarModal.value = false }
+
+const abrirModalDoacao = () => { mostrarModalDoacao.value = true }
+const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
+
 </script>
 
 <template>
@@ -116,14 +121,14 @@ const fecharModal = () => { mostrarModal.value = false }
 
       <div class="buttons">
         <div v-if="!membro" class="in">
-          <button class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
+          <button @click="abrirModalDoacao" class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
           <button @click="entrar" class="postar">Entrar</button>
         </div>
         <div v-else>
           <div class="member">
             <p>Membro</p>
           </div>
-          <button class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
+          <button @click="abrirModalDoacao" class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
           <button @click="abrirModal" class="postar"><span class="mdi mdi-plus"></span> Postar</button>
         </div>
       </div>
@@ -138,16 +143,39 @@ const fecharModal = () => { mostrarModal.value = false }
           placeholder="Compartilhe suas atividades e contribuições para a comunidade..."></textarea>
         <div class="img-post">
           <div class="image-upload">
-            <label class="upload-label">
+            <label v-if="!previewImagem" class="upload-label">
               Escolher imagem
               <input type="file" accept="image/*" @change="selecionarImagem" />
             </label>
+            <img v-else :src="previewImagem" class="preview-image" />
           </div>
-          <img v-if="previewImagem" :src="previewImagem" class="preview-image" />
         </div>
         <div class="buttons-post">
-          <button @click.self="fecharModal">Cancelar</button>
-          <button @click="postar">Publicar</button>
+          <button @click.self="fecharModal" class="doar">Cancelar</button>
+          <button @click="postar" class="postar">Publicar</button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="mostrarModalDoacao" class="doação" @click.self="fecharModalDoacao">
+      <div class="new-doação">
+        <h2>Fazer Doação</h2>
+        <p>
+          Ajude a comunidade Horta Comunitária com sua doação e faça a diferença!
+        </p>
+        <div class="info-doação">
+          <h3>
+            Informações para doação:
+          </h3>
+          <p>
+            {{ comunidade.contato }}
+          </p>
+        </div>
+        <p>
+          {{ comunidade.doacao }}
+        </p>
+        <div class="buttons-post">
+          <button class="postar" @click.self="fecharModalDoacao">Fechar</button>
         </div>
       </div>
     </div>
@@ -317,12 +345,25 @@ section {
   background: rgba(27, 35, 83, 0.1);
 }
 
+.show-post, .doação {
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 .new-post {
   background: white;
   border-radius: 15px;
   padding: 2vw 2vw;
   width: 35vw;
-  height: 25vw;
+  height: 22vw;
   z-index: 100;
   animation: popIn 0.3s ease forwards;
 }
@@ -338,21 +379,9 @@ section {
   margin: 0.5vw 0 1vw 0;
 }
 
-.show-post {
-  background: rgba(0, 0, 0, 0.3);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .image-upload {
   gap: 0.8rem;
-  margin: 1vw 0;
+  margin: 2vw 0;
 }
 
 .upload-label input[type="file"] {
@@ -361,10 +390,11 @@ section {
 
 .preview-image {
   max-width: 20vw;
-  max-height: 5vw;
+  max-height: 8vw;
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid rgb(204, 204, 204, 0.5);
+  position: absolute;
 }
 
 textarea {
@@ -384,29 +414,62 @@ textarea::placeholder {
 
 .show-post label {
   border: 2px dashed #aaa;
-  padding: 8px;
+  padding: 15px;
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-size: 0.9rem;
+  color: #5e5e5e;
+  font-weight: 600;
+  position: absolute;
 }
 
 .buttons-post {
-  column-gap: 10px;
+  display: flex;       
+  gap: 10px;         
+  justify-content: flex-end;
 }
 
-.new-post button {
-  font-size: 0.9rem;
-  padding: 5px 15px;
+.buttons-post button {
+  font-size: 1rem;
+  padding: 10px 20px;
   cursor: pointer;
-  background: rgba(168, 168, 168, 0.1);
-  border: 1px solid rgb(218, 215, 215, 0.9);
-  border-radius: 8px;
   font-weight: 500;
-  color: #1a1f1a;
 }
 
-.new-post button:hover {
-  background: rgba(168, 168, 168, 0.4);
+.info-doação {
+  background: rgb(241, 241, 241, 0.5);
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.info-doação h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1a1f1a;
+  margin: 0;
+}
+
+.info-doação p {
+  margin: 0;
+}
+
+.new-doação {
+  background: white;
+  border-radius: 15px;
+  padding: 2vw 2vw;
+  width: 35vw;
+  height: 22vw;
+  z-index: 100;
+  animation: popIn 0.3s ease forwards;
+}
+
+.new-doação h2 {
+  margin: 0;
+}
+
+.new-doação p {
+  font-size: 1.2rem;
+  color: rgb(100, 99, 99);
 }
 </style>

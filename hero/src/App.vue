@@ -49,7 +49,7 @@ onMounted(() => {
     <HeaderComponent v-if="route.name !== 'login' && route.name !== 'register'" @toggleMenu="showMenu=!showMenu"/>
     <transition name="sidebar-transition">
       <aside class="sidebar" :class="top ? 'top' : ''" v-if="showMenu">
-        <SidebarCommunities />
+        <SidebarCommunities @toggleMenu="showMenu = false"/>
       </aside>
     </transition>
     <RouterView />

@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/auth'
-import ParallaxSection from '../pages/ParallaxSection.vue'
+
 const { login } = useAuth()
 const router = useRouter()
 
@@ -27,8 +27,7 @@ const handleLogin = async () => {
   <section>
     <div class="box1">
       <div class="logo">
-        <!-- <img src="" alt="logo"> -->
-        <h1>HERO</h1>
+        <img src="/logo-branca.png" alt="logo">
       </div>
       <h2>Seja o herói da sua comunidade!</h2>
       <p>No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você encontra pessoas
@@ -65,13 +64,6 @@ const handleLogin = async () => {
         <router-link to="register">Criar conta</router-link>
       </div>
     </div>
-  </section>
-  <section class="teste">
-    <ParallaxSection>
-      <div style="background:#113b74; color:white; padding:2rem; text-align:center;">
-        Eu apareço quando entro na tela!
-      </div>
-    </ParallaxSection>
   </section>
 </template>
 
@@ -163,7 +155,7 @@ form input {
 form label {
   font-weight: 600;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  font-size: 1.6rem;
+  font-size: 1.3rem;
 }
 
 form input {
@@ -172,7 +164,7 @@ form input {
   border-radius: 25px;
   border: 1px solid rgb(204, 198, 198);
   box-shadow: 0 0 10px rgba(150, 148, 148, 0.5);
-  padding: 20px;
+  padding: 15px;
   margin-bottom: 1.5vw;
   transition: 0.2s;
   font-size: 1.3rem;
@@ -188,13 +180,13 @@ form input:hover {
 
 form input::placeholder {
   color: rgb(243, 243, 243);
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 form button.submit {
   background: linear-gradient(135deg, #1720a1, #54cada);
   padding: 0.75vw 1.6vw;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin: 0 0 1vw 0;
   border-radius: 25px;
   border: none;
@@ -226,14 +218,14 @@ form button.submit {
 .register {
   text-align: center;
   margin: 2vw auto 0 auto;
-  padding-top: 2vw;
+  padding-top: 1vw;
   width: 70%;
   border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .register p {
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 1.5vw;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }

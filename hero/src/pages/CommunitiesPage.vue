@@ -58,7 +58,7 @@ function criarComunidade() {
     doacao: novaComunidade.value.tiposDoacoes
       ? novaComunidade.value.tiposDoacoes.split(',').map((d) => d.trim()).join(', ')
       : novaComunidade.value.doacoesInfo.trim(),
-        lider: user.value?.nome || usuario.value.nome || 'Anônimo', // ← aqui definimos o líder
+    lider: user.value?.nome || usuario.value.nome || 'Anônimo', // ← aqui definimos o líder
   }
 
   addCommunity(comunidade)
@@ -318,6 +318,10 @@ span.mdi-magnify {
   border-radius: 25px;
   background: white;
   cursor: pointer;
+}
+
+.comunidades ul li:hover {
+  background: rgb(235, 233, 233, 0.3);
 }
 
 .comunidades ul li h2 {

@@ -25,10 +25,10 @@ const handleLogout = () => {
 <template>
     <header>
         <nav>
-            <h1>
-                <button @click="$emit('toggleMenu')" class="button-user"><font-awesome-icon
+            <button @click="$emit('toggleMenu')" class="button-sidebar"><font-awesome-icon
                         :icon="['fas', 'bars']" /></button>
-                <!-- <img src="/he(1).png" alt="logo" @click="router.push('/')" /> -->
+            <h1>
+                <img src="/logo-branca-icon.png" alt="logo" @click="router.push('/')" />
             </h1>
 
             <ul>
@@ -53,33 +53,27 @@ const handleLogout = () => {
 
 <style scoped>
 header {
+    box-shadow: 0 0 10px rgba(17, 17, 17, 0.8);
     width: 100%;
-    box-shadow: 0 5px 6px -4px rgba(17, 17, 17, 0.3);
     font-size: 1rem;
     background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
     color: wheat;
-    height: 5vw;
-    padding-top: 1vw;
-}
-
-header h1 {
-    margin: 0;
 }
 
 header nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    height: 5vw;
     padding: 0 4rem;
     box-sizing: border-box;
-    color: wheat;
+    color: rgb(255, 255, 255);
 }
 
 header img {
-    height: 40px;
+    height: 3vw;
     width: auto;
-    margin: 0 7vw 0 2vw;
+    margin:  1vw 6vw 0 2vw; 
 }
 
 header nav ul {
@@ -118,20 +112,26 @@ button {
     border-radius: 10px;
 }
 
-.button-user {
+.button-user,
+.button-sidebar {
     font-size: 1.7rem;
     align-items: center;
     color: #ffffff;
     transition: 0.2s;
     text-align: center;
     padding: 5px 7px;
-    border-radius: 13px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.button-user {
     margin-top: 0.7vw;
 }
 
-.button-user:hover {
+.button-user:hover,
+.button-sidebar:hover {
     color: #ffffff;
-    background: rgb(250, 249, 246, 0.5);
+    background: rgb(250, 249, 246, 0.2);
 }
 
 header nav div.user {
@@ -162,7 +162,6 @@ button.exit-button {
     padding: 10px 15px;
     font-size: 1rem;
     font-weight: 600;
-    margin: 0.7vw 0 0.7vw 0;
     color: rgb(255, 255, 255);
     cursor: pointer;
     transition: 0.2s;
