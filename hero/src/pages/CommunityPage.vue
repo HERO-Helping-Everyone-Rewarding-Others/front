@@ -472,4 +472,78 @@ textarea::placeholder {
   font-size: 1.2rem;
   color: rgb(100, 99, 99);
 }
+
+@media (max-width: 1400px) {
+.button-back button {
+  font-size: 0.9rem;
+  padding: 8px 23px;
+}
+
+.info h2 {
+  font-size: 1.3rem;
+}
+
+.desc {
+  font-size: 0.9rem;
+}
+
+.motiv {
+  font-size: 0.9rem;
+}
+
+.infos {
+  font-size: 0.8rem;
+}
+
+.numbers {
+  font-size: 0.9rem;
+}
+
+.buttons button {
+  font-size: 0.8rem;
+}
+
+.member p {
+  font-size: 0.7rem;
+}
+
+.new-post h2 {
+  font-size: 1.3rem;
+}
+
+.new-post p {
+  font-size: 0.9rem;
+}
+
+textarea {  
+  font-size: 0.8rem;
+}
+
+.buttons-post button {
+  font-size: 0.8rem;
+}
+
+.info-doação h3 {
+  font-size: 0.9rem;
+}
+
+.new-doação {
+  background: white;
+  border-radius: 15px;
+  padding: 2vw 2vw;
+  width: 35vw;
+  height: 22vw;
+  z-index: 100;
+  animation: popIn 0.3s ease forwards;
+}
+
+.new-doação h2 {
+  font-size: 1.2rem;
+}
+
+.new-doação p {
+  font-size: 1rem;
+  color: rgb(100, 99, 99);
+}
+}
 </style>

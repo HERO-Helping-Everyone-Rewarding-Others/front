@@ -129,4 +129,30 @@ main.feed {
 .feed-text {
   color: #1a1f24;
 }
+ 
+@media (max-width: 1400px) {
+.welcome h1 {
+  font-size: 2rem;
+}
+
+.welcome p {
+  font-size: 1.1rem;
+}
+
+.welcome li .number {
+  font-size: 1.6rem;
+}
+
+.welcome li p {
+  font-size: 0.9rem;
+}
+
+.welcome li span {
+  font-size: 1.1rem;
+}
+
+.feed-text {
+  font-size: 1rem;
+}
+}
 </style>

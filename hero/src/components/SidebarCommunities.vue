@@ -84,7 +84,6 @@ section {
   background: white;
   padding: 0 0 0 1vw;
   width: 20vw;
-
 }
 
 .acesso h2 {
@@ -199,5 +198,43 @@ span {
 
 .fechar button:hover {
   background: rgb(135, 135, 136, 0.1);
+}
+
+@media (max-width: 1400px) {
+  .acesso h2 {
+    font-size: 1rem;
+  }
+
+  .acesso p {
+    font-size: 0.9rem;
+  }
+
+  p.p-text {
+    font-size: 0.9rem;
+  }
+
+  .plus .mdi-plus {
+    font-size: 1.2rem;
+  }
+
+  .minhas-comun ul li a {
+    font-size: 1rem;
+  }
+
+  .minhas-comun li {
+    padding: 3px 8px;
+  }
+
+  .comun-per a {
+    font-size: 0.9rem;
+  }
+
+  .hero {
+  font-size: 0.7rem;
+  }
+
+  .fechar button {
+  font-size: 1.3rem;
+  }
 }
 </style>

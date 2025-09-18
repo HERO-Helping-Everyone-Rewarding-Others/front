@@ -26,7 +26,7 @@ const handleLogout = () => {
     <header>
         <nav>
             <button @click="$emit('toggleMenu')" class="button-sidebar"><font-awesome-icon
-                        :icon="['fas', 'bars']" /></button>
+                    :icon="['fas', 'bars']" /></button>
             <h1>
                 <img src="/logo-branca-icon.png" alt="logo" @click="router.push('/')" />
             </h1>
@@ -73,7 +73,7 @@ header nav {
 header img {
     height: 3vw;
     width: auto;
-    margin:  1vw 6vw 0 2vw; 
+    margin: 1vw 6vw 0 2vw;
 }
 
 header nav ul {
@@ -86,7 +86,7 @@ header nav ul {
 }
 
 header nav ul li a {
-    padding: 10px 20px;
+    padding: 1vw 1.5vw;
     text-decoration: none;
     border-radius: 10px;
     text-align: center;
@@ -171,4 +171,63 @@ button.exit-button:hover {
     color: #ffffff;
     background: rgb(250, 249, 246, 0.5);
 }
+
+@media (max-width: 1400px) {
+    header {
+        font-size: 0.8rem;
+    }
+
+    header nav ul li a {
+        padding: 8px 18px;
+    }
+
+    button.exit-button {
+        padding: 6px 12px;
+    }
+
+    .button-user,
+    .button-sidebar {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 800px) {
+  header nav {
+    /* empilhar itens em vez de ficar tudo na mesma linha */
+    flex-wrap: wrap;
+    height: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  header img {
+    height: 40px;
+    margin: 0;
+  }
+
+  /* esconde o menu principal e deixa só o botão-sidebar */
+  header nav ul {
+    display: none; /* ou flex-direction: column se quiser mostrar embaixo */
+  }
+
+  /* diminui tamanho dos botões e fontes */
+  .button-user,
+  .button-sidebar {
+    font-size: 1.4rem;
+    padding: 4px 6px;
+  }
+
+  .user-demo p {
+    font-size: 0.9rem;
+  }
+
+  button.exit-button {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  /* opcional: reduzir tamanho da logo */
+  header h1 img {
+    height: 35px;
+  }
+}   
 </style>

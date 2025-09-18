@@ -453,4 +453,68 @@ div.form-comunidade label {
   width: 100%;
   border: none;
 }
+
+@media (max-width: 1400px) {
+  .box-text h2 {
+    font-size: 1.4rem;
+  }
+
+  .box-text p {
+    font-size: 1rem;
+  }
+
+  .box-text button {
+    font-size: 0.9rem;
+  }
+
+  .box-text span.mdi-plus {
+    font-size: 1rem;
+  }
+
+  .search {
+    padding: 0.3vw 0.9vw;
+  }
+
+  .search input {
+    font-size: 0.8rem;
+  }
+
+  .search input::placeholder {
+    font-size: 0.8rem;
+  }
+
+  .comunidades ul li h2 {
+    font-size: 1.2rem;
+  }
+
+  .comunidades p.desc {
+    font-size: 0.9rem;
+  }
+
+  .comunidades div.max-posts,
+  .comunidades .lider {
+    font-size: 0.8rem;
+  }
+
+  .modal div h2 {
+    font-size: 1.3rem;
+  }
+
+  div.form-comunidade label {
+    font-size: 0.8rem;
+  }
+
+  .form-comunidade input,
+  .form-comunidade textarea {
+    font-size: 0.8rem;
+  }
+
+  .form-comunidade input::placeholder {
+    font-size: 0.8rem;
+  }
+
+  .form-comunidade button {
+    font-size: 0.9rem;
+  }
+}
 </style>

@@ -138,7 +138,7 @@ section .box1 .logo img {
   border: 1px solid rgb(31, 30, 30, 0.3);
   box-shadow: 1px 1px 10px 5px rgba(17, 17, 17, 0.2);
   max-width: 40%;
-  max-height: 75%;
+  height: 35vw;
 }
 
 .box2>*:not(.register) {
@@ -167,7 +167,7 @@ form input {
   padding: 15px;
   margin-bottom: 1.5vw;
   transition: 0.2s;
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 form input:focus,

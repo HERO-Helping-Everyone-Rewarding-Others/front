@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref, computed, onMounted } from "vue"
 import { addPost, comunidades, posts } from "../store/posts"
 import { useAuth } from "../composables/auth"
@@ -126,4 +126,4 @@ async function postar() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped></style> -->

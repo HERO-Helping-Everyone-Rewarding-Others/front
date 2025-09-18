@@ -343,6 +343,7 @@ div.pontos-info .pontos {
 .salvos {
   font-size: 1.5rem;
   cursor: pointer;
+   color: grey;
 }
 
 .bookmark:hover {
@@ -420,5 +421,28 @@ div.pontos-info .pontos {
 .link-comunidade {
   color: rgb(88, 88, 88);
   text-decoration: none;
+}
+
+@media (max-width: 1400px) {
+  div.pontos-info .verificado,
+  div.pontos-info .pontos {
+    font-size: 0.8rem;
+  }
+
+  .post-img p {
+    font-size: 1.1rem;
+  }
+
+  .social {
+    font-size: 1.1rem;
+  }
+
+  .salvos {
+    font-size: 1.1rem;
+  }
+
+  .comment-box button {
+    font-size: 0.8rem;
+  }
 }
 </style>

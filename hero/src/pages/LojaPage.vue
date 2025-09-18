@@ -611,4 +611,100 @@ p.faltam {
   opacity: 1;
   transform: translateY(0);
 }
+
+@media (max-width: 1400px) {
+.recom h2 {
+  font-size: 1.4rem;
+}
+
+.recom p,
+.box1-pontos p.text-ponto {
+  font-size: 1rem;
+}
+
+.icon-line span {
+  font-size: 1.7rem;
+}
+
+.total-pontos {
+  font-size: 1.3rem;
+}
+
+
+.list button {
+  font-size: 0.7rem;
+}
+
+.list button span {
+  font-size: 1rem;
+}
+
+.itens h2 {
+  font-size: 0.9rem;
+}
+
+.box-description {
+  font-size: 0.8rem;
+}
+
+.box-info p {
+  font-size: 0.7rem;
+}
+
+.text p {
+  font-size: 0.8rem;
+}
+
+.box-info .star {
+  font-size: 0.8rem;
+}
+
+p.faltam {
+  font-size: 0.8rem;
+}
+
+
+.btn-insuficiente,
+.btn-resgatar {
+  font-size: 0.8rem;
+}
+
+.box-win h2 {
+  font-size: 1.1rem;
+}
+
+.box-win ul li span#gift,
+.box-win ul li span#star,
+.box-win ul li span#heart {
+  font-size: 1.3rem;
+}
+
+.box-win li p {
+  font-size: 0.8rem;
+}
+
+.box-win li h3 {
+  font-size: 1rem;
+}
+
+.info-modal h2 {
+  font-size: 1rem;
+}
+
+.info-modal p {
+  font-size: 0.7rem;
+}
+
+.modal-pontos li p {
+  font-size: 0.8rem;
+}
+
+.buttons button {
+  font-size: 0.8rem;
+}
+
+.cancelar {
+  background: rgb(241, 241, 241, 0.5);
+}
+}
 </style>

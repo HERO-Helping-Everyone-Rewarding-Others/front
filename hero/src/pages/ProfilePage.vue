@@ -200,61 +200,61 @@ function handleDrop(e) {
         </nav>
 
         <!-- Estatísticas -->
-         <transition name="come" mode="in-out">
-        <div v-if="tab === 'stats'" class="stats">
-          <div class="box-stats">
-            <div class="stat-item">
-              <p id="azul" class="stat-value">{{ usuario.pontos || 0 }}</p>
-              <p class="stat-label">Total de pontos</p>
+        <transition name="come" mode="in-out">
+          <div v-if="tab === 'stats'" class="stats">
+            <div class="box-stats">
+              <div class="stat-item">
+                <p id="azul" class="stat-value">{{ usuario.pontos || 0 }}</p>
+                <p class="stat-label">Total de pontos</p>
+              </div>
+              <span class="mdi mdi-chart-line"></span>
             </div>
-            <span class="mdi mdi-chart-line"></span>
-          </div>
 
-          <div class="box-stats">
-            <div class="stat-item">
-              <p id="verde" class="stat-value">{{ comunidadesCount || 0 }}</p>
-              <p class="stat-label">Comunidades</p>
+            <div class="box-stats">
+              <div class="stat-item">
+                <p id="verde" class="stat-value">{{ comunidadesCount || 0 }}</p>
+                <p class="stat-label">Comunidades</p>
+              </div>
+              <span class="mdi mdi-account-group-outline"></span>
             </div>
-            <span class="mdi mdi-account-group-outline"></span>
-          </div>
 
-          <div class="box-stats">
-            <div class="stat-item clickable" @click="tab = 'activity'">
-              <p id="roxo" class="stat-value">{{ postsCount }}</p>
-              <p class="stat-label">Postagens</p>
+            <div class="box-stats">
+              <div class="stat-item clickable" @click="tab = 'activity'">
+                <p id="roxo" class="stat-value">{{ postsCount }}</p>
+                <p class="stat-label">Postagens</p>
+              </div>
+              <span class="mdi mdi-heart-outline"></span>
             </div>
-            <span class="mdi mdi-heart-outline"></span>
-          </div>
 
-          <div id="laranja" class="box-stats">
-            <div class="stat-item">
-              <p class="stat-value">{{ pontosGanhos }}</p>
-              <p class="stat-label">Pontos Ganhos</p>
+            <div id="laranja" class="box-stats">
+              <div class="stat-item">
+                <p class="stat-value">{{ pontosGanhos }}</p>
+                <p class="stat-label">Pontos Ganhos</p>
+              </div>
+              <span class="mdi mdi-gift-outline" id="gift"></span>
             </div>
-            <span class="mdi mdi-gift-outline" id="gift"></span>
           </div>
-        </div>
         </transition>
 
         <transition name="come" mode="in-out">
-        <!-- Posts Salvos -->
-        <div v-if="tab === 'saved'" class="saved">
-          
-          <div v-if="savedPosts.length" class="post">
-            <PostComponentSaved v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
+          <!-- Posts Salvos -->
+          <div v-if="tab === 'saved'" class="saved">
+
+            <div v-if="savedPosts.length" class="post">
+              <PostComponentSaved v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
+            </div>
+            <p v-else>Nenhum post salvo ainda.</p>
           </div>
-          <p v-else>Nenhum post salvo ainda.</p>
-        </div>
         </transition>
 
         <transition name="come" mode="in-out">
-        <!-- Atividade -->
-        <div v-if="tab === 'activity'" class="activity">
-          <div v-if="userPosts.length" class="post">
-            <PostActivity v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
+          <!-- Atividade -->
+          <div v-if="tab === 'activity'" class="activity">
+            <div v-if="userPosts.length" class="post">
+              <PostActivity v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
+            </div>
+            <p v-else>Você ainda não fez nenhuma postagem.</p>
           </div>
-          <p v-else>Você ainda não fez nenhuma postagem.</p>
-        </div>
         </transition>
       </div>
     </div>
@@ -604,5 +604,65 @@ nav.nav-perfil button:focus,
 .come-leave-from {
   opacity: 1;
   transform: translateX(0);
+}
+
+@media (max-width: 1400px) {
+  .edit button {
+    font-size: 1.1rem;
+  }
+
+  .avatar-fallback {
+    font-size: 1.8rem;
+  }
+
+  .profile-main h2 {
+    font-size: 1.5rem;
+  }
+
+  .profile-main p.profile-email {
+    font-size: 1rem;
+  }
+
+  .profile-pontos {
+    font-size: 0.8rem;
+  }
+
+  .profile-bio {
+    font-size: 0.8rem;
+  }
+
+  .profile-form label {
+    font-size: 0.8rem;
+  }
+
+
+  .profile-form div input,
+  .profile-form div textarea {
+    font-size: 0.8rem;
+  }
+
+  .edit-actions button {
+    font-size: 0.7rem;
+  }
+
+  .nav-perfil button {
+    font-size: 0.8rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .stat-value p {
+    font-size: 1.1rem;
+  }
+
+  .box-stats span {
+    font-size: 1.7rem;
+  }
+
+  .stat-label {
+    font-size: 1rem;
+  }
 }
 </style>

@@ -3,7 +3,7 @@ import { useRoute } from 'vue-router'
 import HeaderComponent from './components/HeaderComponent.vue'
 import FooterComponent from './components/FooterComponent.vue'
 import SidebarCommunities from './components/SidebarCommunities.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 const route = useRoute()
 
@@ -16,47 +16,75 @@ const scrollingUp = ref(false);
 let lastScrollY = 0;
 
 const handleScroll = () => {
-  console.log( scrollY.value, window.scrollY, lastScrollY);
-  //scroll da página
+  // seu código original
   scrollY.value = window.scrollY;
-  //se o scroll d pg for menor que ultimo
   scrollingUp.value = scrollY.value < lastScrollY;
-  //scroll antigo atualizado
   lastScrollY = scrollY.value;
 
-  
-  console.log(scrollContainer.value)
-  //se  div estiver ativa
-      if (scrollContainer.value) {
-        const { scrollTop, clientHeight, scrollHeight } = scrollContainer.value;
-        if (scrollTop + clientHeight >= scrollHeight) {
-          top.value = true
-        }
-      }
-      if (scrollingUp.value && window.scrollY==0) {
-        top.value = false
-      }
-    };
+  if (scrollContainer.value) {
+    const { scrollTop, clientHeight, scrollHeight } = scrollContainer.value;
+    if (scrollTop + clientHeight >= scrollHeight) {
+      top.value = true
+    }
+  }
+  if (scrollingUp.value && window.scrollY==0) {
+    top.value = false
+  }
+};
+
+// refs para detectar cliques dentro/fora
+const sidebarRef = ref(null)
+const headerRef = ref(null)
+
+// fecha ao clicar fora (não fecha se clicar dentro da sidebar nem dentro do header)
+const handleClickOutside = (e) => {
+  if (!showMenu.value) return
+
+  const clickedInsideSidebar = sidebarRef.value && sidebarRef.value.contains(e.target)
+  // headerRef será um componente: usamos $el para obter o DOM root
+  const clickedInsideHeader = headerRef.value && headerRef.value.$el && headerRef.value.$el.contains(e.target)
+
+  if (!clickedInsideSidebar && !clickedInsideHeader) {
+    showMenu.value = false
+  }
+}
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  document.addEventListener('click', handleClickOutside)
 })
 
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <template>
   <div ref="scrollContainer" @scroll="handleScroll">
-    <HeaderComponent v-if="route.name !== 'login' && route.name !== 'register'" @toggleMenu="showMenu=!showMenu"/>
+    <!-- adicionamos ref no HeaderComponent -->
+    <HeaderComponent
+      ref="headerRef"
+      v-if="route.name !== 'login' && route.name !== 'register'"
+      @toggleMenu="showMenu = !showMenu"
+    />
     <transition name="sidebar-transition">
-      <aside class="sidebar" :class="top ? 'top' : ''" v-if="showMenu">
+      <!-- adicionamos ref no aside -->
+      <aside
+        class="sidebar"
+        :class="top ? 'top' : ''"
+        v-if="showMenu"
+        ref="sidebarRef"
+      >
         <SidebarCommunities @toggleMenu="showMenu = false"/>
       </aside>
     </transition>
+
     <RouterView />
     <FooterComponent v-if="route.name !== 'login' && route.name !== 'register'" />
   </div>
-  
 </template>
+
 
 <style scoped>
 .sidebar {
@@ -87,5 +115,9 @@ onMounted(() => {
   transform: translateX(-30vw);
 }
 
-
+@media (max-width: 1400px) {
+  .sidebar {
+  margin: 0 0 0 1vw;
+  }
+}
 </style>

@@ -55,7 +55,7 @@ footer {
 }
 
 .logo-footer img {
-    height: 70px;
+    height: 4vw;
     width: auto;
     margin: 1vw 0;
 }
@@ -104,5 +104,19 @@ footer nav ul li {
 .footer2 p {
     color: rgb(250, 249, 246);
     margin: 0;
+}
+
+@media (max-width: 1400px)  {
+.contato span {
+    font-size: 1.3rem;
+}
+
+.contato p {
+    margin: 4px 0;
+    font-size: 1rem;
+}
+.footer2 p {
+    font-size: 0.8rem;
+}
 }
 </style>
