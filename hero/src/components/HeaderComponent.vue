@@ -90,7 +90,7 @@ header nav ul li a {
     text-decoration: none;
     border-radius: 10px;
     text-align: center;
-    color: rgb(250, 249, 246);
+    color: rgb(238, 237, 236);
     transition: 0.2s;
     font-weight: 600;
 }
@@ -102,7 +102,7 @@ header nav ul li {
 nav ul li a:hover,
 nav ul li a:focus,
 li .router-link-exact-active {
-    color: #113b74;
+    color: rgb(255, 255, 255);
     background: rgb(250, 249, 246, 0.3);
 }
 

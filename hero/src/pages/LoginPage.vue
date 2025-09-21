@@ -42,7 +42,7 @@ const handleLogin = async () => {
     </div>
 
     <div class="box2">
-      <form @submit.prevent="handleLogin">
+      <form @submit.prevent="handleLogin" class="formulario">
         <label for="user">E-mail</label>
         <input id="user" type="email" placeholder="seu e-mail" v-model="email" required />
 
@@ -75,6 +75,11 @@ section {
   color: #f5f5f5;
   background: linear-gradient(to right bottom, #1b2353 0%, #276394 75%, #43a86a 100%);
   background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
+}
+
+
+.error {
+  margin-bottom: 0.5vw;
 }
 
 .box1,
@@ -142,7 +147,7 @@ section .box1 .logo img {
 }
 
 .box2>*:not(.register) {
-  padding: 2vw 0 0 4vw;
+  padding: 1vw 0 0 4vw;
 }
 
 form label,

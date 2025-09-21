@@ -101,9 +101,15 @@ const fecharModal = () => {
 }
 
 // Comprar
+const mostrarSucesso = ref(false)
+
 const confirmarCompra = () => {
   if (gastarPontos(itemSelecionado.value.preco)) {
     fecharModal()
+    mostrarSucesso.value = true
+    setTimeout(() => {
+      mostrarSucesso.value = false
+    }, 3000)
   } else {
     alert('Pontos insuficientes.')
   }
@@ -194,15 +200,10 @@ const selecionarCategoria = (categoria) => (categoriaSelecionada.value = categor
               </p>
             </div>
             <div class="progress-bar">
-              <div
-                class="progress"
-                :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }"
-              ></div>
+              <div class="progress" :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }"></div>
             </div>
-            <button
-              @click="abrirModal(item)"
-              :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'"
-            >
+            <button @click="abrirModal(item)"
+              :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'">
               {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
             </button>
           </div>
@@ -275,6 +276,14 @@ const selecionarCategoria = (categoria) => (categoriaSelecionada.value = categor
         </li>
       </ul>
     </div>
+    <Transition name="slide">
+      <div v-if="mostrarSucesso" class="modal-backdrop">
+        <div class="modal-resgate">
+          <h2>Resgate realizado!</h2>
+          <p>O <strong><!--nome do item--></strong> foi resgatado com sucesso.</p>
+        </div>
+      </div>
+    </Transition>
   </section>
 </template>
 
@@ -704,6 +713,70 @@ p.faltam {
 .fade-slide-leave-from {
   opacity: 1;
   transform: translateY(0);
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s ease;
+}
+
+/* estado inicial da entrada */
+.slide-enter-from {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* estado final da entrada */
+.slide-enter-to {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* estado inicial da saída */
+.slide-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* estado final da saída */
+.slide-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* para o backdrop ficar embaixo */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* modal no rodapé */
+  padding-bottom: 40px;
+  pointer-events: none;
+}
+
+.modal-resgate {
+  background: rgb(252, 250, 250);
+  padding: 0.5vw 1vw;
+  border: 3px solid rgb(218, 215, 215);
+  border-radius: 10px;
+  width: 25vw;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(68, 68, 68, 0.2);
+}
+
+.modal-resgate h2 {
+  color: #1a1f1a;
+  font-size: 1.3rem;
+  margin: 0.5vw 0;
+}
+
+.modal-resgate p {
+  color: #1a1f1a;
+  font-size: 1rem;
+  margin: 0 0 0.5vw 0;
+  padding: 0;
 }
 
 @media (max-width: 1400px) {

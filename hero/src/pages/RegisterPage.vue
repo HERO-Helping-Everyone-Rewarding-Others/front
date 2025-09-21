@@ -12,14 +12,16 @@ const email = ref(``)
 const password = ref(``)
 const biografia = ref(``)
 
+const alert = ref(false);
+
 const handleRegister = async () => {
   try {
     await register(nome.value, email.value, password.value, biografia.value)
-    alert(`registro realizado com sucesso!`)
+    alert.value = true
     router.push("/login");
   }
   catch (error) {
-    alert(`não foi possível realizar o registro.`)
+    alert.value = false
   }
 }
 
@@ -78,6 +80,13 @@ const showPassword = ref(false);
         </router-link>
       </div>
     </div>
+    <!-- Modal de erro quando alert = false -->
+    <div v-if="alert === false" class="modal-backdrop">
+      <div class="modal">
+        <p>Não foi possível realizar o registro. Verifique seus dados e tente novamente.</p>
+        <button @click="alert = true">Fechar</button>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -94,7 +103,7 @@ section {
 .box1,
 .box2 {
   flex: 1;
-  margin-top: 10vw;
+  margin-top: 3vw;
 }
 
 .box1 {
@@ -156,7 +165,7 @@ section .box1 .logo img {
 }
 
 .box2>*:not(.register) {
-  padding: 2vw 0 0 4vw;
+  padding: 1vw 0 0 4vw;
 }
 
 form label,
@@ -169,7 +178,7 @@ form input {
 form label {
   font-weight: 600;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 form input {
@@ -178,10 +187,10 @@ form input {
   border-radius: 25px;
   border: 1px solid rgb(204, 198, 198);
   box-shadow: 0 0 10px rgba(150, 148, 148, 0.5);
-  padding: 10px;
+  padding: 15px;
   margin-bottom: 1.5vw;
   transition: 0.2s;
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 form input:focus,
@@ -256,6 +265,48 @@ form button.submit {
 .register a:hover,
 .box2 button:hover {
   color: #ffffff;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: rgb(248, 247, 247);
+  color: #333;
+  padding: 1vw;
+  border: 3px solid rgb(218, 215, 215);
+  border-radius: 10px;
+  width: 25vw;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal p {
+  color: #1a1f1a;
+  margin: 0 0 1vw 0;
+  font-size: 1rem;
+}
+
+.modal button {
+  background: rgba(168, 168, 168, 0.1);
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  box-shadow: 0 1px 5px rgb(204, 202, 202, 0.2);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: #1a1f1a;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background: rgba(168, 168, 168, 0.4);
 }
 
 @media (max-width: 1400px) {
