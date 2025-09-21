@@ -50,31 +50,31 @@ const minhasComunidades = computed(() =>
           <ul>
             <RouterLink to="/" class="link">
               <li>
-              <font-awesome-icon :icon="['far', 'house']" class="home"/>
-              <p>Início</p>
-            </li>
+                <font-awesome-icon :icon="['far', 'house']" class="home" />
+                <p>Início</p>
+              </li>
             </RouterLink>
-            <RouterLink  to="/comunidades" class="link">
+            <RouterLink to="/comunidades" class="link">
               <li>
-              <span class="mdi mdi-account-group-outline"></span>
-              <p>Comunidades</p>
-            </li>
+                <span class="mdi mdi-account-group-outline"></span>
+                <p>Comunidades</p>
+              </li>
             </RouterLink>
             <RouterLink to="/loja" class="link">
               <li>
-              <span class="mdi mdi-shopping-outline"></span>
-              <p>Loja</p>
-            </li>
+                <span class="mdi mdi-shopping-outline"></span>
+                <p>Loja</p>
+              </li>
             </RouterLink>
-            <RouterLink  to="/profile" class="link">
+            <RouterLink to="/profile" class="link">
               <li>
-              <span class="mdi mdi-account-outline"></span>
-              <p>Perfil</p>
-            </li>
+                <span class="mdi mdi-account-outline"></span>
+                <p>Perfil</p>
+              </li>
             </RouterLink>
           </ul>
         </div>
-         <div class="comun">
+        <div class="comun">
           <div class="box-comun">
             <span class="mdi mdi-account-multiple-check-outline"></span>
             <p>Minhas comunidades</p>
@@ -85,7 +85,7 @@ const minhasComunidades = computed(() =>
           <ul>
             <li v-for="nome in minhasComunidades" :key="nome">
               <RouterLink :to="`/comunidade/${nome}`" class="comunidade">
-              <span class="mdi mdi-play"></span> {{ nome }}
+                <span class="mdi mdi-play"></span> {{ nome }}
               </RouterLink>
             </li>
           </ul>
@@ -100,12 +100,13 @@ section {
   margin: 0;
   padding: 0;
 }
+
 .sidebar {
   display: flex;
 }
 
 .sidebar-1 {
-  width: 5vw; 
+  width: 5vw;
   transition: width .20s ease, opacity .20s ease;
   overflow: hidden;
   height: 40vw;
@@ -114,7 +115,8 @@ section {
 .sidebar-2 {
   width: 0;
   opacity: 0;
-  pointer-events: none; /* evita receber hover/click quando fechada */
+  pointer-events: none;
+  /* evita receber hover/click quando fechada */
   transition: width .20s ease, opacity .20s ease;
   overflow: hidden;
   height: 40vw;
@@ -132,7 +134,8 @@ section {
   pointer-events: auto;
 }
 
-.sidebar-1 .logo, .sidebar-2 .logo {
+.sidebar-1 .logo,
+.sidebar-2 .logo {
   background: rgb(27, 35, 83, 0.9);
   width: 3.3vw;
   height: 3vw;
@@ -197,7 +200,8 @@ section {
   transition: all 0.3s ease;
 }
 
-.sidebar-2 ul li span, .home {
+.sidebar-2 ul li span,
+.home {
   font-size: 1.7rem;
   color: grey;
 }
@@ -207,7 +211,7 @@ section {
   padding: 0 0 0 1vw;
   font-size: 1.1rem;
   color: grey;
-  font-weight: 599;
+  font-weight: 500;
 }
 
 .link {
@@ -227,7 +231,7 @@ section {
 .box-comun p {
   font-size: 1rem;
   color: grey;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .box-comun span {
@@ -245,17 +249,23 @@ section {
 .comunidade {
   color: grey;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
+}
+
+.comun ul {
+  margin: 0;
 }
 
 .comun ul li {
   width: 85%;
   margin-left: 1vw;
+  font-size: 0.9rem;
+  padding: 0;
+  margin: 0 1vw;
 }
 
 .comunidade .mdi-play {
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
-
 </style>

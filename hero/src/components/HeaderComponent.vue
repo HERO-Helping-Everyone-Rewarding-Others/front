@@ -86,7 +86,7 @@ header nav ul {
 }
 
 header nav ul li a {
-    padding: 1vw 1.5vw;
+    padding: 10px 15px;
     text-decoration: none;
     border-radius: 10px;
     text-align: center;
