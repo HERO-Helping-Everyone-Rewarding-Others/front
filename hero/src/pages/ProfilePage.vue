@@ -10,6 +10,7 @@ import PostComponentSaved from '../components/PostComponentSaved.vue'
 import PostActivity from '../components/PostActivity.vue'
 
 
+
 const router = useRouter()
 const { user, accessToken, fetchUser } = useAuth()
 const { comunidadesEntradas } = useCommunityState()
@@ -212,7 +213,7 @@ function handleDrop(e) {
 
             <div class="box-stats">
               <div class="stat-item">
-                <p id="verde" class="stat-value">{{ comunidadesCount || 0 }}</p>
+                <p id="verde" class="stat-value">{{ comunidadesEntradas.length }}</p>
                 <p class="stat-label">Comunidades</p>
               </div>
               <span class="mdi mdi-account-group-outline"></span>
@@ -228,10 +229,10 @@ function handleDrop(e) {
 
             <div id="laranja" class="box-stats">
               <div class="stat-item">
-                <p class="stat-value">{{ pontosGanhos }}</p>
-                <p class="stat-label">Pontos Ganhos</p>
+                <p class="stat-value">{{ savedPosts.length }}</p>
+                <p class="stat-label">Salvos</p>
               </div>
-              <span class="mdi mdi-gift-outline" id="gift"></span>
+              <span class="mdi mdi-star-outline" id="gift"></span>
             </div>
           </div>
         </transition>
@@ -545,12 +546,12 @@ nav.nav-perfil button:focus,
   background: rgba(177, 6, 177, 0.2);
 }
 
-.mdi-gift-outline,
+.mdi-star-outline,
 #laranja {
   color: rgba(255, 166, 0, 0.856);
 }
 
-.mdi-gift-outline {
+.mdi-star-outline {
   background: rgba(255, 166, 0, 0.2);
 }
 
