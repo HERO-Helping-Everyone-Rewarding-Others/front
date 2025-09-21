@@ -94,7 +94,7 @@ section {
 .box1,
 .box2 {
   flex: 1;
-  margin-top: 5vw;
+  margin-top: 10vw;
 }
 
 .box1 {

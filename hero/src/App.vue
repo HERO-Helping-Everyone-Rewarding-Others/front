@@ -101,7 +101,7 @@ onUnmounted(() => {
 }
 
 .top {
-  top: 0;
+  top: 1vw;
 }
 
 .sidebar-transition-enter-active,
@@ -120,4 +120,5 @@ onUnmounted(() => {
   margin: 0 0 0 1vw;
   }
 }
+
 </style>

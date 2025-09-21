@@ -19,9 +19,6 @@ const minhasComunidades = computed(() =>
   <section @click.stop>
     <div class="acesso">
       <h2>Acesso Rápido</h2>
-      <p>
-        Suas comunidades
-      </p>
     </div>
     <div class="comun-user">
       <div class="plus">
@@ -235,6 +232,43 @@ span {
 
   .fechar button {
   font-size: 1.3rem;
+  }
+}
+@media (max-width: 950px) {
+  .acesso h2 {
+    font-size: 0.9rem;
+  }
+
+  .acesso p {
+    font-size: 0.8rem;
+  }
+
+  p.p-text {
+    font-size: 0.8rem;
+  }
+
+  .plus .mdi-plus {
+    font-size: 1rem;
+  }
+
+  .minhas-comun ul li a {
+    font-size: 0.9rem;
+  }
+
+  .minhas-comun li {
+    padding: 3px 8px;
+  }
+
+  .comun-per a {
+    font-size: 0.8rem;
+  }
+
+  .hero {
+  font-size: 0.6rem;
+  }
+
+  .fechar button {
+  font-size: 1.2rem;
   }
 }
 </style>

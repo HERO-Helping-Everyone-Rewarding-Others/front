@@ -106,17 +106,92 @@ footer nav ul li {
     margin: 0;
 }
 
-@media (max-width: 1400px)  {
-.contato span {
-    font-size: 1.3rem;
+@media (max-width: 1400px) {
+    .contato span {
+        font-size: 1.3rem;
+    }
+
+    .contato p {
+        margin: 4px 0;
+        font-size: 1rem;
+    }
+
+    .footer2 p {
+        font-size: 0.8rem;
+    }
 }
 
-.contato p {
-    margin: 4px 0;
-    font-size: 1rem;
+@media (max-width: 950px) {
+    .contato span {
+        font-size: 1.2rem;
+    }
+
+    .contato p {
+        margin: 4px 0;
+        font-size: 1rem;
+    }
+
+    .footer2 p {
+        font-size: 0.8rem;
+    }
 }
-.footer2 p {
-    font-size: 0.8rem;
+
+@media (max-width: 750px) {
+    .contato span {
+        font-size: 1.3rem;
+    }
+
+    .contato p {
+        margin: 4px 0;
+        font-size: 0.9rem;
+    }
+
+    .footer2 p {
+        font-size: 0.7rem;
+    }
+
+    .social a.icon-social {
+        padding: 10px 12px 10px 12px;
+    }
 }
+
+@media (max-width: 550px) {
+    .contato span {
+        font-size: 1.2rem;
+    }
+
+    .social a.icon-social {
+        padding: 8px 10px 8px 10px;
+    }
+
+    .contato p {
+        margin: 4px 0;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .contato span {
+        font-size: 1rem;
+    }
+
+    .contato p {
+        margin: 4px 0;
+        font-size: 0.7rem;
+    }
+
+    .footer2 p {
+        font-size: 0.6rem;
+    }
+
+    .logo-footer img {
+    height: 5vw;
+}
+.social a.icon-social {
+        padding: 5px 7px 5px 7px;
+    }
+    .social a {
+        font-size: 0.8rem;
+    }
 }
 </style>

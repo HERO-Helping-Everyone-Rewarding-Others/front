@@ -70,7 +70,6 @@ main {
 
 .welcome ul {
   display: flex;
-  justify-content: s;
   list-style: none;
   gap: 20px;
   margin-top: 3vw;
@@ -129,30 +128,105 @@ main.feed {
 .feed-text {
   color: #1a1f24;
 }
- 
+
 @media (max-width: 1400px) {
-.welcome h1 {
-  font-size: 2rem;
+  .welcome h1 {
+    font-size: 2rem;
+  }
+
+  .welcome p {
+    font-size: 1.1rem;
+  }
+
+  .welcome li .number {
+    font-size: 1.6rem;
+  }
+
+  .welcome li p {
+    font-size: 0.9rem;
+  }
+
+  .welcome li span {
+    font-size: 1.1rem;
+  }
+
+  .feed-text {
+    font-size: 1rem;
+  }
 }
 
-.welcome p {
-  font-size: 1.1rem;
+@media (max-width: 950px) {
+  .welcome h1 {
+    font-size: 1.8rem;
+  }
+
+  .welcome p {
+    font-size: 1rem;
+  }
+
+  .mdi-account-group-outline {
+    padding: 10px 14px;
+  }
+
+  .hand {
+    padding: 11px 12px;
+  }
+
+  .mdi-eye-outline {
+    padding: 10px 14px;
+  }
+
+  .welcome li .number {
+    font-size: 1.2rem;
+  }
+
+  .welcome li p {
+    font-size: 0.8rem;
+  }
+
+  .welcome li span {
+    font-size: 1.1rem;
+  }
+
+  .feed-text {
+    font-size: 0.8rem;
+  }
+
+  .welcome ul li {
+    padding: 2.5vw 0;
+  }
 }
 
-.welcome li .number {
-  font-size: 1.6rem;
+@media (max-width: 500px) {
+  .welcome ul {
+  display: block;
+  margin: 0 auto;
+  width: 50%;
 }
+.welcome ul li {
+  margin: 2vw 0;
+}
+.mdi-account-group-outline {
+    padding: 5px 8px;
+  }
 
-.welcome li p {
-  font-size: 0.9rem;
-}
+  .hand {
+    padding: 6px 7px;
+  }
 
-.welcome li span {
-  font-size: 1.1rem;
-}
+  .mdi-eye-outline {
+    padding: 5px 8px;
+  }
+  .welcome li .number {
+    font-size: 1.4rem;
+  }
 
-.feed-text {
-  font-size: 1rem;
-}
+  .welcome li p {
+    font-size: 0.7rem;
+  }
+
+  .welcome li span {
+    font-size: 1rem;
+  }
 }
 </style>

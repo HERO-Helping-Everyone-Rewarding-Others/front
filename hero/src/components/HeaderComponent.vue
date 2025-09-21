@@ -191,43 +191,111 @@ button.exit-button:hover {
     }
 }
 
-@media (max-width: 800px) {
-  header nav {
-    /* empilhar itens em vez de ficar tudo na mesma linha */
-    flex-wrap: wrap;
-    height: auto;
-    padding: 0.5rem 1rem;
-  }
+@media (max-width: 950px) {
+    header {
+        font-size: 0.8rem;
+    }
 
-  header img {
-    height: 40px;
-    margin: 0;
-  }
+    header nav ul li a {
+        padding: 8px 18px;
+    }
 
-  /* esconde o menu principal e deixa só o botão-sidebar */
-  header nav ul {
-    display: none; /* ou flex-direction: column se quiser mostrar embaixo */
-  }
+    button.exit-button {
+        padding: 6px 12px;
+    }
 
-  /* diminui tamanho dos botões e fontes */
-  .button-user,
-  .button-sidebar {
-    font-size: 1.4rem;
-    padding: 4px 6px;
-  }
+    .button-user,
+    .button-sidebar {
+        font-size: 1.2rem;
+    }
 
-  .user-demo p {
-    font-size: 0.9rem;
-  }
+    button.exit-button {
+        padding: 5px 13px;
+        font-size: 0.9rem;
+    }
 
-  button.exit-button {
-    padding: 6px 10px;
-    font-size: 0.9rem;
-  }
+    .user-demo {
+        display: none;
+    }
 
-  /* opcional: reduzir tamanho da logo */
-  header h1 img {
-    height: 35px;
-  }
-}   
+    header nav ul {
+        gap: 20px;
+    }
+
+    header nav ul li a {
+        padding: 0.6vw 1.1vw;
+    }
+}
+
+@media (max-width: 750px) {
+    header {
+        font-size: 0.7rem;
+    }
+
+    button.exit-button {
+        padding: 6px 12px;
+    }
+
+    .button-user,
+    .button-sidebar {
+        font-size: 1rem;
+    }
+
+    button.exit-button {
+        padding: 3px 10px;
+        font-size: 0.8rem;
+    }
+
+    header nav ul {
+        gap: 20px;
+    }
+
+    header nav ul li a {
+        padding: 0.6vw 1.1vw;
+    }
+}
+
+@media (max-width: 550px) {
+    header {
+        padding-top: 1vw;
+        height: 6vw;
+    }
+
+    button.exit-button {
+        padding: 5px 12px;
+    }
+
+    .button-sidebar {
+        font-size: 1rem;
+    }
+
+    .button-user {
+        display: none;
+    }
+
+    button.exit-button {
+        padding: 3px 10px;
+        font-size: 0.8rem;
+    }
+
+    header nav ul li a {
+        padding: 0.5vw 1.2vw;
+    }
+}
+
+@media (max-width: 500px) {
+    header {
+        padding: 6vw 0 0 0;
+        height: 12vw;
+    }
+
+    header nav {
+        padding: 0 3vw;
+    }
+
+    header nav ul {
+        display: block;
+        text-align: center;
+    }
+}
 </style>

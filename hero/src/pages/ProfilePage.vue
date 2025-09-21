@@ -665,4 +665,63 @@ nav.nav-perfil button:focus,
     font-size: 1rem;
   }
 }
+@media (max-width: 950px) {
+  .edit button {
+    font-size: 1rem;
+  }
+
+  .avatar-fallback {
+    font-size: 1.6rem;
+  }
+
+  .profile-main h2 {
+    font-size: 1.3rem;
+  }
+
+  .profile-main p.profile-email {
+    font-size: 0.9rem;
+  }
+
+  .profile-pontos {
+    font-size: 0.7rem;
+  }
+
+  .profile-bio {
+    font-size: 0.7rem;
+  }
+
+  .profile-form label {
+    font-size: 0.7rem;
+  }
+
+  .profile-form div input,
+  .profile-form div textarea {
+    font-size: 0.7rem;
+  }
+
+  .edit-actions button {
+    font-size: 0.7rem;
+  }
+
+  .nav-perfil button {
+    font-size: 0.8rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .stat-value p {
+    font-size: 1.1rem;
+  }
+
+  .box-stats span {
+    font-size: 1.7rem;
+  }
+
+  .stat-label {
+    font-size: 1rem;
+  }
+}
+
 </style>

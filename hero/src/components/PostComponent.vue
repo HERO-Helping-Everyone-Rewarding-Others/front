@@ -459,4 +459,28 @@ div.pontos-info .pontos {
     font-size: 0.8rem;
   }
 }
+
+@media (max-width: 500px) {
+  div.pontos-info .verificado,
+  div.pontos-info .pontos {
+    font-size: 0.6rem;
+  }
+
+  .post-img p {
+    font-size: 1rem;
+  }
+
+  .social {
+    font-size: 1rem;
+  }
+
+  .salvos {
+    font-size: 1rem;
+  }
+
+  .comment-box button {
+    font-size: 0.7rem;
+  }
+}
+
 </style>
