@@ -2,7 +2,6 @@
 import { computed } from "vue"
 import { RouterLink } from "vue-router"
 import { useCommunityState } from "../store/communities"
-import router from "@/router"
 
 const emit = defineEmits(['toggleMenu'])
 

@@ -20,7 +20,7 @@ const previewImagem = ref("")
 const usuarioLogado = computed(() => user.value?.nome || "")
 const membro = ref(false)
 
-// 🔹 comunidade atual
+
 const comunidade = computed(() =>
   todasComunidades.value.find(c => c.nome === comunidadeNome) || null
 )
@@ -92,6 +92,26 @@ const fecharModal = () => { mostrarModal.value = false }
 
 const abrirModalDoacao = () => { mostrarModalDoacao.value = true }
 const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
+
+
+function deletarPost(postParaRemover) {
+  const confirmar = confirm("Deseja mesmo excluir esta postagem?")
+  if (!confirmar) return
+
+  const index = posts.value.findIndex(p =>
+    p.usuario === postParaRemover.usuario &&
+    p.tempo === postParaRemover.tempo
+  )
+
+  if (index !== -1) {
+    posts.value.splice(index, 1)
+    alert("Post excluído com sucesso.")
+  } else {
+    alert("Não foi possível encontrar o post.")
+  }
+}
+
+
 
 </script>
 
@@ -182,8 +202,14 @@ const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
 
     <div v-if="postsDaComunidade.length">
       <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario" class="feed">
-        <PostComponent :post="p" />
-      </div>
+  <PostComponent :post="p" />
+  <div v-if="p.usuario === usuarioLogado" >
+    <button @click="deletarPost(p)">
+      Excluir
+    </button>
+  </div>
+</div>
+
     </div>
     <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
   </section>
@@ -425,8 +451,8 @@ textarea::placeholder {
 }
 
 .buttons-post {
-  display: flex;       
-  gap: 10px;         
+  display: flex;
+  gap: 10px;
   justify-content: flex-end;
 }
 
@@ -486,7 +512,7 @@ textarea::placeholder {
   font-size: 0.9rem;
 }
 
-textarea {  
+textarea {
   font-size: 0.8rem;
 }
 
@@ -584,7 +610,7 @@ textarea {
   font-size: 0.9rem;
 }
 
-textarea {  
+textarea {
   font-size: 0.8rem;
 }
 

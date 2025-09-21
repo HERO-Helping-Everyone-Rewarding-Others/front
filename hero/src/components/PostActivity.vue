@@ -446,7 +446,7 @@ div.pontos-info .pontos {
   }
 }
 @media (max-width: 950px) {
-  div.pontos-info .verificado,
+  div.pontos-info .verificado, 
   div.pontos-info .pontos {
     font-size: 0.7rem;
   }
