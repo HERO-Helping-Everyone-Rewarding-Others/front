@@ -2,7 +2,6 @@
 import { computed } from "vue"
 import { RouterLink } from "vue-router"
 import { useCommunityState } from "../store/communities"
-import router from "@/router"
 
 const emit = defineEmits(['toggleMenu'])
 
@@ -17,258 +16,246 @@ const minhasComunidades = computed(() =>
 
 <template>
   <section @click.stop>
-    <div class="acesso">
-      <h2>Acesso Rápido</h2>
-    </div>
-    <div class="comun-user">
-      <div class="plus">
-        <p class="p-text">
-          MINHAS COMUNIDADES
-        </p>
-        <RouterLink to="/comunidades">
-          <span class="mdi mdi-plus"></span>
-        </RouterLink>
-
+    <div class="sidebar">
+      <div class="sidebar-1">
+        <div class="logo">
+          <img src="/logo-branca-icon.png" alt="logo" />
+        </div>
+        <div class="list">
+          <ul>
+            <li>
+              <font-awesome-icon :icon="['far', 'house']" />
+            </li>
+            <li>
+              <span class="mdi mdi-account-group-outline"></span>
+            </li>
+            <li>
+              <span class="mdi mdi-shopping-outline"></span>
+            </li>
+            <li>
+              <span class="mdi mdi-account-outline"></span>
+            </li>
+          </ul>
+        </div>
+        <div class="comun">
+          <span class="mdi mdi-account-multiple-check-outline"></span>
+        </div>
       </div>
-      <div class="minhas-comun">
-        <p v-if="minhasComunidades.length === 0" class="none-comun">
-          Você ainda não entrou em nenhuma comunidade.
-        </p>
-        <ul>
-          <li v-for="nome in minhasComunidades" :key="nome">
-            <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
-              <span>•</span> {{ nome }}
+
+      <div class="sidebar-2">
+        <div class="logo">
+          <img src="/logo-branca-icon.png" alt="logo" />
+        </div>
+        <div class="list">
+          <ul>
+            <RouterLink to="/" class="link">
+              <li>
+              <font-awesome-icon :icon="['far', 'house']" class="home"/>
+              <p>Início</p>
+            </li>
             </RouterLink>
-          </li>
-        </ul>
+            <RouterLink  to="/comunidades" class="link">
+              <li>
+              <span class="mdi mdi-account-group-outline"></span>
+              <p>Comunidades</p>
+            </li>
+            </RouterLink>
+            <RouterLink to="/loja" class="link">
+              <li>
+              <span class="mdi mdi-shopping-outline"></span>
+              <p>Loja</p>
+            </li>
+            </RouterLink>
+            <RouterLink  to="/profile" class="link">
+              <li>
+              <span class="mdi mdi-account-outline"></span>
+              <p>Perfil</p>
+            </li>
+            </RouterLink>
+          </ul>
+        </div>
+         <div class="comun">
+          <div class="box-comun">
+            <span class="mdi mdi-account-multiple-check-outline"></span>
+            <p>Minhas comunidades</p>
+          </div>
+          <p v-if="minhasComunidades.length === 0" class="none-comun">
+            Você ainda não entrou em nenhuma comunidade.
+          </p>
+          <ul>
+            <li v-for="nome in minhasComunidades" :key="nome">
+              <RouterLink :to="`/comunidade/${nome}`" class="comunidade">
+              <span class="mdi mdi-play"></span> {{ nome }}
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-    <p class="p-text">
-      COMUNIDADES POPULARES
-    </p>
-    <div class="minhas-comun">
-      <ul class="mb-4">
-        <li v-for="nome in comunidadesPopulares" :key="nome" class="mb-1">
-          <RouterLink :to="`/comunidade/${nome}`" class="hover:underline">
-            <span>•</span> {{ nome }}
-          </RouterLink>
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <div class="comun-per">
-        <div>
-          <RouterLink to="/comunidades"><font-awesome-icon :icon="['fas', 'users']" /> Ver todas as comunidades
-          </RouterLink>
-        </div>
-        <div>
-          <RouterLink to="/profile"><font-awesome-icon :icon="['far', 'user']" /> Perfil</RouterLink>
-        </div>
-      </div>
-    </div>
-    <p class="hero">
-      Helping Everyone Rewarding Others
-    </p>
   </section>
-  <div class="fechar">
-    <button @click="emit('toggleMenu')">✕</button>
-  </div>
 </template>
 
 <style scoped>
 section {
-  background: white;
-  padding: 0 0 0 1vw;
-  width: 20vw;
-}
-
-.acesso h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.5vw;
-}
-
-section p {
-  color: rgb(86, 85, 87);
-}
-
-.acesso p {
-  font-size: 1.1rem;
   margin: 0;
-}
-
-.plus {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-p.p-text {
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: #1a1f1a;
-}
-
-.plus .mdi-plus {
-  color: rgb(116, 116, 117);
-  font-size: 1.5rem;
-  margin-right: 2vw;
-}
-
-.minhas-comun ul {
-  margin: 0;
-  list-style: none;
   padding: 0;
+}
+.sidebar {
+  display: flex;
+}
+
+.sidebar-1 {
+  width: 5vw; 
+  transition: width .20s ease, opacity .20s ease;
+  overflow: hidden;
+  height: 40vw;
+}
+
+.sidebar-2 {
+  width: 0;
+  opacity: 0;
+  pointer-events: none; /* evita receber hover/click quando fechada */
+  transition: width .20s ease, opacity .20s ease;
+  overflow: hidden;
+  height: 40vw;
+}
+
+.sidebar:hover .sidebar-1 {
+  width: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar:hover .sidebar-2 {
+  width: 15vw;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-1 .logo, .sidebar-2 .logo {
+  background: rgb(27, 35, 83, 0.9);
+  width: 3.3vw;
+  height: 3vw;
+  display: flex;
   align-items: center;
-}
-
-.minhas-comun ul li a {
-  text-decoration: none;
-  color: rgb(86, 85, 87);
-}
-
-.minhas-comun li {
-  padding: 5px 10px;
-  width: 70%;
+  justify-content: center;
   border-radius: 10px;
+  margin: 1vw auto;
 }
 
-.minhas-comun ul li:hover {
-  background: rgba(202, 203, 204, 0.2);
+.logo img {
+  width: 2.5vw;
 }
 
-.none-comun {
-  margin: 0;
-  font-size: 1rem;
-  padding-right: 20px;
+.sidebar-1 .list {
+  display: flex;
+  justify-content: center;
 }
 
-.hero {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 2vw 0 2vw 0.5vw;
+.sidebar-1 ul {
+  list-style: none;
+  margin: 1vw 0 0 0;
+  padding: 0;
 }
 
-.comun-per {
+.sidebar-1 ul li {
+  font-size: 1.7rem;
+  color: grey;
   margin: 1vw 0;
 }
 
-.comun-per div {
-  margin-bottom: 10px;
-}
-
-.comun-per a {
-  text-decoration: none;
-  color: rgb(86, 85, 87);
-  font-size: 1.2rem;
-  font-weight: 600;
-  padding: 6px;
-  border-radius: 10px;
-}
-
-.comun-per a:hover {
-  background: rgba(202, 203, 204, 0.2);
-  color: rgb(57, 57, 58);
-}
-
-span {
-  font-weight: 700;
-  font-size: 1.2rem;
-}
-
-.fechar {
-  position: absolute;
-  top: 0.7vw;
-  left: 17vw;
-}
-
-.fechar button {
-  border: none;
-  background: transparent;
+.sidebar-1 .comun {
   font-size: 1.7rem;
-  cursor: pointer;
-  color: rgb(135, 135, 136);
-  padding: 2px 10px;
+  color: grey;
+  margin: 0 0 0 1vw;
+}
+
+.sidebar-2 .list {
+  display: flex;
+  margin: 0 1vw;
+}
+
+.sidebar-2 .logo {
+  margin: 1vw;
+}
+
+.sidebar-2 ul {
+  list-style: none;
+  margin: 1.4vw 0 0 0;
+  padding: 0;
+}
+
+.sidebar-2 ul li {
+  display: flex;
+  align-items: center;
+  margin: 1vw 0 0 0;
+  width: 100%;
+  height: 3vw;
+  padding: 0 0 0 0.7vw;
   border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.fechar button:hover {
-  background: rgb(135, 135, 136, 0.1);
+.sidebar-2 ul li span, .home {
+  font-size: 1.7rem;
+  color: grey;
 }
 
-@media (max-width: 1400px) {
-  .acesso h2 {
-    font-size: 1rem;
-  }
-
-  .acesso p {
-    font-size: 0.9rem;
-  }
-
-  p.p-text {
-    font-size: 0.9rem;
-  }
-
-  .plus .mdi-plus {
-    font-size: 1.2rem;
-  }
-
-  .minhas-comun ul li a {
-    font-size: 1rem;
-  }
-
-  .minhas-comun li {
-    padding: 3px 8px;
-  }
-
-  .comun-per a {
-    font-size: 0.9rem;
-  }
-
-  .hero {
-  font-size: 0.7rem;
-  }
-
-  .fechar button {
-  font-size: 1.3rem;
-  }
+.sidebar-2 ul li p {
+  margin: 0;
+  padding: 0 0 0 1vw;
+  font-size: 1.1rem;
+  color: grey;
+  font-weight: 599;
 }
-@media (max-width: 950px) {
-  .acesso h2 {
-    font-size: 0.9rem;
-  }
 
-  .acesso p {
-    font-size: 0.8rem;
-  }
-
-  p.p-text {
-    font-size: 0.8rem;
-  }
-
-  .plus .mdi-plus {
-    font-size: 1rem;
-  }
-
-  .minhas-comun ul li a {
-    font-size: 0.9rem;
-  }
-
-  .minhas-comun li {
-    padding: 3px 8px;
-  }
-
-  .comun-per a {
-    font-size: 0.8rem;
-  }
-
-  .hero {
-  font-size: 0.6rem;
-  }
-
-  .fechar button {
-  font-size: 1.2rem;
-  }
+.link {
+  text-decoration: none;
 }
+
+.sidebar-2 li:hover {
+  background: rgba(120, 120, 121, 0.1);
+}
+
+.sidebar-2 .comun .box-comun {
+  display: flex;
+  align-items: center;
+  margin-top: 1vw;
+}
+
+.box-comun p {
+  font-size: 1rem;
+  color: grey;
+  font-weight: 600;
+}
+
+.box-comun span {
+  font-size: 2rem;
+  margin: 0 1vw;
+  color: grey;
+}
+
+.none-comun {
+  color: grey;
+  font-size: 0.9rem;
+  margin: 0 0.5vw 0 1vw;
+}
+
+.comunidade {
+  color: grey;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.comun ul li {
+  width: 85%;
+  margin-left: 1vw;
+}
+
+.comunidade .mdi-play {
+  font-size: 1rem;
+}
+
 </style>

@@ -95,7 +95,7 @@ onUnmounted(() => {
   background: rgba(255, 255, 255);
   border: 2px solid rgb(167, 164, 164, 0.3);  
   box-shadow: 3px 3px 15px 1px rgba(121, 120, 120, 0.2);
-  border-radius: 15px;
+  border-radius: 10px;
   transition: top 0.5s ease;
 
 }
