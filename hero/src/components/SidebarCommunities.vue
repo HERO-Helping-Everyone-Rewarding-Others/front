@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue"
-import { RouterLink } from "vue-router"
+import { useRouter } from "vue-router"
 import { useCommunityState } from "../store/communities"
 
 const emit = defineEmits(['toggleMenu'])
@@ -12,6 +12,12 @@ const comunidadesPopulares = computed(() =>
 const minhasComunidades = computed(() =>
   comunidadesEntradas.value.map(c => typeof c === "string" ? c : (c.nome || "Comunidade sem nome"))
 )
+
+const router = useRouter()
+
+function irParaComunidade(nome) {
+  router.push(`/comunidade/${nome}`)
+}
 </script>
 
 <template>
@@ -83,10 +89,14 @@ const minhasComunidades = computed(() =>
             Você ainda não entrou em nenhuma comunidade.
           </p>
           <ul>
-            <li v-for="nome in minhasComunidades" :key="nome">
-              <RouterLink :to="`/comunidade/${nome}`" class="comunidade">
-                <span class="mdi mdi-play"></span> {{ nome }}
-              </RouterLink>
+            <li
+              v-for="nome in minhasComunidades"
+              :key="nome"
+              class="comunidade"
+              @click="irParaComunidade(nome)"
+              style="cursor: pointer"
+            >
+              <span class="mdi mdi-play"></span> {{ nome }}
             </li>
           </ul>
         </div>

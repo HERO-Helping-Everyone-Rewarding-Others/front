@@ -9,7 +9,6 @@ const emit = defineEmits(['toggleMenu'])
 const { user, accessToken, fetchUser, logout } = useAuth()
 
 onMounted(() => {
-    // Se já tem token salvo mas o user ainda não foi buscado
     if (accessToken.value && !user.value) {
         fetchUser().catch(() => { })
     }

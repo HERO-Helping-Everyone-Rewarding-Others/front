@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useAuth } from '../composables/auth'
 import { profileName, profileAvatar } from '../store/user'
-import { toggleSave, isSaved } from '../store/saved' // novo
+import { toggleSave, isSaved } from '../store/saved' 
 
 
 const imagemExpandida = ref(null)
@@ -446,7 +446,7 @@ div.pontos-info .pontos {
   }
 }
 @media (max-width: 950px) {
-  div.pontos-info .verificado, 
+  div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.7rem;
   }

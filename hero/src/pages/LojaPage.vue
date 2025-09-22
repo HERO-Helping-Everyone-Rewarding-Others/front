@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import { usuario, gastarPontos } from '../store/user'
 import { TransitionGroup } from 'vue'
 
-// Itens disponíveis
 const itens = ref([
   {
     id: 1,
@@ -83,7 +82,7 @@ const itens = ref([
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
-// Categoria filtrada
+// Categoria
 const categoriaSelecionada = ref('todos')
 const itensFiltrados = computed(() => {
   if (categoriaSelecionada.value === 'todos') return itens.value
@@ -280,7 +279,7 @@ const selecionarCategoria = (categoria) => (categoriaSelecionada.value = categor
       <div v-if="mostrarSucesso" class="modal-backdrop">
         <div class="modal-resgate">
           <h2>Resgate realizado!</h2>
-          <p>O <strong><!--nome do item--></strong> foi resgatado com sucesso.</p>
+          <p>Sua recompensa foi resgatada com sucesso.</p>
         </div>
       </div>
     </Transition>

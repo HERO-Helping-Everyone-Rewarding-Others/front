@@ -16,7 +16,6 @@ const scrollingUp = ref(false);
 let lastScrollY = 0;
 
 const handleScroll = () => {
-  // seu código original
   scrollY.value = window.scrollY;
   scrollingUp.value = scrollY.value < lastScrollY;
   lastScrollY = scrollY.value;
@@ -62,14 +61,12 @@ onUnmounted(() => {
 
 <template>
   <div ref="scrollContainer" @scroll="handleScroll">
-    <!-- adicionamos ref no HeaderComponent -->
     <HeaderComponent
       ref="headerRef"
       v-if="route.name !== 'login' && route.name !== 'register'"
       @toggleMenu="showMenu = !showMenu"
     />
     <transition name="sidebar-transition">
-      <!-- adicionamos ref no aside -->
       <aside
         class="sidebar"
         :class="top ? 'top' : ''"
@@ -93,7 +90,7 @@ onUnmounted(() => {
   left: 0;
   margin: 1vw 0 0 1vw;
   background: rgba(255, 255, 255);
-  border: 2px solid rgb(167, 164, 164, 0.3);  
+  border: 2px solid rgb(167, 164, 164, 0.3);
   box-shadow: 3px 3px 15px 1px rgba(121, 120, 120, 0.2);
   border-radius: 10px;
   transition: top 0.5s ease;

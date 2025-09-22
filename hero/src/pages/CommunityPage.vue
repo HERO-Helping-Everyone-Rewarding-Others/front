@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue"
+import { ref, computed, onMounted, watch } from "vue"
 import { useAuth } from "../composables/auth"
 import { useRoute, useRouter } from "vue-router"
 import { addPost, posts } from "../store/posts"
@@ -12,7 +12,7 @@ const route = useRoute()
 const router = useRouter()
 const { entrouNaComunidade, entrarNaComunidade, todasComunidades } = useCommunityState()
 
-const comunidadeNome = route.params.nome
+const comunidadeNome = computed(() => route.params.nome)
 const conteudo = ref("")
 const imagemLink = ref("")
 const arquivoImagem = ref(null)
@@ -20,28 +20,29 @@ const previewImagem = ref("")
 const usuarioLogado = computed(() => user.value?.nome || "")
 const membro = ref(false)
 
-
 const comunidade = computed(() =>
-  todasComunidades.value.find(c => c.nome === comunidadeNome) || null
+  todasComunidades.value.find(c => c.nome === comunidadeNome.value) || null
 )
 
 const postsDaComunidade = computed(() =>
-  posts.value.filter(p => p.comunidade === comunidadeNome)
+  posts.value.filter(p => p.comunidade === comunidadeNome.value)
 )
 
 onMounted(async () => {
   if (accessToken.value && !user.value) await fetchUser()
   if (!user.value.comunidades) user.value.comunidades = []
-  membro.value = entrouNaComunidade(comunidadeNome)
+  membro.value = entrouNaComunidade(comunidadeNome.value)
+})
+
+watch(() => route.params.nome, async (novoNome) => {
+  membro.value = entrouNaComunidade(novoNome)
 })
 
 function entrar() {
-  entrarNaComunidade(comunidadeNome)
+  entrarNaComunidade(comunidadeNome.value)
   membro.value = true
-  alert(`Você entrou na comunidade ${comunidadeNome}! Agora você pode postar.`)
+  alert(`Você entrou na comunidade ${comunidadeNome.value}! Agora você pode postar.`)
 }
-
-
 
 function selecionarImagem(event) {
   const file = event.target.files[0]
@@ -64,7 +65,7 @@ async function postar() {
 
   addPost({
     usuario: usuarioLogado.value,
-    comunidade: comunidadeNome,
+    comunidade: comunidadeNome.value,
     pontos: 10,
     verificado: false,
     tempo: new Date().toISOString(),
@@ -93,7 +94,6 @@ const fecharModal = () => { mostrarModal.value = false }
 const abrirModalDoacao = () => { mostrarModalDoacao.value = true }
 const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
 
-
 function deletarPost(postParaRemover) {
   const confirmar = confirm("Deseja mesmo excluir esta postagem?")
   if (!confirmar) return
@@ -110,10 +110,8 @@ function deletarPost(postParaRemover) {
     alert("Não foi possível encontrar o post.")
   }
 }
-
-
-
 </script>
+
 
 <template>
   <section>
