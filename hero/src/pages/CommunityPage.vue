@@ -89,7 +89,14 @@ const mostrarModal = ref(false)
 const mostrarModalDoacao = ref(false)
 
 const abrirModal = () => { mostrarModal.value = true }
-const fecharModal = () => { mostrarModal.value = false }
+const fecharModal = () => {
+  mostrarModal.value = false
+  conteudo.value = ""
+  imagemLink.value = ""
+  arquivoImagem.value = null
+  previewImagem.value = ""
+}
+
 
 const abrirModalDoacao = () => { mostrarModalDoacao.value = true }
 const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
