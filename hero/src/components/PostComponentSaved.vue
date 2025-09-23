@@ -166,7 +166,7 @@ function getUserColor(name) {
         <a>
           <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
         </a>
-        <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
+        <a><span id="link" class="mdi mdi-share-variant-outline"></span></a>
       </div>
     </div>
   </div>

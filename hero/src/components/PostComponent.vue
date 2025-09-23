@@ -232,6 +232,14 @@ div.box-post {
   color: #1a1f24;
 }
 
+.avatar-img-small {
+  width: 3.2vw;
+  height: 3.2vw;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1vw;
+}
+
 .info-post .post-user span,
 .c-conteudo {
   color: rgb(81, 81, 82);
@@ -368,7 +376,7 @@ div.pontos-info .pontos {
   color: rgba(243, 227, 6, 0.925);
 }
 
-.comment-user p.avatar {
+.comment-user p.avatar, .comment-avatar-img {
   width: 3vw;
   height: 3vw;
   border-radius: 100%;
@@ -378,7 +386,8 @@ div.pontos-info .pontos {
   align-items: center;
   color: white;
   font-weight: 700;
-  margin-right: 1vw;
+  margin: 1.5vw 1vw 1vw 0;
+  object-fit: cover;
 }
 
 .comment-user {
@@ -414,22 +423,6 @@ div.pontos-info .pontos {
   font-size: 1rem;
   font-weight: 600;
   color: rgb(101, 143, 235);
-}
-
-.avatar-img-small {
-  width: 3.2vw;
-  height: 3.2vw;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 1vw;
-}
-
-.comment-avatar-img {
-  width: 3vw;
-  height: 3vw;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 1vw;
 }
 
 .link-comunidade {

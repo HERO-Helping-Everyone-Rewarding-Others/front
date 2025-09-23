@@ -317,6 +317,7 @@ div .profile-container {
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  object-fit: cover;
 }
 
 .avatar-fallback {

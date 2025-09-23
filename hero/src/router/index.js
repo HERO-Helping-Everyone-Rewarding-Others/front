@@ -8,6 +8,7 @@ import CommunitiesPage from '../pages/CommunitiesPage.vue'
 import CommunityPage from '../pages/CommunityPage.vue'
 import LojaPage from '../pages/LojaPage.vue'
 import ProfilePage from '@/pages/ProfilePage.vue'
+import ProfileUsers from '../pages/ProfileUsers.vue'
 
 const routes = [
   { path: '/', name: 'home', component: HomePage, meta: { requiresAuth: true } },
@@ -16,7 +17,8 @@ const routes = [
   { path: '/comunidades', name: 'comunidades', component: CommunitiesPage, meta: { requiresAuth: true } },
   { path: '/comunidade/:nome', name: 'comunidade', component: CommunityPage, props: true, meta: { requiresAuth: true } },
   { path: '/loja', name: 'loja', component: LojaPage, meta: { requiresAuth: true } },
-  { path: '/profile', name: 'profile', component: ProfilePage, meta: { requiresAuth: true } }
+  { path: '/profile', name: 'profile', component: ProfilePage, meta: { requiresAuth: true } },
+  { path: '/profileUsers', name: 'profileUsers', component: ProfileUsers, meta: { requiresAuth: true }  }
 ]
 
 const router = createRouter({

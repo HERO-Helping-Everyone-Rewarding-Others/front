@@ -70,13 +70,13 @@ const handleLogin = async () => {
 <style scoped>
 section {
   display: flex;
+  align-items: center;
   height: 100vh;
   padding: 0 8vw 0 8vw;
   color: #f5f5f5;
   background: linear-gradient(to right bottom, #1b2353 0%, #276394 75%, #43a86a 100%);
   background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
 }
-
 
 .error {
   margin-bottom: 0.5vw;
@@ -85,7 +85,6 @@ section {
 .box1,
 .box2 {
   flex: 1;
-  margin-top: 5vw;
 }
 
 .box1 {

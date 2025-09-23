@@ -141,62 +141,22 @@ function handleDrop(e) {
     <div class="profile-container">
       <div class="profile-card">
         <div class="profile-header">
-          <div class="edit">
-            <p>Perfil</p>
-            <button @click="editing = !editing"><font-awesome-icon
-                :icon="editing ? ['fas', 'xmark'] : ['fas', 'pen-to-square']" />
-            </button>
-          </div>
 
           <div class="profile-main">
             <img v-if="profileAvatar" :src="profileAvatar" alt="avatar" class="avatar-img" />
             <div v-else class="avatar-fallback" :style="{ background: avatarColor }"> {{ initials }}</div>
             <h2>{{ displayName }}</h2>
-            <p v-if="user?.email" class="profile-email">{{ user.email }}</p>
-            <p class="profile-pontos">{{ usuario.pontos || 0 }} pontos</p>
           </div>
-        </div>
-        <transition name="grow" mode="out-in">
-          <div v-if="editing" class="profile-edit">
-            <div class="profile-form">
-              <div class="avatar-form" @click="$refs.avatarInput.click()" @dragover.prevent="handleDragOver"
-                @dragenter.prevent="handleDragOver" @dragleave="handleDragLeave" @drop="handleDrop"
-                :class="{ 'dragging': isDragging }">
-                <label for="avatar">Clique ou arraste sua foto aqui</label>
-                <input ref="avatarInput" id="avatar" type="file" accept="image/*" @change="onSelectAvatar"
-                  style="display: none" />
-              </div>
-
-              <div>
-                <label for="nome">Nome</label>
-                <input id="nome" v-model="profileName" type="text" placeholder="Seu nome" />
-              </div>
-
-              <div>
-                <label for="bio">Biografia</label>
-                <textarea id="bio" v-model="profileBio" placeholder="Escreva uma biografia curta"
-                  class="textarea"></textarea>
-              </div>
-            </div>
-
-            <div class="edit-actions">
-              <button @click="saveLocalChanges" class="btn-save">Salvar</button>
-              <button @click="resetLocal" class="btn-reset">Resetar</button>
-            </div>
-          </div>
-          <div v-else class="profile-bio">
+        </div>          
             <h3>Bio</h3>
             <p v-if="profileBio">{{ profileBio }}</p>
             <p v-else class="muted">Sem biografia</p>
-          </div>
-        </transition>
       </div>
 
       <!-- Conteúdo -->
       <div class="profile-content">
         <nav class="nav-perfil">
-          <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">Estatísticas</button>
-          <button :class="{ active: tab === 'saved' }" @click="selectTab('saved')">Salvos</button>
+          <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">Comunidades</button>
           <button :class="{ active: tab === 'activity' }" @click="selectTab('activity')">Atividade</button>
         </nav>
 

@@ -72,7 +72,7 @@ function irParaComunidade(nome) {
                 <p>Loja</p>
               </li>
             </RouterLink>
-            <RouterLink to="/profile" class="link">
+            <RouterLink to="/profileUsers" class="link">
               <li>
                 <span class="mdi mdi-account-outline"></span>
                 <p>Perfil</p>
@@ -106,11 +106,6 @@ function irParaComunidade(nome) {
 </template>
 
 <style scoped>
-section {
-  margin: 0;
-  padding: 0;
-}
-
 .sidebar {
   display: flex;
 }
@@ -139,7 +134,7 @@ section {
 }
 
 .sidebar:hover .sidebar-2 {
-  width: 15vw;
+  width: 17vw;
   opacity: 1;
   pointer-events: auto;
 }
@@ -202,7 +197,6 @@ section {
   display: flex;
   align-items: center;
   margin: 1vw 0 0 0;
-  width: 100%;
   height: 3vw;
   padding: 0 0 0 0.7vw;
   border-radius: 10px;
@@ -222,6 +216,7 @@ section {
   font-size: 1.1rem;
   color: grey;
   font-weight: 500;
+  padding-right: 3vw;
 }
 
 .link {
@@ -242,6 +237,7 @@ section {
   font-size: 1rem;
   color: grey;
   font-weight: 500;
+  width: 50%;
 }
 
 .box-comun span {

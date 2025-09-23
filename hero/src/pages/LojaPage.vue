@@ -767,7 +767,7 @@ p.faltam {
 
 .modal-resgate h2 {
   color: #1a1f1a;
-  font-size: 1.3rem;
+  font-size: 1rem;
   margin: 0.5vw 0;
 }
 

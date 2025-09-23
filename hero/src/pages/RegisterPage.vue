@@ -93,6 +93,7 @@ const showPassword = ref(false);
 <style scoped>
 section {
   display: flex;
+  align-items: center;
   height: 100vh;
   padding: 0 8vw 0 8vw;
   color: #f5f5f5;
@@ -103,7 +104,6 @@ section {
 .box1,
 .box2 {
   flex: 1;
-  margin-top: 3vw;
 }
 
 .box1 {
