@@ -102,6 +102,16 @@ function getUserColor(name) {
   const index = Math.abs(hash) % colors.length
   return colors[index]
 }
+
+const link = ref(false)
+
+function copiarLink() {
+  const linkParaCopiar = 'https://anotepad.com/'; // O link que você quer copiar
+  navigator.clipboard.writeText(linkParaCopiar)
+    .then(() => {
+      link.value = true
+    })
+}
 </script>
 
 <template>
@@ -164,7 +174,12 @@ function getUserColor(name) {
         <a>
           <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
         </a>
-        <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
+        <div class="share-link">
+          <a @click="copiarLink"><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
+          <div v-if="link == true">
+            <p>Link copiado!</p>
+          </div>
+        </div>
       </div>
 
       <div class="salvos">
@@ -335,6 +350,16 @@ div.pontos-info .pontos {
   margin: 1vw 0;
 }
 
+.share-link {
+  display: flex;
+}
+
+.share-link p {
+  margin: 0 1vw;
+  font-size: 1.1rem;
+  color: rgb(118, 118, 119);
+}
+
 .likes {
   display: flex;
   gap: 15px;
@@ -379,7 +404,8 @@ div.pontos-info .pontos {
   color: rgba(243, 227, 6, 0.925);
 }
 
-.comment-user p.avatar, .comment-avatar-img {
+.comment-user p.avatar,
+.comment-avatar-img {
   width: 3vw;
   height: 3vw;
   border-radius: 100%;
@@ -434,6 +460,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 1400px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.8rem;
@@ -457,6 +484,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 500px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.6rem;
@@ -478,5 +506,4 @@ div.pontos-info .pontos {
     font-size: 0.7rem;
   }
 }
-
-</style> 
+</style>

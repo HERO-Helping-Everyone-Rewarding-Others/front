@@ -10,8 +10,6 @@ import PostComponentSaved from '../components/PostComponentSaved.vue'
 import PostActivity from '../components/PostActivity.vue'
 import RewardProfile from '@/components/RewardProfile.vue'
 
-
-
 const router = useRouter()
 const { user, accessToken, fetchUser } = useAuth()
 const { comunidadesEntradas } = useCommunityState()
@@ -22,7 +20,6 @@ const tab = ref('stats')
 function selectTab(name) {
   tab.value = name
 }
-
 
 // Atualiza campos locais com dados do usuário
 watch(
@@ -264,14 +261,14 @@ function handleDrop(e) {
 
 
           <!-- rewards -->
-          <div v-if="tab === 'reward'" class="reward">
+     
             <div v-if="tab === 'reward'" class="reward">
-              <div v-if="Você ainda não fez nenhuma postagem.">
+              <div v-if="mostrarSucesso == true">
                 <RewardProfile></RewardProfile>
               </div>
-              <p v-else>"userPosts.length" class="post"</p>
+              <p v-else>Você ainda não resgatou nenhuma recompensa.</p>
             </div>
-          </div>
+  
         </transition>
       </div>
     </div>
@@ -468,7 +465,7 @@ div .profile-container {
 
 .profile-content nav {
   background: rgba(240, 239, 239, 0.5);
-  border-radius: 15px;
+  border-radius: 25px;
   display: flex;
   width: 100%;
   padding: 0.2vw;
@@ -476,7 +473,7 @@ div .profile-container {
 
 .nav-perfil button {
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-radius: 20px;
   flex: 1;
   display: flex;
