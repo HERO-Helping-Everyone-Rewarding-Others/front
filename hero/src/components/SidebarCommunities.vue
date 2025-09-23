@@ -198,7 +198,7 @@ function irParaComunidade(nome) {
   align-items: center;
   margin: 1vw 0 0 0;
   height: 3vw;
-  padding: 0 0 0 0.7vw;
+  padding: 0 5vw 0 0.5vw;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -212,11 +212,9 @@ function irParaComunidade(nome) {
 
 .sidebar-2 ul li p {
   margin: 0;
-  padding: 0 0 0 1vw;
   font-size: 1.1rem;
   color: grey;
   font-weight: 500;
-  padding-right: 3vw;
 }
 
 .link {

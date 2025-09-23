@@ -87,7 +87,7 @@ async function postar() {
     comentariosLista: []
   })
 
-  ganharPontos(20)
+  ganharPontos(10)
   conteudo.value = ""
   imagemLink.value = ""
   arquivoImagem.value = null

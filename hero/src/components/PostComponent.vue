@@ -152,6 +152,9 @@ function getUserColor(name) {
     </div>
 
     <div class="social">
+
+      <!-- adicionafunçãopraincrementarcontador -->
+
       <div class="likes">
         <a @click="toggleLike" class="like-btn">
           <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"

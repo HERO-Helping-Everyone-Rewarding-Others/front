@@ -201,7 +201,7 @@ const selecionarCategoria = (categoria) => (categoriaSelecionada.value = categor
             <div class="progress-bar">
               <div class="progress" :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }"></div>
             </div>
-            <button @click="abrirModal(item)"
+            <button :disabled="usuario.pontos < item.preco" @click="abrirModal(item)"
               :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'">
               {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
             </button>

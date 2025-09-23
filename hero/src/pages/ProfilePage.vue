@@ -8,6 +8,7 @@ import { savedPosts } from '../store/saved'
 import { useCommunityState } from '../store/communities'
 import PostComponentSaved from '../components/PostComponentSaved.vue'
 import PostActivity from '../components/PostActivity.vue'
+import RewardProfile from '@/components/RewardProfile.vue'
 
 
 
@@ -198,6 +199,7 @@ function handleDrop(e) {
           <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">Estatísticas</button>
           <button :class="{ active: tab === 'saved' }" @click="selectTab('saved')">Salvos</button>
           <button :class="{ active: tab === 'activity' }" @click="selectTab('activity')">Atividade</button>
+          <button :class="{ active: tab === 'reward' }" @click="selectTab('reward')">Recompensas</button>
         </nav>
 
         <!-- Estatísticas -->
@@ -255,6 +257,20 @@ function handleDrop(e) {
               <PostActivity v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
             </div>
             <p v-else>Você ainda não fez nenhuma postagem.</p>
+          </div>
+        </transition>
+
+        <transition name="come" mode="in-out">
+
+
+          <!-- rewards -->
+          <div v-if="tab === 'reward'" class="reward">
+            <div v-if="tab === 'reward'" class="reward">
+              <div v-if="Você ainda não fez nenhuma postagem.">
+                <RewardProfile></RewardProfile>
+              </div>
+              <p v-else>"userPosts.length" class="post"</p>
+            </div>
           </div>
         </transition>
       </div>
@@ -557,7 +573,8 @@ nav.nav-perfil button:focus,
 }
 
 .activity,
-.saved {
+.saved,
+.reward {
   margin-top: 2vw;
   width: 100%;
   max-height: 28vw;
@@ -565,10 +582,11 @@ nav.nav-perfil button:focus,
 }
 
 .activity p,
-.saved p {
+.saved p,
+.reward p {
   color: rgb(103, 103, 104);
   text-align: center;
-  margin-top: 4vw;
+  margin-top: 3vw;
 }
 
 .grow-enter-active,
@@ -667,6 +685,7 @@ nav.nav-perfil button:focus,
     font-size: 1rem;
   }
 }
+
 @media (max-width: 950px) {
   .edit button {
     font-size: 1rem;
@@ -725,5 +744,4 @@ nav.nav-perfil button:focus,
     font-size: 1rem;
   }
 }
-
 </style>

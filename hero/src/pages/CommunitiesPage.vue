@@ -312,6 +312,8 @@ span.mdi-magnify {
 .comunidades ul li {
   padding: 0 2vw;
   flex-direction: column;
+  display: flex;
+  justify-content: space-between;
   width: 24vw;
   border: 3px solid rgb(201, 199, 199, 0.3);
   box-shadow: 0 5px 10px 1px rgba(158, 157, 157, 0.1);
