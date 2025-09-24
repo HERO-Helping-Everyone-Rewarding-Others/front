@@ -259,7 +259,7 @@
             </div>
           </transition>
           <transition name="come" mode="in-out">
-            <div v-if="tab === 'reward'">
+            <div v-if="tab === 'reward'" class="box-reward">
               <div v-if="recompensasResgatadas.length" class="reward">
                 <div v-for="(r, index) in recompensasResgatadas" :key="index" class="reward-card">
                     <div class="reward-info">
@@ -575,7 +575,7 @@
 
   .activity,
   .saved,
-  .reward {
+  .box-reward {
     margin-top: 2vw;
     width: 100%;
     max-height: 28vw;
@@ -584,7 +584,7 @@
 
   .activity p,
   .saved p,
-  .reward #null {
+  #null {
     color: rgb(103, 103, 104);
     text-align: center;
     margin-top: 3vw;
