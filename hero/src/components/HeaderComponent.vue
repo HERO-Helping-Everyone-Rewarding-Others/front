@@ -1,8 +1,12 @@
 <script setup>
-import { onMounted } from "vue"
+import { onMounted, computed } from "vue"
 import { usuario } from "../store/user"
 import router from "@/router/"
 import { useAuth } from "@/composables/auth"
+import { profileName } from "../store/user"
+
+  const displayName = computed(() => profileName.value || user.value?.nome || usuario.value.nome)
+
 
 const emit = defineEmits(['toggleMenu'])
 
@@ -38,7 +42,7 @@ const handleLogout = () => {
 
             <div class="user">
                 <div class="user-demo">
-                    <p id="user-negrito">{{ (user && (user.nome || user.username)) || "Visitante" }}</p>
+                    <p id="user-negrito">{{ displayName }}</p>
                     <p>{{ usuario.pontos }} pontos</p>
                 </div>
                 <router-link to="/profile" class="button-user">

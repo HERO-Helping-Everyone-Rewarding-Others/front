@@ -2,7 +2,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useAuth } from '../composables/auth'
 import { profileName, profileAvatar } from '../store/user'
-import { toggleSave, isSaved } from '../store/saved' // novo
+import { toggleSave, isSaved } from '../store/saved'
+import { ganharPontos } from "@/store/user"
 
 
 const imagemExpandida = ref(null)
@@ -68,12 +69,9 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString())
 }
 
-
-
 function handleSave() {
   toggleSave(props.post)
 }
-
 
 const addComment = () => {
   if (!newComment.value.trim()) return
@@ -102,37 +100,61 @@ function getUserColor(name) {
   const index = Math.abs(hash) % colors.length
   return colors[index]
 }
-</script>
 
+const link = ref(false)
+
+function copiarLink() {
+  const linkParaCopiar = 'https://anotepad.com/'; // O link que você quer copiar
+  navigator.clipboard.writeText(linkParaCopiar)
+    .then(() => {
+      link.value = true
+    })
+}
+</script>
 <template>
   <div class="box-post">
     <div class="info-box">
-      <div class="perfil-user">
-
-        <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
-
-          <img :src="profileAvatar" class="avatar-img-small" />
-        </template>
-        <template v-else>
-          <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
-            {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
-          </p>
-        </template>
-      </div>
+      <router-link id="user" class="username-link" :to="{ name: 'profileUsers', params: { id: post.usuarioId } }">
+        <div class="perfil-user">
+          <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
+            <img :src="profileAvatar" class="avatar-img-small" />
+          </template>
+          <template v-else>
+            <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
+              {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
+            </p>
+          </template>
+        </div>
+      </router-link>
 
       <div class="info-post">
         <div class="post-user">
+
           <span id="user">
+
+            <router-link id="user" class="username-link" :to="{ name: 'profileUsers', params: { id: post.usuarioId } }">
+              {{
+                post.usuario === user?.nome || post.usuario === profileName
+                  ? profileName || user?.nome
+                  : post.usuario
+              }}
+            </router-link>
+
+          </span>
+
+          <span>
+            •
+            <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
+              {{ post.comunidade }}
+            </RouterLink>
+            •
             {{
-              post.usuario === user?.nome || post.usuario === profileName
-                ? profileName || user?.nome
-                : post.usuario
+              new Date(post.tempo).toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
             }}
           </span>
-          <span> • <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
-              {{ post.comunidade }}
-            </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-            }}</span>
         </div>
         <div v-if="post.verificado" class="pontos-info">
           <p class="verificado">Verificado</p>
@@ -152,16 +174,25 @@ function getUserColor(name) {
     </div>
 
     <div class="social">
+
       <div class="likes">
-        <a @click="toggleLike" class="like-btn">
+        <a @click="() => { toggleLike(); ganharPontos(1) }" class="like-btn">
           <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
             class="heart-icon" />
           {{ likes }}
         </a>
         <a>
-          <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
+          <font-awesome-icon :icon="['far', 'comment']" class="comment" />
+          {{ comentarios.length }}
         </a>
-        <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
+        <div class="share-link">
+          <a @click="copiarLink">
+            <span id="link" class="mdi mdi-share-variant-outline"></span>
+          </a>
+          <div v-if="link == true">
+            <p>Link copiado!</p>
+          </div>
+        </div>
       </div>
 
       <div class="salvos">
@@ -190,8 +221,11 @@ function getUserColor(name) {
     </div>
 
     <div class="comment-box">
-      <input v-model="newComment" type="text" placeholder="Escreva um comentário…" @keyup.enter="addComment" />
-      <button @click="addComment">Publicar</button>
+      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
+        @keyup.enter="() => { addComment(); ganharPontos(1) }" />
+      <button @click="() => { addComment(); ganharPontos(1) }">
+        Publicar
+      </button>
     </div>
   </div>
 </template>
@@ -230,6 +264,11 @@ div.box-post {
 .c-user {
   font-weight: 600;
   color: #1a1f24;
+  text-decoration: none;
+}
+
+#user:hover {
+  color: #3f4041;
 }
 
 .avatar-img-small {
@@ -332,6 +371,16 @@ div.pontos-info .pontos {
   margin: 1vw 0;
 }
 
+.share-link {
+  display: flex;
+}
+
+.share-link p {
+  margin: 0 1vw;
+  font-size: 1.1rem;
+  color: rgb(118, 118, 119);
+}
+
 .likes {
   display: flex;
   gap: 15px;
@@ -376,7 +425,8 @@ div.pontos-info .pontos {
   color: rgba(243, 227, 6, 0.925);
 }
 
-.comment-user p.avatar, .comment-avatar-img {
+.comment-user p.avatar,
+.comment-avatar-img {
   width: 3vw;
   height: 3vw;
   border-radius: 100%;
@@ -431,6 +481,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 1400px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.8rem;
@@ -454,6 +505,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 500px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.6rem;
@@ -475,5 +527,4 @@ div.pontos-info .pontos {
     font-size: 0.7rem;
   }
 }
-
-</style> 
+</style>
