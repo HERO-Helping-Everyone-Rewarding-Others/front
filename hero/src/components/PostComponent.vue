@@ -114,33 +114,31 @@ function copiarLink() {
 <template>
   <div class="box-post">
     <div class="info-box">
-      <div class="perfil-user">
-        <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
-          <img :src="profileAvatar" class="avatar-img-small" />
-        </template>
-        <template v-else>
-          <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
-            {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
-          </p>
-        </template>
-      </div>
+      <router-link id="user" class="username-link" :to="{ name: 'profileUsers', params: { id: post.usuarioId } }">
+        <div class="perfil-user">
+          <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
+            <img :src="profileAvatar" class="avatar-img-small" />
+          </template>
+          <template v-else>
+            <p class="avatar" :style="{ background: getUserColor(post.usuario) }">
+              {{ post.usuario.split(' ')[0][0] }}{{ post.usuario.split(' ')[1]?.[0] }}
+            </p>
+          </template>
+        </div>
+      </router-link>
 
       <div class="info-post">
         <div class="post-user">
 
           <span id="user">
 
-            <router-link
-  id="user"
-  class="username-link"
-  :to="{ name: 'profileUsers', params: { id: post.usuarioId } }"
->
-  {{
-    post.usuario === user?.nome || post.usuario === profileName
-      ? profileName || user?.nome
-      : post.usuario
-  }}
-</router-link>
+            <router-link id="user" class="username-link" :to="{ name: 'profileUsers', params: { id: post.usuarioId } }">
+              {{
+                post.usuario === user?.nome || post.usuario === profileName
+                  ? profileName || user?.nome
+                  : post.usuario
+              }}
+            </router-link>
 
           </span>
 
@@ -167,12 +165,7 @@ function copiarLink() {
 
     <div class="post-img">
       <p>{{ post.conteudo }}</p>
-      <img
-        v-if="post.imagem"
-        :src="post.imagem"
-        alt="imagem do post"
-        @click="abrirImagem(post.imagem)"
-      />
+      <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" @click="abrirImagem(post.imagem)" />
     </div>
 
     <div v-if="imagemExpandida" class="lightbox" @click.self="fecharImagem">
@@ -183,15 +176,9 @@ function copiarLink() {
     <div class="social">
 
       <div class="likes">
-        <a
-          @click="() => { toggleLike(); ganharPontos(1) }"
-          class="like-btn"
-        >
-          <font-awesome-icon
-            :icon="[liked ? 'fas' : 'far', 'heart']"
-            :class="['heart-icon', liked ? 'liked' : '']"
-            class="heart-icon"
-          />
+        <a @click="() => { toggleLike(); ganharPontos(1) }" class="like-btn">
+          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
+            class="heart-icon" />
           {{ likes }}
         </a>
         <a>
@@ -210,11 +197,8 @@ function copiarLink() {
 
       <div class="salvos">
         <a @click="handleSave">
-          <font-awesome-icon
-            :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
-            :class="['star', isSaved(post) ? 'saved' : '']"
-            class="bookmark"
-          />
+          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
+            :class="['star', isSaved(post) ? 'saved' : '']" class="bookmark" />
         </a>
       </div>
     </div>
@@ -237,12 +221,8 @@ function copiarLink() {
     </div>
 
     <div class="comment-box">
-      <input
-        v-model="newComment"
-        type="text"
-        placeholder="Escreva um comentário…"
-        @keyup.enter="() => { addComment(); ganharPontos(1) }"
-      />
+      <input v-model="newComment" type="text" placeholder="Escreva um comentário…"
+        @keyup.enter="() => { addComment(); ganharPontos(1) }" />
       <button @click="() => { addComment(); ganharPontos(1) }">
         Publicar
       </button>
@@ -284,6 +264,11 @@ div.box-post {
 .c-user {
   font-weight: 600;
   color: #1a1f24;
+  text-decoration: none;
+}
+
+#user:hover {
+  color: #3f4041;
 }
 
 .avatar-img-small {

@@ -72,7 +72,7 @@ function irParaComunidade(nome) {
                 <p>Loja</p>
               </li>
             </RouterLink>
-            <RouterLink to="/profileUsers" class="link">
+            <RouterLink to="/profile" class="link">
               <li>
                 <span class="mdi mdi-account-outline"></span>
                 <p>Perfil</p>
@@ -191,6 +191,7 @@ function irParaComunidade(nome) {
   list-style: none;
   margin: 1.4vw 0 0 0;
   padding: 0;
+  width: 100%;
 }
 
 .sidebar-2 ul li {
@@ -198,7 +199,6 @@ function irParaComunidade(nome) {
   align-items: center;
   margin: 1vw 0 0 0;
   height: 3vw;
-  padding: 0 5vw 0 0.5vw;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -208,6 +208,7 @@ function irParaComunidade(nome) {
 .home {
   font-size: 1.7rem;
   color: grey;
+  padding-left: 1vw;
 }
 
 .sidebar-2 ul li p {

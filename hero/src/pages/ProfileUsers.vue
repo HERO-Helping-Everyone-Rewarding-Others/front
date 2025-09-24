@@ -282,16 +282,89 @@ nav.nav-perfil button:focus,
   color: rgb(0, 0, 0);
 }
 
-.activity,
-.comuni {
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 2vw;
+}
+
+.box-stats {
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 20px;
+  border: 3px solid rgb(201, 199, 199, 0.3);
+  width: 48%;
+  height: 10vw;
+  margin-bottom: 1vw;
+}
+
+.stat-item p {
+  margin: 0 0 0 2.5vw;
+}
+
+.stat-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.stat-label {
+  color: rgb(86, 85, 87);
+}
+
+.box-stats span {
+  font-size: 2rem;
+  padding: 0.6vw 1vw;
+  border-radius: 50%;
+  margin-right: 2vw;
+}
+
+.mdi-chart-line,
+#azul {
+  color: #066ccc;
+}
+
+.mdi-chart-line {
+  background: rgba(6, 108, 204, 0.2);
+}
+
+.mdi-account-group-outline,
+#verde {
+  color: rgb(6, 187, 0);
+}
+
+.mdi-account-group-outline {
+  background: rgba(6, 187, 0, 0.2);
+}
+
+.mdi-heart-outline,
+#roxo {
+  color: rgb(177, 6, 177);
+}
+
+.mdi-heart-outline {
+  background: rgba(177, 6, 177, 0.2);
+}
+
+.mdi-star-outline,
+#laranja {
+  color: rgba(255, 166, 0, 0.856);
+}
+
+.mdi-star-outline {
+  background: rgba(255, 166, 0, 0.2);
+}
+
+.activity {
   margin-top: 1vw;
   width: 100%;
   max-height: 28vw;
   overflow-y: auto;
 }
 
-.activity p,
-.comuni p {
+.activity p {
   color: rgb(103, 103, 104);
   text-align: center;
   margin-top: 4vw;
