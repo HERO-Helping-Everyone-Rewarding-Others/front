@@ -74,18 +74,20 @@ async function postar() {
   error.value = null
 
   addPost({
-    usuario: usuarioLogado.value,
-    comunidade: comunidadeNome.value,
-    pontos: 10,
-    verificado: false,
-    tempo: new Date().toISOString(),
-    conteudo: conteudo.value,
-    imagem: previewImagem.value || imagemLink.value,
-    curtidas: 0,
-    comentarios: 0,
-    compartilhamentos: 0,
-    comentariosLista: []
-  })
+  usuarioId: user.value?.id, // 🔹 id do usuário logado
+  usuario: usuarioLogado.value,
+  comunidade: comunidadeNome.value,
+  pontos: 10,
+  verificado: false,
+  tempo: new Date().toISOString(),
+  conteudo: conteudo.value,
+  imagem: previewImagem.value || imagemLink.value,
+  curtidas: 0,
+  comentarios: 0,
+  compartilhamentos: 0,
+  comentariosLista: []
+})
+
 
   ganharPontos(10)
   conteudo.value = ""
@@ -246,7 +248,7 @@ function confirmarExclusao() {
         <button @click="confirmarExclusao" class="postar">Sim</button>
       </div>
     </div>
-    
+
   </section>
 </template>
 
