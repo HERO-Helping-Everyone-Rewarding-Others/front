@@ -2,7 +2,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useAuth } from '../composables/auth'
 import { profileName, profileAvatar } from '../store/user'
-import { toggleSave, isSaved } from '../store/saved' // novo
+import { toggleSave, isSaved } from '../store/saved'
+import { ganharPontos } from "@/store/user"
 
 
 const imagemExpandida = ref(null)
@@ -113,14 +114,11 @@ function copiarLink() {
     })
 }
 </script>
-
 <template>
   <div class="box-post">
     <div class="info-box">
       <div class="perfil-user">
-
         <template v-if="profileAvatar && (post.usuario === user?.nome || post.usuario === profileName)">
-
           <img :src="profileAvatar" class="avatar-img-small" />
         </template>
         <template v-else>
@@ -132,17 +130,36 @@ function copiarLink() {
 
       <div class="info-post">
         <div class="post-user">
+
           <span id="user">
+
+            <router-link
+  id="user"
+  class="username-link"
+  :to="{ name: 'profileUsers', params: { id: post.usuarioId } }"
+>
+  {{
+    post.usuario === user?.nome || post.usuario === profileName
+      ? profileName || user?.nome
+      : post.usuario
+  }}
+</router-link>
+
+          </span>
+
+          <span>
+            •
+            <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
+              {{ post.comunidade }}
+            </RouterLink>
+            •
             {{
-              post.usuario === user?.nome || post.usuario === profileName
-                ? profileName || user?.nome
-                : post.usuario
+              new Date(post.tempo).toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
             }}
           </span>
-          <span> • <RouterLink :to="`/comunidade/${post.comunidade}`" class="link-comunidade">
-              {{ post.comunidade }}
-            </RouterLink> • {{ new Date(post.tempo).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-            }}</span>
         </div>
         <div v-if="post.verificado" class="pontos-info">
           <p class="verificado">Verificado</p>
@@ -153,7 +170,12 @@ function copiarLink() {
 
     <div class="post-img">
       <p>{{ post.conteudo }}</p>
-      <img v-if="post.imagem" :src="post.imagem" alt="imagem do post" @click="abrirImagem(post.imagem)" />
+      <img
+        v-if="post.imagem"
+        :src="post.imagem"
+        alt="imagem do post"
+        @click="abrirImagem(post.imagem)"
+      />
     </div>
 
     <div v-if="imagemExpandida" class="lightbox" @click.self="fecharImagem">
@@ -163,19 +185,26 @@ function copiarLink() {
 
     <div class="social">
 
-      <!-- adicionafunçãopraincrementarcontador -->
-
       <div class="likes">
-        <a @click="toggleLike" class="like-btn">
-          <font-awesome-icon :icon="[liked ? 'fas' : 'far', 'heart']" :class="['heart-icon', liked ? 'liked' : '']"
-            class="heart-icon" />
+        <a
+          @click="() => { toggleLike(); ganharPontos(1) }"
+          class="like-btn"
+        >
+          <font-awesome-icon
+            :icon="[liked ? 'fas' : 'far', 'heart']"
+            :class="['heart-icon', liked ? 'liked' : '']"
+            class="heart-icon"
+          />
           {{ likes }}
         </a>
         <a>
-          <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
+          <font-awesome-icon :icon="['far', 'comment']" class="comment" />
+          {{ comentarios.length }}
         </a>
         <div class="share-link">
-          <a @click="copiarLink"><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
+          <a @click="copiarLink">
+            <span id="link" class="mdi mdi-share-variant-outline"></span>
+          </a>
           <div v-if="link == true">
             <p>Link copiado!</p>
           </div>
@@ -184,8 +213,11 @@ function copiarLink() {
 
       <div class="salvos">
         <a @click="handleSave">
-          <font-awesome-icon :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
-            :class="['star', isSaved(post) ? 'saved' : '']" class="bookmark" />
+          <font-awesome-icon
+            :icon="[isSaved(post) ? 'fas' : 'far', 'star']"
+            :class="['star', isSaved(post) ? 'saved' : '']"
+            class="bookmark"
+          />
         </a>
       </div>
     </div>
@@ -208,8 +240,15 @@ function copiarLink() {
     </div>
 
     <div class="comment-box">
-      <input v-model="newComment" type="text" placeholder="Escreva um comentário…" @keyup.enter="addComment" />
-      <button @click="addComment">Publicar</button>
+      <input
+        v-model="newComment"
+        type="text"
+        placeholder="Escreva um comentário…"
+        @keyup.enter="() => { addComment(); ganharPontos(1) }"
+      />
+      <button @click="() => { addComment(); ganharPontos(1) }">
+        Publicar
+      </button>
     </div>
   </div>
 </template>

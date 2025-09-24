@@ -2,13 +2,14 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/auth'
-import { usuario, profileName, profileBio, profileAvatar, pontosGanhos } from '../store/user'
+import { usuario, profileName, profileBio, profileAvatar, pontosGanhos, recompensasResgatadas } from '../store/user'
 import { posts } from '../store/posts'
 import { savedPosts } from '../store/saved'
 import { useCommunityState } from '../store/communities'
 import PostComponentSaved from '../components/PostComponentSaved.vue'
 import PostActivity from '../components/PostActivity.vue'
-import RewardProfile from '@/components/RewardProfile.vue'
+
+
 
 const router = useRouter()
 const { user, accessToken, fetchUser } = useAuth()
@@ -138,6 +139,7 @@ function handleDrop(e) {
   <section class="profile-section">
     <div class="profile-container">
       <div class="profile-card">
+
         <div class="profile-header">
           <div class="edit">
             <p>Perfil</p>
@@ -257,18 +259,25 @@ function handleDrop(e) {
           </div>
         </transition>
 
-        <transition name="come" mode="in-out">
 
 
-          <!-- rewards -->
-     
-            <div v-if="tab === 'reward'" class="reward">
-              <div v-if="mostrarSucesso == true">
-                <RewardProfile></RewardProfile>
+
+         <transition name="come" mode="in-out">
+          <div v-if="tab === 'reward'" class="reward">
+            <div v-if="recompensasResgatadas.length">
+              <div v-for="(r, index) in recompensasResgatadas" :key="index" class="reward-card">
+
+                <div class="reward-info">
+                  <h3>{{ r.nome }}</h3>
+                  <p>{{ r.descricao }}</p>
+                  <img :src="r.Qr" alt="Imagem recompensa" class="reward-img" />
+                  <small>Resgatado em: {{ new Date(r.data).toLocaleDateString('pt-BR') }}</small>
+                </div>
               </div>
-              <p v-else>Você ainda não resgatou nenhuma recompensa.</p>
             </div>
-  
+            <p v-else>Você ainda não resgatou nenhuma recompensa.</p>
+          </div>
+
         </transition>
       </div>
     </div>
