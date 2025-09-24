@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { usuario, gastarPontos } from '../store/user'
+import { usuario, gastarPontos, adicionarRecompensa } from '../store/user'
 import { TransitionGroup } from 'vue'
 
 const itens = ref([
@@ -10,6 +10,7 @@ const itens = ref([
     preco: 500,
     descricao: 'Vale-presente para compras na Amazon',
     disponivel: 280,
+    Qr:'./QRcodes/amazon.png',
     img: '/amazon.png',
     categoria: 'gift',
   },
@@ -19,6 +20,7 @@ const itens = ref([
     preco: 200,
     descricao: 'Cupom de desconto para pedidos no iFood',
     disponivel: 50,
+    Qr:'/QRcodes/ifood.png',
     img: '/ifood.png',
     categoria: 'desconto',
   },
@@ -28,6 +30,7 @@ const itens = ref([
     preco: 300,
     descricao: 'Tranferência PIX direto para sua conta',
     disponivel: 100,
+    Qr:'/QRcodes/pix.png',
     img: '/pix.png',
     categoria: 'dinheiro',
   },
@@ -46,6 +49,7 @@ const itens = ref([
     preco: 350,
     descricao: 'Assinatura premium do Spotify',
     disponivel: 15,
+    Qr:'/QRcodes/spotify.png',
     img: '/spotify.png',
     categoria: 'gift',
   },
@@ -55,6 +59,7 @@ const itens = ref([
     preco: 150,
     descricao: 'Cupom de desconto para corridas Uber',
     disponivel: 75,
+    Qr:'/QRcodes/uber.png',
     img: '/uber.png',
     categoria: 'desconto',
   },
@@ -64,6 +69,7 @@ const itens = ref([
     preco: 300,
     descricao: 'Gift card de 30 reais na Google Play',
     disponivel: 40,
+    Qr:'/QRcodes/googlePlay.png',
     img: '/play.png',
     categoria: 'gift',
   },
@@ -73,6 +79,7 @@ const itens = ref([
     preco: 100,
     descricao: 'Cupom de desconto para pedidos no Starbuks',
     disponivel: 100,
+    Qr:'/QRcodes/starbucks.png',
     img: '/starbucks.png',
     categoria: 'desconto',
   },
@@ -104,6 +111,7 @@ const mostrarSucesso = ref(false)
 
 const confirmarCompra = () => {
   if (gastarPontos(itemSelecionado.value.preco)) {
+    adicionarRecompensa(itemSelecionado.value)
     fecharModal()
     mostrarSucesso.value = true
     setTimeout(() => {

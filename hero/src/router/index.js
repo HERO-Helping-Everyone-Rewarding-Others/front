@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '@/composables/auth'
-
 import LoginPage from '../pages/LoginPage.vue'
 import RegisterPage from '../pages/RegisterPage.vue'
 import HomePage from '../pages/HomePage.vue'
@@ -18,7 +17,13 @@ const routes = [
   { path: '/comunidade/:nome', name: 'comunidade', component: CommunityPage, props: true, meta: { requiresAuth: true } },
   { path: '/loja', name: 'loja', component: LojaPage, meta: { requiresAuth: true } },
   { path: '/profile', name: 'profile', component: ProfilePage, meta: { requiresAuth: true } },
-  { path: '/profileUsers', name: 'profileUsers', component: ProfileUsers, meta: { requiresAuth: true }  }
+  {
+  path: '/profileUsers/:id',
+  name: 'profileUsers',
+  component: ProfileUsers,
+  props: true,
+  meta: { requiresAuth: true }
+}
 ]
 
 const router = createRouter({

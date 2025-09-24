@@ -27,5 +27,21 @@ export function gastarPontos(qtd) {
 export const pontosGanhos = ref(0)
 
 export function adicionarPontosPost() {
-  pontosGanhos.value += 20
+  pontosGanhos.value += 10
+}
+export function adicionarPontosLike() {
+  pontosGanhos.value += 1
+}
+export function adicionarPontosComentario() {
+  pontosGanhos.value += 1
+}
+
+// ✅ Recompensas resgatadas
+export const recompensasResgatadas = ref([])
+
+export function adicionarRecompensa(recompensa) {
+  recompensasResgatadas.value.push({
+    ...recompensa,
+    data: new Date().toISOString(), // salva data do resgate
+  })
 }
