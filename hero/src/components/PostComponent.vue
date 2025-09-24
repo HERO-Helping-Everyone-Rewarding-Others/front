@@ -68,12 +68,9 @@ const toggleLike = () => {
   localStorage.setItem(likesKey.value, likes.value.toString())
 }
 
-
-
 function handleSave() {
   toggleSave(props.post)
 }
-
 
 const addComment = () => {
   if (!newComment.value.trim()) return

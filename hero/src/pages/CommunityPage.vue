@@ -46,8 +46,8 @@ function entrar() {
   membro.value = true
   mostrarMembro.value = true
   setTimeout(() => {
-      mostrarMembro.value = false
-    }, 3000)
+    mostrarMembro.value = false
+  }, 3000)
 }
 
 function selecionarImagem(event) {
@@ -113,21 +113,21 @@ const abrirModalDoacao = () => { mostrarModalDoacao.value = true }
 const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
 
 
-function deletarPost(postParaRemover) {
-  const confirmar = confirm("Deseja mesmo excluir esta postagem?")
-  if (!confirmar) return
+const mostrarConfirmar = ref(false)
+const postParaRemover = ref(null)
 
+function pedirConfirmacao(post) {
+  postParaRemover.value = post
+  mostrarConfirmar.value = true
+}
+
+function confirmarExclusao() {
   const index = posts.value.findIndex(p =>
-    p.usuario === postParaRemover.usuario &&
-    p.tempo === postParaRemover.tempo
+    p.usuario === postParaRemover.value.usuario &&
+    p.tempo === postParaRemover.value.tempo
   )
-
-  if (index !== -1) {
-    posts.value.splice(index, 1)
-    alert("Post excluído com sucesso.")
-  } else {
-    alert("Não foi possível encontrar o post.")
-  }
+  if (index !== -1) posts.value.splice(index, 1)
+  mostrarConfirmar.value = false
 }
 </script>
 
@@ -222,7 +222,7 @@ function deletarPost(postParaRemover) {
       <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario" class="feed">
         <PostComponent :post="p" />
         <div v-if="p.usuario === usuarioLogado" class="delete-button">
-          <button @click="deletarPost(p)">
+          <button @click="pedirConfirmacao(p)">
             <font-awesome-icon :icon="['fas', 'xmark']" />
           </button>
         </div>
@@ -238,12 +238,51 @@ function deletarPost(postParaRemover) {
         </div>
       </div>
     </Transition>
+
+    <div v-if="mostrarConfirmar" class="backdrop">
+      <div class="modal-delete">
+        <p>Deseja mesmo excluir esta postagem?</p>
+        <button @click="mostrarConfirmar = false" class="doar">Não</button>
+        <button @click="confirmarExclusao" class="postar">Sim</button>
+      </div>
+    </div>
+    
   </section>
 </template>
 
 <style scoped>
 section {
   padding: 0 12vw;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-delete {
+  background: rgb(252, 250, 250);
+  padding: 0.5vw 2vw;
+  border: 2px solid rgb(218, 215, 215);
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(158, 158, 158, 0.2);
+}
+
+.modal-delete p {
+  font-size: 1rem;
+  color: #1a1f1a;
+  margin: 1vw 0 0 0;
+}
+
+.modal-delete button {
+  font-size: 1rem;
+  padding: 5px 15px;
+  margin: 1vw 0.5vw;
+  cursor: pointer;
 }
 
 .delete-button button {
