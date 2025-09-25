@@ -509,6 +509,7 @@ div.pontos-info .pontos {
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.6rem;
+    padding: 3px 8px;
   }
 
   .post-img p {
@@ -524,6 +525,19 @@ div.pontos-info .pontos {
   }
 
   .comment-box button {
+    font-size: 0.7rem;
+  }
+
+  p.avatar {
+    font-size: 0.5rem;
+    width: 5vw;
+    height: 5vw;
+  }
+
+  p.c-user,
+  span.c-conteudo,
+  input::placeholder,
+  input {
     font-size: 0.7rem;
   }
 }

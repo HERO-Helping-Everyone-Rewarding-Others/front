@@ -89,13 +89,8 @@ function irParaComunidade(nome) {
             Você ainda não entrou em nenhuma comunidade.
           </p>
           <ul>
-            <li
-              v-for="nome in minhasComunidades"
-              :key="nome"
-              class="comunidade"
-              @click="irParaComunidade(nome)"
-              style="cursor: pointer"
-            >
+            <li v-for="nome in minhasComunidades" :key="nome" class="comunidade" @click="irParaComunidade(nome)"
+              style="cursor: pointer">
               <span class="mdi mdi-play"></span> {{ nome }}
             </li>
           </ul>
@@ -212,7 +207,7 @@ function irParaComunidade(nome) {
 }
 
 .sidebar-2 ul li p {
-  margin: 0;
+  margin: 0 0 0 1vw;
   font-size: 1.1rem;
   color: grey;
   font-weight: 500;
@@ -272,5 +267,102 @@ function irParaComunidade(nome) {
 
 .comunidade .mdi-play {
   font-size: 0.9rem;
+}
+
+@media (max-width: 1400px) {
+
+  .sidebar-2 ul li span,
+  .home {
+    font-size: 1.5rem;
+  }
+
+  .sidebar-2 ul li p {
+    margin: 0 0 0 1vw;
+    font-size: 1rem;
+  }
+
+  .box-comun p {
+    font-size: 1rem;
+  }
+
+  .comun ul li {
+    font-size: 0.8rem;
+    margin: 0 0 1vw 1vw;
+  }
+
+  .comunidade .mdi-play {
+    font-size: 0.8rem;
+    padding-right: 1vw;
+  }
+}
+
+@media (max-width: 1000px) {
+
+  .sidebar-2 ul li span,
+  .home {
+    font-size: 1.2rem;
+  }
+
+  .sidebar-2 ul li p {
+    margin: 0 0 0 1vw;
+    font-size: 0.8rem;
+  }
+
+  .sidebar-1 ul li {
+    font-size: 1.2rem;
+  }
+
+  .comun span {
+    font-size: 1.2rem;
+  }
+
+  .box-comun p {
+    font-size: 0.8rem;
+  }
+
+  .comun ul li {
+    font-size: 0.7rem;
+    margin: 0 0 1vw 0;
+  }
+
+  .comunidade .mdi-play {
+    font-size: 0.6rem;
+    padding-right: 1vw;
+  }
+}
+
+@media (max-width: 500px) {
+  .sidebar-1 {
+    display: none;
+  }
+
+  .sidebar-2 {
+    width: 50vw;
+    opacity: 1;
+    pointer-events: auto;
+    transition: none;
+    height: auto;
+    padding: 2vw;
+  }
+
+  .sidebar:hover {
+    display: none;
+  }
+
+  .sidebar-2 ul li {
+    height: auto;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  div.logo img {
+    width: 5vw;
+
+  }
+
+  div.logo {
+    padding: 2.5vw;
+  }
+
 }
 </style>

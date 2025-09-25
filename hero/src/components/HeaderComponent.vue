@@ -5,7 +5,7 @@ import router from "@/router/"
 import { useAuth } from "@/composables/auth"
 import { profileName } from "../store/user"
 
-  const displayName = computed(() => profileName.value || user.value?.nome || usuario.value.nome)
+const displayName = computed(() => profileName.value || user.value?.nome || usuario.value.nome)
 
 
 const emit = defineEmits(['toggleMenu'])
@@ -288,8 +288,9 @@ button.exit-button:hover {
 
 @media (max-width: 500px) {
     header {
-        padding: 6vw 0 0 0;
-        height: 12vw;
+        padding: 2vw 0 1vw 0;
+        height: 5vw;
+        display: flex;
     }
 
     header nav {
@@ -297,8 +298,20 @@ button.exit-button:hover {
     }
 
     header nav ul {
-        display: block;
-        text-align: center;
+        display: none;
+    }
+
+    header img {
+        width: 5vw;
+        height: 5vw;
+    }
+
+    button.exit-button {
+        padding: 2px 5px;
+        font-size: 0.8rem;
+        position: absolute;
+        right: 4vw;
+        border-radius: 5px;
     }
 }
 </style>

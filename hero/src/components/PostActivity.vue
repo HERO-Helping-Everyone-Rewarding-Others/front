@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useAuth } from '../composables/auth'
 import { profileName, profileAvatar } from '../store/user'
-import { toggleSave, isSaved } from '../store/saved' 
+import { toggleSave, isSaved } from '../store/saved'
 
 
 const imagemExpandida = ref(null)
@@ -343,7 +343,7 @@ div.pontos-info .pontos {
 .salvos {
   font-size: 1.5rem;
   cursor: pointer;
-   color: grey;
+  color: grey;
 }
 
 .bookmark:hover {
@@ -424,6 +424,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 1400px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.8rem;
@@ -445,7 +446,9 @@ div.pontos-info .pontos {
     font-size: 0.8rem;
   }
 }
+
 @media (max-width: 950px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.7rem;
@@ -466,6 +469,18 @@ div.pontos-info .pontos {
 
   .comment-box button {
     font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .post-img p {
+    margin: 10vw 0 0 0;
+  }
+
+  .perfil-user p {
+    width: 5vw;
+    height: 5vw;
+    font-size: 0.8rem;
   }
 }
 </style>

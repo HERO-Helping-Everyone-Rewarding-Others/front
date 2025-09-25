@@ -519,4 +519,46 @@ div.form-comunidade label {
     font-size: 0.9rem;
   }
 }
+
+@media (max-width: 850px) {
+  .box-text button {
+    font-size: 0.7rem;
+    padding: 20px 10px;
+    display: flex;
+  }
+
+  .box-text button span {
+    display: none;
+  }
+
+  .comunidades ul li {
+    width: 100%;
+  }
+
+  .modal {
+    height: 40%;
+    width: 30%;
+  }
+}
+
+@media (max-width: 500px) {
+  .box-text button {
+    font-size: 0.7rem;
+    padding: 20px 10px;
+    display: flex;
+  }
+
+  .box-text button span {
+    display: none;
+  }
+
+  .comunidades ul li {
+    width: 100%;
+  }
+
+  .modal {
+    height: 50%;
+    width: 70%;
+  }
+}
 </style>

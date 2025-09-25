@@ -55,17 +55,13 @@ const postsCount = computed(() => userPosts.value.length)
       <div class="profile-card">
 
         <div class="profile-header">
-          <div class="edit">
-            <p>Perfil</p>
-          </div>
-
           <div class="profile-main">
             <div v-if="selectedUser?.avatar">
               <img :src="selectedUser.avatar" alt="avatar" class="avatar-img" />
             </div>
             <div v-else class="avatar-fallback" :style="{ background: avatarColor }"> {{ initials }}</div>
             <h2>{{ displayName }}</h2>
-            <p class="profile-pontos">{{ selectedUser?.pontos || 0 }} pontos</p>
+            <p class="profile-pontos">Verificado</p>
           </div>
         </div>
 
@@ -161,27 +157,6 @@ div .profile-container {
   border-radius: 25px;
   padding: 2vw 2vw 3vw 2vw;
   min-width: 22vw;
-}
-
-.edit {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.edit button {
-  border: 2px solid rgb(201, 199, 199, 0.3);
-  background: none;
-  border-radius: 10px;
-  padding: 0.5vw 0.7vw;
-  color: rgb(86, 85, 87);
-  cursor: pointer;
-  font-size: 1.4rem;
-}
-
-.edit button:hover,
-.edit-actions button:hover {
-  background: rgba(247, 246, 246, 0.5);
 }
 
 .profile-main {
@@ -466,6 +441,7 @@ nav.nav-perfil button:focus,
     font-size: 1rem;
   }
 }
+
 @media (max-width: 950px) {
   .edit button {
     font-size: 1rem;
@@ -525,4 +501,73 @@ nav.nav-perfil button:focus,
   }
 }
 
+@media (max-width: 500px) {
+  .profile-container {
+    flex-direction: column;
+    gap: 4vw;
+  }
+
+  .profile-card {
+    padding: 4vw 5vw;
+  }
+
+  .profile-main h2 {
+    width: 90%;
+  }
+
+  .profile-main img,
+  .profile-main .avatar-fallback {
+    width: 16vw;
+    height: 16vw;
+  }
+
+  .nav-perfil {
+    column-count: 2;
+  }
+
+  .nav-perfil button {
+    font-size: 1rem;
+  }
+
+  .profile-content nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stats {
+    display: block;
+    column-count: 1;
+  }
+
+  .box-stats {
+    width: 100%;
+    height: 22vw;
+  }
+
+  .box-stats span {
+    font-size: 1.7rem;
+    padding: 1vw 2.3vw;
+    border-radius: 50%;
+    margin-right: 2vw;
+  }
+
+  .reward-info h3 {
+    font-size: 1rem;
+  }
+
+  .reward-info p {
+    font-size: 0.9rem;
+  }
+
+  #date {
+    font-size: 0.8rem;
+  }
+
+  .reward-img {
+    max-width: 20vw;
+    max-height: 20vw;
+    align-items: center;
+  }
+}
 </style>

@@ -10,7 +10,7 @@ const itens = ref([
     preco: 500,
     descricao: 'Vale-presente para compras na Amazon',
     disponivel: 280,
-    Qr:'./QRcodes/amazon.png',
+    Qr: './QRcodes/amazon.png',
     img: '/amazon.png',
     categoria: 'gift',
   },
@@ -20,7 +20,7 @@ const itens = ref([
     preco: 200,
     descricao: 'Cupom de desconto para pedidos no iFood',
     disponivel: 50,
-    Qr:'/QRcodes/ifood.png',
+    Qr: '/QRcodes/ifood.png',
     img: '/ifood.png',
     categoria: 'desconto',
   },
@@ -30,7 +30,7 @@ const itens = ref([
     preco: 300,
     descricao: 'Tranferência PIX direto para sua conta',
     disponivel: 100,
-    Qr:'/QRcodes/pix.png',
+    Qr: '/QRcodes/pix.png',
     img: '/pix.png',
     categoria: 'dinheiro',
   },
@@ -49,7 +49,7 @@ const itens = ref([
     preco: 350,
     descricao: 'Assinatura premium do Spotify',
     disponivel: 15,
-    Qr:'/QRcodes/spotify.png',
+    Qr: '/QRcodes/spotify.png',
     img: '/spotify.png',
     categoria: 'gift',
   },
@@ -59,7 +59,7 @@ const itens = ref([
     preco: 150,
     descricao: 'Cupom de desconto para corridas Uber',
     disponivel: 75,
-    Qr:'/QRcodes/uber.png',
+    Qr: '/QRcodes/uber.png',
     img: '/uber.png',
     categoria: 'desconto',
   },
@@ -69,7 +69,7 @@ const itens = ref([
     preco: 300,
     descricao: 'Gift card de 30 reais na Google Play',
     disponivel: 40,
-    Qr:'/QRcodes/googlePlay.png',
+    Qr: '/QRcodes/googlePlay.png',
     img: '/play.png',
     categoria: 'gift',
   },
@@ -79,7 +79,7 @@ const itens = ref([
     preco: 100,
     descricao: 'Cupom de desconto para pedidos no Starbuks',
     disponivel: 100,
-    Qr:'/QRcodes/starbucks.png',
+    Qr: '/QRcodes/starbucks.png',
     img: '/starbucks.png',
     categoria: 'desconto',
   },
@@ -877,6 +877,107 @@ p.faltam {
 
   .cancelar {
     background: rgb(241, 241, 241, 0.5);
+  }
+
+  .modal-resgate {
+    width: 35vw;
+  }
+}
+
+@media (max-width: 850px) {
+  .list ul li button {
+    font-size: 0.8rem;
+  }
+
+  .list ul {
+    flex-wrap: wrap;
+  }
+
+  .list ul li button span {
+    display: none;
+  }
+
+  .itens {
+    width: 30%;
+  }
+
+  .itens img {
+    height: 15vw;
+  }
+}
+
+@media (max-width: 500px) {
+  .list ul li button {
+    font-size: 0.8rem;
+  }
+
+  .list ul {
+    flex-wrap: wrap;
+  }
+
+  .list ul li button span {
+    display: none;
+  }
+
+  .itens {
+    width: 40%;
+  }
+
+  .itens img {
+    height: 20vw;
+  }
+
+  .text-progress p {
+    display: none;
+  }
+
+  .text-progress {
+    margin: 5vw 0;
+  }
+
+  .btn-insuficiente,
+  .btn-resgatar {
+    padding: 10px 0;
+  }
+
+  .box-win {
+    padding: 0 2vw;
+  }
+
+  .box-win h2 {
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .box-win ul {
+    margin: 5vw 10vw;
+    padding: 0;
+    display: block;
+    column-count: 1;
+  }
+
+  .box-win ul li span#gift,
+  .box-win ul li span#star,
+  .box-win ul li span#heart {
+    padding: 0.7vw 1.5vw;
+  }
+
+  .box-win li p {
+    font-size: 0.8rem;
+  }
+
+  .box-win li h3 {
+    font-size: 0.9rem;
+  }
+
+  .modal {
+    width: 60%;
+    border-radius: 10px;
+  }
+
+  .modal-resgate {
+    width: 60%;
   }
 }
 </style>

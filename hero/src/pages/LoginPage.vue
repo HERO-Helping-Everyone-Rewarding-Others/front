@@ -298,4 +298,78 @@ form button.submit {
     font-size: 0.9rem;
   }
 }
+
+@media (max-width: 1100px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 950px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 850px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 500px) {
+  .box1 {
+    display: none;
+  }
+
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+
+  section {
+    display: flex;
+    justify-content: center;
+  }
+
+  .box2 label {
+    font-size: 1.3rem;
+  }
+
+  .box2 form {
+    margin: 5vw 0 0 0;
+  }
+
+  form input {
+    width: 85%;
+  }
+
+  .password-field input {
+    width: 120%;
+  }
+
+  .password-field .mdi {
+    right: -10vw;
+  }
+
+  form button.submit {
+    padding: 8px 0;
+    width: 90%;
+    font-size: 1rem;
+    margin: 2vw 0;
+  }
+
+  .register a {
+    padding: 1vw 4vw;
+    font-size: 1.1rem;
+  }
+
+  .register p {
+    font-size: 1.2rem;
+    margin-bottom: 3vw;
+  }
+}
 </style>

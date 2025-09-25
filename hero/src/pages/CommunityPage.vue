@@ -74,19 +74,19 @@ async function postar() {
   error.value = null
 
   addPost({
-  usuarioId: user.value?.id, // 🔹 id do usuário logado
-  usuario: usuarioLogado.value,
-  comunidade: comunidadeNome.value,
-  pontos: 10,
-  verificado: false,
-  tempo: new Date().toISOString(),
-  conteudo: conteudo.value,
-  imagem: previewImagem.value || imagemLink.value,
-  curtidas: 0,
-  comentarios: 0,
-  compartilhamentos: 0,
-  comentariosLista: []
-})
+    usuarioId: user.value?.id, // 🔹 id do usuário logado
+    usuario: usuarioLogado.value,
+    comunidade: comunidadeNome.value,
+    pontos: 10,
+    verificado: false,
+    tempo: new Date().toISOString(),
+    conteudo: conteudo.value,
+    imagem: previewImagem.value || imagemLink.value,
+    curtidas: 0,
+    comentarios: 0,
+    compartilhamentos: 0,
+    comentariosLista: []
+  })
 
 
   ganharPontos(10)
@@ -296,6 +296,7 @@ section {
   right: 13.5vw;
   margin-top: 1.3vw;
   cursor: pointer;
+  z-index: 1;
 }
 
 .delete-button button:hover {
@@ -486,6 +487,12 @@ section {
   align-items: center;
 }
 
+.show-post,
+.doação,
+.backdrop,
+.modal-backdrop {
+  z-index: 1000;
+}
 
 .new-post {
   background: white;
@@ -756,6 +763,32 @@ textarea::placeholder {
   .button-back button {
     font-size: 0.8rem;
   }
+
+  .modal-delete {
+    width: 25vw;
+  }
+
+  .modal-membro {
+    width: 30vw;
+  }
+
+  .modal-delete p,
+  .modal-membro p {
+    font-size: 0.8rem;
+  }
+
+  .modal-delete h2,
+  .modal-membro h2 {
+    font-size: 0.8rem;
+  }
+
+  .modal-delete button {
+    font-size: 0.8rem;
+  }
+
+  .delete-button button {
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 950px) {
@@ -812,16 +845,6 @@ textarea::placeholder {
     font-size: 0.9rem;
   }
 
-  .new-doação {
-    background: white;
-    border-radius: 15px;
-    padding: 2vw 2vw;
-    width: 35vw;
-    height: 22vw;
-    z-index: 100;
-    animation: popIn 0.3s ease forwards;
-  }
-
   .new-doação h2 {
     font-size: 1.2rem;
   }
@@ -830,12 +853,70 @@ textarea::placeholder {
     font-size: 1rem;
     color: rgb(100, 99, 99);
   }
+}
 
-  .buttons button {
+@media (max-width: 500px) {
+  .box-user {
+    display: block;
+  }
+
+  .member {
+    margin-right: 1vw;
+  }
+
+  .member p {
+    width: 10vw;
+  }
+
+  .buttons {
+    margin-bottom: 3vw;
+  }
+
+  .modal-membro {
+    width: 60%;
+  }
+
+  .new-post {
+    width: 80%;
+  }
+
+  .new-post h2,
+  .new-doação h2 {
+    font-size: 1.2rem;
+  }
+
+  .new-post p,
+  .new-doação p {
+    font-size: 1rem;
+  }
+
+  .new-post .buttons-post {
+    margin-top: 20vw;
+  }
+
+  .show-post label {
+    padding: 10px;
     font-size: 0.8rem;
-    padding: 6px 9px;
-    margin-left: 0.5vw;
-    cursor: pointer;
+  }
+
+  .preview-image {
+    max-width: 20vw;
+    max-height: 20vw;
+    position: absolute;
+  }
+
+  .new-doação {
+    width: 80%;
+    padding: 2vw 4vw;
+  }
+
+  .new-doação .buttons-post {
+    margin: 2vw 0;
+  }
+
+  .delete-button button {
+    font-size: 1rem;
+    margin-top: 2vw;
   }
 }
 </style>

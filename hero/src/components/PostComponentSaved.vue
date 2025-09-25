@@ -329,6 +329,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 1400px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.8rem;
@@ -352,6 +353,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 950px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.7rem;
@@ -375,4 +377,15 @@ div.pontos-info .pontos {
   }
 }
 
+@media (max-width: 500px) {
+  .post-img p {
+    margin: 10vw 0 0 0;
+  }
+
+  .perfil-user p {
+    width: 5vw;
+    height: 5vw;
+    font-size: 0.8rem;
+  }
+}
 </style>
