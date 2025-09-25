@@ -173,6 +173,10 @@ function irParaComunidade(nome) {
   margin: 0 0 0 1vw;
 }
 
+.sidebar-2 {
+  overflow-y: auto;
+}
+
 .sidebar-2 .list {
   display: flex;
   margin: 0 1vw;
@@ -235,7 +239,7 @@ function irParaComunidade(nome) {
 }
 
 .box-comun span {
-  font-size: 2rem;
+  font-size: 1.7rem;
   margin: 0 1vw;
   color: grey;
 }
@@ -357,7 +361,6 @@ function irParaComunidade(nome) {
 
   div.logo img {
     width: 5vw;
-
   }
 
   div.logo {

@@ -12,7 +12,7 @@ const email = ref(``)
 const password = ref(``)
 const biografia = ref(``)
 
-const alert = ref(false);
+const alert = ref(true);
 
 const handleRegister = async () => {
   try {
@@ -21,7 +21,7 @@ const handleRegister = async () => {
     router.push("/login");
   }
   catch (error) {
-    alert.value = false
+    alert.value = true
   }
 }
 

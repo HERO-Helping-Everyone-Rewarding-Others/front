@@ -526,8 +526,8 @@ section {
 }
 
 .preview-image {
-  max-width: 15vw;
-  max-height: 10vw;
+  width: 12vw;
+  height: 12vw;
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid rgb(204, 204, 204, 0.5);
@@ -550,14 +550,13 @@ textarea::placeholder {
 
 .show-post label {
   border: 2px dashed #aaa;
-  padding: 15px;
+  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-size: 0.9rem;
   color: #5e5e5e;
   font-weight: 600;
-  position: absolute;
 }
 
 .buttons-post {

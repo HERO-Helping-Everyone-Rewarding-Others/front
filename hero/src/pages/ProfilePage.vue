@@ -476,7 +476,7 @@ div .profile-container {
 }
 
 .nav-perfil button {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.9rem;
   border-radius: 20px;
   flex: 1;
