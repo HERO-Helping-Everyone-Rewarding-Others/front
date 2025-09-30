@@ -3,12 +3,10 @@ import { computed } from "vue"
 import { useRouter } from "vue-router"
 import { useCommunityState } from "../store/communities"
 
-const emit = defineEmits(['toggleMenu'])
 
-const { todasComunidades, comunidadesEntradas } = useCommunityState()
-const comunidadesPopulares = computed(() =>
-  todasComunidades.value.map(c => c.nome || "Comunidade sem nome")
-)
+
+const { comunidadesEntradas } = useCommunityState()
+
 const minhasComunidades = computed(() =>
   comunidadesEntradas.value.map(c => typeof c === "string" ? c : (c.nome || "Comunidade sem nome"))
 )

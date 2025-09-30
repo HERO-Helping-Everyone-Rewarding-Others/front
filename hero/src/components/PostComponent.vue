@@ -22,10 +22,9 @@ const { user, accessToken, fetchUser } = useAuth()
 
 const postId = computed(() => {
   if (props.post.id) return props.post.id
-  if (props.post._localUid) return props.post._localUid
+  if (props.post._localId) return props.post._localId
 
   const newId = `${Date.now()}.${Math.random().toString(36).slice(2, 8)}`
-  props.post._localUid = newId
   return newId
 })
 

@@ -17,7 +17,7 @@ const handleLogin = async () => {
   try {
     await login(email.value, password.value)
     router.push('/')
-  } catch (err) {
+  } catch (error) {
     error.value = "Email ou senha inválidos."
   }
 }

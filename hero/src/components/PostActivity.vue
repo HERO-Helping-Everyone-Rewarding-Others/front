@@ -5,33 +5,21 @@ import { profileName, profileAvatar } from '../store/user'
 import { toggleSave, isSaved } from '../store/saved'
 
 
-const imagemExpandida = ref(null)
-
-function abrirImagem(img) {
-  imagemExpandida.value = img
-}
-
-function fecharImagem() {
-  imagemExpandida.value = null
-}
-
 const props = defineProps({ post: Object })
 
 const { user, accessToken, fetchUser } = useAuth()
 
 const postId = computed(() => {
   if (props.post.id) return props.post.id
-  if (props.post._localUid) return props.post._localUid
+  if (props.post._localId) return props.post._localId
 
   const newId = `${Date.now()}.${Math.random().toString(36).slice(2, 8)}`
-  props.post._localUid = newId
   return newId
 })
 
 const likes = ref(props.post.curtidas || 0)
 const liked = ref(false)
 
-const newComment = ref('')
 const comentarios = ref([])
 
 const likedKey = computed(() => `liked_post_${postId.value}`)
@@ -58,8 +46,6 @@ onMounted(async () => {
   }
 })
 
-const persistComments = () =>
-  localStorage.setItem(commentsKey.value, JSON.stringify(comentarios.value))
 
 const toggleLike = () => {
   liked.value ? likes.value-- : likes.value++
@@ -70,25 +56,6 @@ const toggleLike = () => {
 
 function handleSave() {
   toggleSave(props.post)
-}
-
-
-const addComment = () => {
-  if (!newComment.value.trim()) return
-
-  const usuarioNome = profileName.value || user.value?.nome || 'Usuário Anônimo'
-
-  comentarios.value.push({
-    id: Date.now(),
-    usuario: usuarioNome,
-    conteudo: newComment.value,
-    tempo: 'agora',
-    curtidas: 0,
-    liked: false,
-  })
-
-  newComment.value = ''
-  persistComments()
 }
 
 function getUserColor(name) {

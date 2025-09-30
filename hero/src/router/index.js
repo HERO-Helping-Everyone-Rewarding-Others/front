@@ -35,7 +35,6 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const { user, fetchUser, accessToken } = useAuth()
 
-  // Tenta buscar o usuário se tiver token
   if (!user.value && accessToken.value) {
     await fetchUser()
   }
@@ -45,7 +44,6 @@ router.beforeEach(async (to, from, next) => {
     return next('/login')
   }
 
-  // Redireciona usuário logado que tenta acessar login ou register
   if ((to.path === '/login' || to.path === '/register') && user.value) {
     return next('/')
   }

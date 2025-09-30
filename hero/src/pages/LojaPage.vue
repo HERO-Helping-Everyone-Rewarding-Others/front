@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { usuario, gastarPontos, adicionarRecompensa } from '../store/user'
-import { TransitionGroup } from 'vue'
 
 const itens = ref([
   {
@@ -207,10 +206,16 @@ const selecionarCategoria = (categoria) => (categoriaSelecionada.value = categor
               </p>
             </div>
             <div class="progress-bar">
-              <div class="progress" :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }"></div>
+              <div
+                class="progress"
+                :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }"
+              ></div>
             </div>
-            <button :disabled="usuario.pontos < item.preco" @click="abrirModal(item)"
-              :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'">
+            <button
+              :disabled="usuario.pontos < item.preco"
+              @click="abrirModal(item)"
+              :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'"
+            >
               {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
             </button>
           </div>

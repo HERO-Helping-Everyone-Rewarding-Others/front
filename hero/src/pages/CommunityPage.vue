@@ -1,12 +1,11 @@
 <script setup>
-import { ref, computed, onMounted, watch } from "vue"
-import { useAuth } from "../composables/auth"
-import { useRoute, useRouter } from "vue-router"
-import { addPost, posts } from "../store/posts"
-import { ganharPontos } from "../store/user"
-import { useCommunityState } from "../store/communities"
-import PostComponent from "../components/PostComponent.vue"
-import { faL } from "@fortawesome/free-solid-svg-icons"
+import { ref, computed, onMounted, watch } from 'vue'
+import { useAuth } from '../composables/auth'
+import { useRoute, useRouter } from 'vue-router'
+import { addPost, posts } from '../store/posts'
+import { ganharPontos } from '../store/user'
+import { useCommunityState } from '../store/communities'
+import PostComponent from '../components/PostComponent.vue'
 
 const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
@@ -14,20 +13,20 @@ const router = useRouter()
 const { entrouNaComunidade, entrarNaComunidade, todasComunidades } = useCommunityState()
 
 const comunidadeNome = computed(() => route.params.nome)
-const conteudo = ref("")
-const imagemLink = ref("")
+const conteudo = ref('')
+const imagemLink = ref('')
 const arquivoImagem = ref(null)
-const previewImagem = ref("")
-const usuarioLogado = computed(() => user.value?.nome || "")
+const previewImagem = ref('')
+const usuarioLogado = computed(() => user.value?.nome || '')
 const membro = ref(false)
 const mostrarMembro = ref(false)
 
-const comunidade = computed(() =>
-  todasComunidades.value.find(c => c.nome === comunidadeNome.value) || null
+const comunidade = computed(
+  () => todasComunidades.value.find((c) => c.nome === comunidadeNome.value) || null,
 )
 
 const postsDaComunidade = computed(() =>
-  posts.value.filter(p => p.comunidade === comunidadeNome.value)
+  posts.value.filter((p) => p.comunidade === comunidadeNome.value),
 )
 
 onMounted(async () => {
@@ -36,10 +35,12 @@ onMounted(async () => {
   membro.value = entrouNaComunidade(comunidadeNome.value)
 })
 
-watch(() => route.params.nome, async (novoNome) => {
-  membro.value = entrouNaComunidade(novoNome)
-})
-
+watch(
+  () => route.params.nome,
+  async (novoNome) => {
+    membro.value = entrouNaComunidade(novoNome)
+  },
+)
 
 function entrar() {
   entrarNaComunidade(comunidadeNome.value)
@@ -62,12 +63,12 @@ const error = ref(null)
 
 async function postar() {
   if (!conteudo.value || !usuarioLogado.value) {
-    error.value = ("Você precisa escrever algo para postar.")
+    error.value = 'Você precisa escrever algo para postar.'
     return
   }
 
   if (!membro.value) {
-    alert("Você precisa entrar na comunidade antes de postar.")
+    alert('Você precisa entrar na comunidade antes de postar.')
     return
   }
 
@@ -85,35 +86,37 @@ async function postar() {
     curtidas: 0,
     comentarios: 0,
     compartilhamentos: 0,
-    comentariosLista: []
+    comentariosLista: [],
   })
 
-
   ganharPontos(10)
-  conteudo.value = ""
-  imagemLink.value = ""
+  conteudo.value = ''
+  imagemLink.value = ''
   arquivoImagem.value = null
-  previewImagem.value = ""
+  previewImagem.value = ''
 }
 
-const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 const mostrarModalDoacao = ref(false)
 
-const abrirModal = () => { mostrarModal.value = true }
+const abrirModal = () => {
+  mostrarModal.value = true
+}
 const fecharModal = () => {
   mostrarModal.value = false
-  conteudo.value = ""
-  imagemLink.value = ""
+  conteudo.value = ''
+  imagemLink.value = ''
   arquivoImagem.value = null
-  previewImagem.value = ""
+  previewImagem.value = ''
   error.value = null
 }
 
-
-const abrirModalDoacao = () => { mostrarModalDoacao.value = true }
-const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
-
+const abrirModalDoacao = () => {
+  mostrarModalDoacao.value = true
+}
+const fecharModalDoacao = () => {
+  mostrarModalDoacao.value = false
+}
 
 const mostrarConfirmar = ref(false)
 const postParaRemover = ref(null)
@@ -124,15 +127,13 @@ function pedirConfirmacao(post) {
 }
 
 function confirmarExclusao() {
-  const index = posts.value.findIndex(p =>
-    p.usuario === postParaRemover.value.usuario &&
-    p.tempo === postParaRemover.value.tempo
+  const index = posts.value.findIndex(
+    (p) => p.usuario === postParaRemover.value.usuario && p.tempo === postParaRemover.value.tempo,
   )
   if (index !== -1) posts.value.splice(index, 1)
   mostrarConfirmar.value = false
 }
 </script>
-
 
 <template>
   <section>
@@ -143,7 +144,6 @@ function confirmarExclusao() {
     </div>
 
     <div v-if="comunidade" class="box-user">
-
       <div class="info">
         <h2>{{ comunidade.nome }}</h2>
         <p class="desc">{{ comunidade.descricao }}</p>
@@ -153,33 +153,41 @@ function confirmarExclusao() {
 
         <div class="numbers">
           <p>Membros: máx. {{ comunidade.maxMembros }}</p>
-          <p><font-awesome-icon :icon="['far', 'heart']" style="color: red;" /> {{ postsDaComunidade.length }} postagens
+          <p>
+            <font-awesome-icon :icon="['far', 'heart']" style="color: red" />
+            {{ postsDaComunidade.length }} postagens
           </p>
         </div>
       </div>
 
       <div class="buttons">
         <div v-if="!membro" class="in">
-          <button @click="abrirModalDoacao" class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
+          <button @click="abrirModalDoacao" class="doar">
+            <span class="mdi mdi-currency-usd"></span> Doar
+          </button>
           <button @click="entrar" class="postar">Entrar</button>
         </div>
         <div v-else>
           <div class="member">
             <p>Membro</p>
           </div>
-          <button @click="abrirModalDoacao" class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
-          <button @click="abrirModal" class="postar"><span class="mdi mdi-plus"></span> Postar</button>
+          <button @click="abrirModalDoacao" class="doar">
+            <span class="mdi mdi-currency-usd"></span> Doar
+          </button>
+          <button @click="abrirModal" class="postar">
+            <span class="mdi mdi-plus"></span> Postar
+          </button>
         </div>
       </div>
     </div>
     <div v-if="mostrarModal" class="show-post" @click.self="fecharModal">
       <div class="new-post">
         <h2>Nova Postagem</h2>
-        <p>
-          Compartilhe suas atividades e contribuições para a comunidade.
-        </p>
-        <textarea v-model="conteudo"
-          placeholder="Compartilhe suas atividades e contribuições para a comunidade..."></textarea>
+        <p>Compartilhe suas atividades e contribuições para a comunidade.</p>
+        <textarea
+          v-model="conteudo"
+          placeholder="Compartilhe suas atividades e contribuições para a comunidade..."
+        ></textarea>
         <div v-if="error" class="error">{{ error }}</div>
         <div class="img-post">
           <div class="image-upload">
@@ -200,13 +208,9 @@ function confirmarExclusao() {
     <div v-if="mostrarModalDoacao" class="doação" @click.self="fecharModalDoacao">
       <div class="new-doação">
         <h2>Fazer Doação</h2>
-        <p>
-          Ajude a comunidade Horta Comunitária com sua doação e faça a diferença!
-        </p>
+        <p>Ajude a comunidade Horta Comunitária com sua doação e faça a diferença!</p>
         <div class="info-doação">
-          <h3>
-            Informações para doação:
-          </h3>
+          <h3>Informações para doação:</h3>
           <p>
             {{ comunidade.contato }}
           </p>
@@ -248,7 +252,6 @@ function confirmarExclusao() {
         <button @click="confirmarExclusao" class="postar">Sim</button>
       </div>
     </div>
-
   </section>
 </template>
 
@@ -521,7 +524,7 @@ section {
   margin: 1.5vw 0 0 0;
 }
 
-.upload-label input[type="file"] {
+.upload-label input[type='file'] {
   display: none;
 }
 
@@ -593,7 +596,6 @@ textarea::placeholder {
   width: 35vw;
   animation: popIn 0.3s ease forwards;
 }
-
 
 .new-doação p {
   font-size: 1.2rem;

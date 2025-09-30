@@ -1,28 +1,21 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useAuth } from '../composables/auth'
+import { useRoute } from 'vue-router'
+
 import { posts } from '../store/posts'
-import { savedPosts } from '../store/saved'
-import { useCommunityState } from '../store/communities'
+
 import PostActivity from '../components/PostActivity.vue'
 
-const router = useRouter()
-const route = useRoute()   // 🔹 pega params
-const userId = route.params.id   // 🔹 id do usuário vindo da URL
-
-const { user } = useAuth()
-const { comunidadesEntradas } = useCommunityState()
+const route = useRoute()
+const userId = route.params.id
 
 const editing = ref(false)
 const tab = ref('stats')
 
-// 🔹 seleciona o usuário baseado no id
 const selectedUser = computed(() => {
-  return posts.value.find(p => String(p.usuarioId) === String(userId)) || null
+  return posts.value.find((p) => String(p.usuarioId) === String(userId)) || null
 })
 
-// 🔹 usa selectedUser para exibição
 const displayName = computed(() => selectedUser.value?.usuario || 'Usuário')
 
 const initials = computed(() => {
@@ -33,33 +26,40 @@ const initials = computed(() => {
 })
 
 function getUserColor(name) {
-  const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9', '#EDC01C']
+  const colors = [
+    '#E8BCE0',
+    '#247063',
+    '#05232B',
+    '#040F45',
+    '#88B0B8',
+    '#E36BD1',
+    '#b00000',
+    '#6321d9',
+    '#EDC01C',
+  ]
   let hash = 0
   for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
   return colors[Math.abs(hash) % colors.length]
 }
 const avatarColor = computed(() => getUserColor(displayName.value))
 
-// 🔹 posts do usuário selecionado
 const userPosts = computed(() => {
-  return posts.value.filter(p => String(p.usuarioId) === String(userId))
+  return posts.value.filter((p) => String(p.usuarioId) === String(userId))
 })
-
-// 🔹 contador de posts
-const postsCount = computed(() => userPosts.value.length)
 </script>
 
 <template>
   <section class="profile-section">
     <div class="profile-container">
       <div class="profile-card">
-
         <div class="profile-header">
           <div class="profile-main">
             <div v-if="selectedUser?.avatar">
               <img :src="selectedUser.avatar" alt="avatar" class="avatar-img" />
             </div>
-            <div v-else class="avatar-fallback" :style="{ background: avatarColor }"> {{ initials }}</div>
+            <div v-else class="avatar-fallback" :style="{ background: avatarColor }">
+              {{ initials }}
+            </div>
             <h2>{{ displayName }}</h2>
             <p class="profile-pontos">Verificado</p>
           </div>
@@ -70,12 +70,14 @@ const postsCount = computed(() => userPosts.value.length)
             <div class="profile-form">
               <div>
                 <label for="nome">Nome</label>
-                <input id="nome" v-model="selectedUser.usuario" type="text" placeholder="Seu nome" />
+                <input
+                  id="nome"
+                  v-model="selectedUser.usuario"
+                  type="text"
+                  placeholder="Seu nome"
+                />
               </div>
-
-
             </div>
-
           </div>
           <div v-else class="profile-bio">
             <h3>Bio</h3>
@@ -90,8 +92,9 @@ const postsCount = computed(() => userPosts.value.length)
         <nav class="nav-perfil">
           <button :class="{ active: tab === 'stats' }" @click="tab = 'stats'">Estatísticas</button>
 
-          <button :class="{ active: tab === 'activity' }" @click="tab = 'activity'">Atividade</button>
-
+          <button :class="{ active: tab === 'activity' }" @click="tab = 'activity'">
+            Atividade
+          </button>
         </nav>
 
         <!-- Estatísticas -->
@@ -123,8 +126,6 @@ const postsCount = computed(() => userPosts.value.length)
           </div>
         </transition>
 
-
-
         <transition name="come" mode="in-out">
           <!-- Atividade -->
           <div v-if="tab === 'activity'" class="activity">
@@ -134,13 +135,10 @@ const postsCount = computed(() => userPosts.value.length)
             <p v-else>Esse usuário ainda não fez nenhuma postagem.</p>
           </div>
         </transition>
-
-
       </div>
     </div>
   </section>
 </template>
-
 
 <style scoped>
 section {
@@ -410,7 +408,6 @@ nav.nav-perfil button:focus,
   .profile-form label {
     font-size: 0.8rem;
   }
-
 
   .profile-form div input,
   .profile-form div textarea {

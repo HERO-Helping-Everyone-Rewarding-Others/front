@@ -2,52 +2,46 @@
 import { useAuth } from '@/composables/auth'
 const { register } = useAuth()
 import { ref } from 'vue'
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router'
 
-
-const router = useRouter();
+const router = useRouter()
 
 const nome = ref(``)
 const email = ref(``)
 const password = ref(``)
 const biografia = ref(``)
 
-const alert = ref(true);
+const alert = ref(true)
 
 const handleRegister = async () => {
   try {
     await register(nome.value, email.value, password.value, biografia.value)
     alert.value = true
-    router.push("/login");
-  }
-  catch (error) {
+    router.push('/login')
+  } catch {
     alert.value = true
   }
 }
 
-const showPassword = ref(false);
+const showPassword = ref(false)
 </script>
 
 <template>
   <section>
     <div class="box1">
       <div class="logo">
-        <img src="/logo-branca.png" alt="logo">
+        <img src="/logo-branca.png" alt="logo" />
       </div>
       <h2>Seja o herói da sua comunidade!</h2>
-      <p>No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você encontra pessoas
-        que compartilham da mesma vontade de ajudar e recebe reconhecimento por cada contribuição. Juntos, podemos
-        provar que ser herói é um papel que cabe a todos nós!</p>
+      <p>
+        No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você
+        encontra pessoas que compartilham da mesma vontade de ajudar e recebe reconhecimento por
+        cada contribuição. Juntos, podemos provar que ser herói é um papel que cabe a todos nós!
+      </p>
       <ul>
-        <li>
-          Crie uma comunidade
-        </li>
-        <li>
-          Ajude o mundo
-        </li>
-        <li>
-          Seja um herói
-        </li>
+        <li>Crie uma comunidade</li>
+        <li>Ajude o mundo</li>
+        <li>Seja um herói</li>
       </ul>
     </div>
     <div class="box2">
@@ -64,20 +58,24 @@ const showPassword = ref(false);
 
         <label>Senha</label>
         <div class="password-field">
-          <input id="password" :type="showPassword ? 'text' : 'password'" placeholder="password" v-model="password" />
-          <span class="mdi" :class="showPassword ? 'mdi-eye-off' : 'mdi-eye'" @click="showPassword = !showPassword">
+          <input
+            id="password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="password"
+            v-model="password"
+          />
+          <span
+            class="mdi"
+            :class="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            @click="showPassword = !showPassword"
+          >
           </span>
         </div>
         <button type="submit" class="submit">Registrar</button>
-
       </form>
       <div class="register">
-        <p>
-          Já possui uma conta?
-        </p>
-        <router-link to="/login">
-          entrar
-        </router-link>
+        <p>Já possui uma conta?</p>
+        <router-link to="/login"> entrar </router-link>
       </div>
     </div>
     <!-- Modal de erro quando alert = false -->
@@ -164,7 +162,7 @@ section .box1 .logo img {
   height: 38vw;
 }
 
-.box2>*:not(.register) {
+.box2 > *:not(.register) {
   padding: 1vw 0 0 4vw;
 }
 

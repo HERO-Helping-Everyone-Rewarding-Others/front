@@ -28,7 +28,7 @@ const handleLogout = () => {
 <template>
     <header>
         <nav>
-            <button @click="$emit('toggleMenu')" class="button-sidebar"><font-awesome-icon
+            <button @click="emit('toggleMenu')" class="button-sidebar"><font-awesome-icon
                     :icon="['fas', 'bars']" /></button>
             <h1>
                 <img src="/logo-branca-icon.png" alt="logo" @click="router.push('/')" />

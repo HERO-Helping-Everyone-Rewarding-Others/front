@@ -1,283 +1,302 @@
-  <script setup>
-  import { ref, computed, watch, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useAuth } from '../composables/auth'
-  import { usuario, profileName, profileBio, profileAvatar, pontosGanhos, recompensasResgatadas } from '../store/user'
-  import { posts } from '../store/posts'
-  import { savedPosts } from '../store/saved'
-  import { useCommunityState } from '../store/communities'
-  import PostComponentSaved from '../components/PostComponentSaved.vue'
-  import PostActivity from '../components/PostActivity.vue'
+<script setup>
+import { ref, computed, watch, onMounted } from 'vue'
+import { useAuth } from '../composables/auth'
+import {
+  usuario,
+  profileName,
+  profileBio,
+  profileAvatar,
+  recompensasResgatadas,
+} from '../store/user'
+import { posts } from '../store/posts'
+import { savedPosts } from '../store/saved'
+import { useCommunityState } from '../store/communities'
+import PostComponentSaved from '../components/PostComponentSaved.vue'
+import PostActivity from '../components/PostActivity.vue'
 
+const { user, accessToken, fetchUser } = useAuth()
+const { comunidadesEntradas } = useCommunityState()
 
+const editing = ref(false)
+const tab = ref('stats')
 
-  const router = useRouter()
-  const { user, accessToken, fetchUser } = useAuth()
-  const { comunidadesEntradas } = useCommunityState()
+function selectTab(name) {
+  tab.value = name
+}
 
-  const editing = ref(false)
-  const tab = ref('stats')
-
-  function selectTab(name) {
-    tab.value = name
-  }
-
-  // Atualiza campos locais com dados do usuário
-  watch(
-    () => user.value,
-    (val) => {
-      if (val) {
-        if (!profileName.value) profileName.value = val.nome || usuario.value.nome || ''
-        if (!profileBio.value) profileBio.value = val.biografia || ''
-      }
-    },
-    { immediate: true },
-  )
-
-  // Nome para exibição
-  const displayName = computed(() => profileName.value || user.value?.nome || usuario.value.nome)
-
-  // Iniciais para avatar fallback
-  const initials = computed(() => {
-    const name = displayName.value || 'U'
-    const parts = name.split(' ').filter(Boolean)
-    if (parts.length === 1) return parts[0][0].toUpperCase()
-    return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase()
-  })
-
-  // Gera cores para avatar de acordo com o nome
-  function getUserColor(name) {
-    const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9', '#EDC01C']
-    let hash = 0
-    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
-    return colors[Math.abs(hash) % colors.length]
-  }
-  const avatarColor = computed(() => getUserColor(displayName.value))
-
-  // Posts do usuário
-  const userPosts = computed(() => {
-    const backendName = user.value?.nome || usuario.value.nome
-    const localName = profileName.value
-    return posts.value.filter((p) => p.usuario === backendName || p.usuario === localName)
-  })
-  const postsCount = computed(() => userPosts.value.length)
-  const salvosCount = computed(() => comunidadesEntradas.value.length)
-  const pontosPostagens = computed(() => pontosGanhos.value)
-
-  // Verifica se o post é do usuário atual
-  function isPostByCurrentUser(p) {
-    const backendName = user.value?.nome || usuario.value.nome
-    return p.usuario === profileName.value || p.usuario === backendName
-  }
-  function initialsFor(name) {
-    if (!name) return 'U'
-    const parts = String(name).split(' ').filter(Boolean)
-    if (parts.length === 1) return parts[0][0].toUpperCase()
-    return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase()
-  }
-
-  // On mounted
-  onMounted(async () => {
-    if (accessToken.value && !user.value) {
-      await fetchUser().catch(() => { })
+// Atualiza campos locais com dados do usuário
+watch(
+  () => user.value,
+  (val) => {
+    if (val) {
+      if (!profileName.value) profileName.value = val.nome || usuario.value.nome || ''
+      if (!profileBio.value) profileBio.value = val.biografia || ''
     }
-  })
+  },
+  { immediate: true },
+)
 
-  // Seleção de avatar
-  function onSelectAvatar(e) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      profileAvatar.value = ev.target.result
-    }
-    reader.readAsDataURL(file)
+// Nome para exibição
+const displayName = computed(() => profileName.value || user.value?.nome || usuario.value.nome)
+
+// Iniciais para avatar fallback
+const initials = computed(() => {
+  const name = displayName.value || 'U'
+  const parts = name.split(' ').filter(Boolean)
+  if (parts.length === 1) return parts[0][0].toUpperCase()
+  return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase()
+})
+
+// Gera cores para avatar de acordo com o nome
+function getUserColor(name) {
+  const colors = [
+    '#E8BCE0',
+    '#247063',
+    '#05232B',
+    '#040F45',
+    '#88B0B8',
+    '#E36BD1',
+    '#b00000',
+    '#6321d9',
+    '#EDC01C',
+  ]
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  return colors[Math.abs(hash) % colors.length]
+}
+const avatarColor = computed(() => getUserColor(displayName.value))
+
+// Posts do usuário
+const userPosts = computed(() => {
+  const backendName = user.value?.nome || usuario.value.nome
+  const localName = profileName.value
+  return posts.value.filter((p) => p.usuario === backendName || p.usuario === localName)
+})
+const postsCount = computed(() => userPosts.value.length)
+
+// On mounted
+onMounted(async () => {
+  if (accessToken.value && !user.value) {
+    await fetchUser().catch(() => {})
+  }
+})
+
+// Seleção de avatar
+function onSelectAvatar(e) {
+  const file = e.target.files?.[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = (ev) => {
+    profileAvatar.value = ev.target.result
+  }
+  reader.readAsDataURL(file)
+}
+
+// Salvar e resetar alterações locais
+function saveLocalChanges() {
+  editing.value = false
+}
+function resetLocal() {
+  profileName.value = user.value?.nome || usuario.value.nome || ''
+  profileBio.value = user.value?.biografia || ''
+  profileAvatar.value = ''
+}
+
+const isDragging = ref(false)
+
+function handleDragOver(e) {
+  e.preventDefault()
+  isDragging.value = true
+}
+
+function handleDragLeave() {
+  isDragging.value = false
+}
+
+function handleDrop(e) {
+  e.preventDefault()
+  isDragging.value = false
+
+  const file = e.dataTransfer.files[0]
+  if (!file) return
+
+  if (!file.type.startsWith('image/')) {
+    alert('Apenas arquivos de imagem são permitidos.')
+    return
   }
 
-  // Salvar e resetar alterações locais
-  function saveLocalChanges() {
-    editing.value = false
+  const reader = new FileReader()
+  reader.onload = (ev) => {
+    profileAvatar.value = ev.target.result
   }
-  function resetLocal() {
-    profileName.value = user.value?.nome || usuario.value.nome || ''
-    profileBio.value = user.value?.biografia || ''
-    profileAvatar.value = ''
-  }
-
-  const isDragging = ref(false)
-
-  function handleDragOver(e) {
-    e.preventDefault() // obrigatório para permitir drop
-    isDragging.value = true
-  }
-
-  function handleDragLeave(e) {
-    isDragging.value = false
-  }
-
-  function handleDrop(e) {
-    e.preventDefault()
-    isDragging.value = false
-
-    const file = e.dataTransfer.files[0]
-    if (!file) return
-
-    if (!file.type.startsWith('image/')) {
-      alert('Apenas arquivos de imagem são permitidos.')
-      return
-    }
-
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      profileAvatar.value = ev.target.result
-    }
-    reader.readAsDataURL(file)
-  }
+  reader.readAsDataURL(file)
+}
 </script>
 
-  <template>
-    <section class="profile-section">
-      <div class="profile-container">
-        <div class="profile-card">
+<template>
+  <section class="profile-section">
+    <div class="profile-container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="edit">
+            <p>Perfil</p>
+            <button @click="editing = !editing">
+              <font-awesome-icon :icon="editing ? ['fas', 'xmark'] : ['fas', 'pen-to-square']" />
+            </button>
+          </div>
 
-          <div class="profile-header">
-            <div class="edit">
-              <p>Perfil</p>
-              <button @click="editing = !editing"><font-awesome-icon
-                  :icon="editing ? ['fas', 'xmark'] : ['fas', 'pen-to-square']" />
-              </button>
+          <div class="profile-main">
+            <img v-if="profileAvatar" :src="profileAvatar" alt="avatar" class="avatar-img" />
+            <div v-else class="avatar-fallback" :style="{ background: avatarColor }">
+              {{ initials }}
+            </div>
+            <h2>{{ displayName }}</h2>
+            <p v-if="user?.email" class="profile-email">{{ user.email }}</p>
+            <p class="profile-pontos">{{ usuario.pontos || 0 }} pontos</p>
+          </div>
+        </div>
+        <transition name="grow" mode="out-in">
+          <div v-if="editing" class="profile-edit">
+            <div class="profile-form">
+              <div
+                class="avatar-form"
+                @click="$refs.avatarInput.click()"
+                @dragover.prevent="handleDragOver"
+                @dragenter.prevent="handleDragOver"
+                @dragleave="handleDragLeave"
+                @drop="handleDrop"
+                :class="{ dragging: isDragging }"
+              >
+                <label for="avatar">Clique ou arraste sua foto aqui</label>
+                <input
+                  ref="avatarInput"
+                  id="avatar"
+                  type="file"
+                  accept="image/*"
+                  @change="onSelectAvatar"
+                  style="display: none"
+                />
+              </div>
+
+              <div>
+                <label for="nome">Nome</label>
+                <input id="nome" v-model="profileName" type="text" placeholder="Seu nome" />
+              </div>
+
+              <div>
+                <label for="bio">Biografia</label>
+                <textarea
+                  id="bio"
+                  v-model="profileBio"
+                  placeholder="Escreva uma biografia curta"
+                  class="textarea"
+                ></textarea>
+              </div>
             </div>
 
-            <div class="profile-main">
-              <img v-if="profileAvatar" :src="profileAvatar" alt="avatar" class="avatar-img" />
-              <div v-else class="avatar-fallback" :style="{ background: avatarColor }"> {{ initials }}</div>
-              <h2>{{ displayName }}</h2>
-              <p v-if="user?.email" class="profile-email">{{ user.email }}</p>
-              <p class="profile-pontos">{{ usuario.pontos || 0 }} pontos</p>
+            <div class="edit-actions">
+              <button @click="saveLocalChanges" class="btn-save">Salvar</button>
+              <button @click="resetLocal" class="btn-reset">Resetar</button>
             </div>
           </div>
-          <transition name="grow" mode="out-in">
-            <div v-if="editing" class="profile-edit">
-              <div class="profile-form">
-                <div class="avatar-form" @click="$refs.avatarInput.click()" @dragover.prevent="handleDragOver"
-                  @dragenter.prevent="handleDragOver" @dragleave="handleDragLeave" @drop="handleDrop"
-                  :class="{ 'dragging': isDragging }">
-                  <label for="avatar">Clique ou arraste sua foto aqui</label>
-                  <input ref="avatarInput" id="avatar" type="file" accept="image/*" @change="onSelectAvatar"
-                    style="display: none" />
-                </div>
-
-                <div>
-                  <label for="nome">Nome</label>
-                  <input id="nome" v-model="profileName" type="text" placeholder="Seu nome" />
-                </div>
-
-                <div>
-                  <label for="bio">Biografia</label>
-                  <textarea id="bio" v-model="profileBio" placeholder="Escreva uma biografia curta"
-                    class="textarea"></textarea>
-                </div>
-              </div>
-
-              <div class="edit-actions">
-                <button @click="saveLocalChanges" class="btn-save">Salvar</button>
-                <button @click="resetLocal" class="btn-reset">Resetar</button>
-              </div>
-            </div>
-            <div v-else class="profile-bio">
-              <h3>Bio</h3>
-              <p v-if="profileBio">{{ profileBio }}</p>
-              <p v-else class="muted">Sem biografia</p>
-            </div>
-          </transition>
-        </div>
-
-        <!-- Conteúdo -->
-        <div class="profile-content">
-          <nav class="nav-perfil">
-            <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">Estatísticas</button>
-            <button :class="{ active: tab === 'saved' }" @click="selectTab('saved')">Salvos</button>
-            <button :class="{ active: tab === 'activity' }" @click="selectTab('activity')">Atividade</button>
-            <button :class="{ active: tab === 'reward' }" @click="selectTab('reward')">Recompensas</button>
-          </nav>
-
-          <!-- Estatísticas -->
-          <transition name="come" mode="in-out">
-            <div v-if="tab === 'stats'" class="stats">
-              <div class="box-stats">
-                <div class="stat-item">
-                  <p id="azul" class="stat-value">{{ usuario.pontos || 0 }}</p>
-                  <p class="stat-label">Total de pontos</p>
-                </div>
-                <span class="mdi mdi-chart-line"></span>
-              </div>
-
-              <div class="box-stats">
-                <div class="stat-item">
-                  <p id="verde" class="stat-value">{{ comunidadesEntradas.length }}</p>
-                  <p class="stat-label">Comunidades</p>
-                </div>
-                <span class="mdi mdi-account-group-outline"></span>
-              </div>
-
-              <div class="box-stats">
-                <div class="stat-item clickable" @click="tab = 'activity'">
-                  <p id="roxo" class="stat-value">{{ postsCount }}</p>
-                  <p class="stat-label">Postagens</p>
-                </div>
-                <span class="mdi mdi-heart-outline"></span>
-              </div>
-
-              <div id="laranja" class="box-stats">
-                <div class="stat-item">
-                  <p class="stat-value">{{ savedPosts.length }}</p>
-                  <p class="stat-label">Salvos</p>
-                </div>
-                <span class="mdi mdi-star-outline" id="gift"></span>
-              </div>
-            </div>
-          </transition>
-
-          <transition name="come" mode="in-out">
-            <!-- Posts Salvos -->
-            <div v-if="tab === 'saved'" class="saved">
-
-              <div v-if="savedPosts.length" class="post">
-                <PostComponentSaved v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
-              </div>
-              <p v-else>Nenhum post salvo ainda.</p>
-            </div>
-          </transition>
-
-          <transition name="come" mode="in-out">
-            <!-- Atividade -->
-            <div v-if="tab === 'activity'" class="activity">
-              <div v-if="userPosts.length" class="post">
-                <PostActivity v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
-              </div>
-              <p v-else>Você ainda não fez nenhuma postagem.</p>
-            </div>
-          </transition>
-          <transition name="come" mode="in-out">
-            <div v-if="tab === 'reward'" class="box-reward">
-              <div v-if="recompensasResgatadas.length" class="reward">
-                <div v-for="(r, index) in recompensasResgatadas" :key="index" class="reward-card">
-                  <div class="reward-info">
-                    <h3>{{ r.nome }}</h3>
-                    <p>{{ r.descricao }}</p>
-                    <p id="date">Resgatado em: {{ new Date(r.data).toLocaleDateString('pt-BR') }}</p>
-                  </div>
-                  <img :src="r.Qr" alt="Imagem recompensa" class="reward-img" />
-                </div>
-              </div>
-              <p v-else id="null">Você ainda não resgatou nenhuma recompensa.</p>
-            </div>
-
-          </transition>
-        </div>
+          <div v-else class="profile-bio">
+            <h3>Bio</h3>
+            <p v-if="profileBio">{{ profileBio }}</p>
+            <p v-else class="muted">Sem biografia</p>
+          </div>
+        </transition>
       </div>
-    </section>
-  </template>
+
+      <!-- Conteúdo -->
+      <div class="profile-content">
+        <nav class="nav-perfil">
+          <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">
+            Estatísticas
+          </button>
+          <button :class="{ active: tab === 'saved' }" @click="selectTab('saved')">Salvos</button>
+          <button :class="{ active: tab === 'activity' }" @click="selectTab('activity')">
+            Atividade
+          </button>
+          <button :class="{ active: tab === 'reward' }" @click="selectTab('reward')">
+            Recompensas
+          </button>
+        </nav>
+
+        <!-- Estatísticas -->
+        <transition name="come" mode="in-out">
+          <div v-if="tab === 'stats'" class="stats">
+            <div class="box-stats">
+              <div class="stat-item">
+                <p id="azul" class="stat-value">{{ usuario.pontos || 0 }}</p>
+                <p class="stat-label">Total de pontos</p>
+              </div>
+              <span class="mdi mdi-chart-line"></span>
+            </div>
+
+            <div class="box-stats">
+              <div class="stat-item">
+                <p id="verde" class="stat-value">{{ comunidadesEntradas.length }}</p>
+                <p class="stat-label">Comunidades</p>
+              </div>
+              <span class="mdi mdi-account-group-outline"></span>
+            </div>
+
+            <div class="box-stats">
+              <div class="stat-item clickable" @click="tab = 'activity'">
+                <p id="roxo" class="stat-value">{{ postsCount }}</p>
+                <p class="stat-label">Postagens</p>
+              </div>
+              <span class="mdi mdi-heart-outline"></span>
+            </div>
+
+            <div id="laranja" class="box-stats">
+              <div class="stat-item">
+                <p class="stat-value">{{ savedPosts.length }}</p>
+                <p class="stat-label">Salvos</p>
+              </div>
+              <span class="mdi mdi-star-outline" id="gift"></span>
+            </div>
+          </div>
+        </transition>
+
+        <transition name="come" mode="in-out">
+          <!-- Posts Salvos -->
+          <div v-if="tab === 'saved'" class="saved">
+            <div v-if="savedPosts.length" class="post">
+              <PostComponentSaved v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
+            </div>
+            <p v-else>Nenhum post salvo ainda.</p>
+          </div>
+        </transition>
+
+        <transition name="come" mode="in-out">
+          <!-- Atividade -->
+          <div v-if="tab === 'activity'" class="activity">
+            <div v-if="userPosts.length" class="post">
+              <PostActivity v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
+            </div>
+            <p v-else>Você ainda não fez nenhuma postagem.</p>
+          </div>
+        </transition>
+        <transition name="come" mode="in-out">
+          <div v-if="tab === 'reward'" class="box-reward">
+            <div v-if="recompensasResgatadas.length" class="reward">
+              <div v-for="(r, index) in recompensasResgatadas" :key="index" class="reward-card">
+                <div class="reward-info">
+                  <h3>{{ r.nome }}</h3>
+                  <p>{{ r.descricao }}</p>
+                  <p id="date">Resgatado em: {{ new Date(r.data).toLocaleDateString('pt-BR') }}</p>
+                </div>
+                <img :src="r.Qr" alt="Imagem recompensa" class="reward-img" />
+              </div>
+            </div>
+            <p v-else id="null">Você ainda não resgatou nenhuma recompensa.</p>
+          </div>
+        </transition>
+      </div>
+    </div>
+  </section>
+</template>
 
 <style scoped>
 section {
@@ -689,7 +708,6 @@ nav.nav-perfil button:focus,
   .profile-form label {
     font-size: 0.8rem;
   }
-
 
   .profile-form div input,
   .profile-form div textarea {
