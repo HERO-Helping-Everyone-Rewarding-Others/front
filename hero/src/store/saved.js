@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref } from 'vue'
 
 export const savedPosts = ref([])
 
@@ -9,7 +9,7 @@ export function toggleSave(post) {
   }
   const uniqueId = post.id || post._localUid
 
-  const index = savedPosts.value.findIndex(p => (p.id || p._localUid) === uniqueId)
+  const index = savedPosts.value.findIndex((p) => (p.id || p._localUid) === uniqueId)
 
   if (index >= 0) {
     savedPosts.value.splice(index, 1) // remover
@@ -20,5 +20,5 @@ export function toggleSave(post) {
 
 export function isSaved(post) {
   const uniqueId = post.id || post._localUid
-  return savedPosts.value.some(p => (p.id || p._localUid) === uniqueId)
+  return savedPosts.value.some((p) => (p.id || p._localUid) === uniqueId)
 }

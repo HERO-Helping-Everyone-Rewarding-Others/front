@@ -1,8 +1,9 @@
 import { computed } from "vue";
 import { posts } from "@/store/posts";
 
+
+// redireciona os posts de uma comunidade específica (não mexer)
 export function usePosts() {
-  // retorna os posts de uma comunidade específica
   const postsDaComunidade = (nomeComunidade) => {
     return computed(() =>
       posts.value.filter((p) => p.comunidade === nomeComunidade)

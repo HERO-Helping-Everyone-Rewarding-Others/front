@@ -1,16 +1,19 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/auth'
-import { usuario, profileName, profileBio, profileAvatar, pontosGanhos } from '../store/user'
+import {
+  usuario,
+  profileName,
+  profileBio,
+  profileAvatar,
+  recompensasResgatadas,
+} from '../store/user'
 import { posts } from '../store/posts'
 import { savedPosts } from '../store/saved'
 import { useCommunityState } from '../store/communities'
 import PostComponentSaved from '../components/PostComponentSaved.vue'
 import PostActivity from '../components/PostActivity.vue'
 
-
-const router = useRouter()
 const { user, accessToken, fetchUser } = useAuth()
 const { comunidadesEntradas } = useCommunityState()
 
@@ -20,7 +23,6 @@ const tab = ref('stats')
 function selectTab(name) {
   tab.value = name
 }
-
 
 // Atualiza campos locais com dados do usuário
 watch(
@@ -47,7 +49,17 @@ const initials = computed(() => {
 
 // Gera cores para avatar de acordo com o nome
 function getUserColor(name) {
-  const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9', '#EDC01C']
+  const colors = [
+    '#E8BCE0',
+    '#247063',
+    '#05232B',
+    '#040F45',
+    '#88B0B8',
+    '#E36BD1',
+    '#b00000',
+    '#6321d9',
+    '#EDC01C',
+  ]
   let hash = 0
   for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash)
   return colors[Math.abs(hash) % colors.length]
@@ -61,25 +73,11 @@ const userPosts = computed(() => {
   return posts.value.filter((p) => p.usuario === backendName || p.usuario === localName)
 })
 const postsCount = computed(() => userPosts.value.length)
-const salvosCount = computed(() => comunidadesEntradas.value.length)
-const pontosPostagens = computed(() => pontosGanhos.value)
-
-// Verifica se o post é do usuário atual
-function isPostByCurrentUser(p) {
-  const backendName = user.value?.nome || usuario.value.nome
-  return p.usuario === profileName.value || p.usuario === backendName
-}
-function initialsFor(name) {
-  if (!name) return 'U'
-  const parts = String(name).split(' ').filter(Boolean)
-  if (parts.length === 1) return parts[0][0].toUpperCase()
-  return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase()
-}
 
 // On mounted
 onMounted(async () => {
   if (accessToken.value && !user.value) {
-    await fetchUser().catch(() => { })
+    await fetchUser().catch(() => {})
   }
 })
 
@@ -107,11 +105,11 @@ function resetLocal() {
 const isDragging = ref(false)
 
 function handleDragOver(e) {
-  e.preventDefault() // obrigatório para permitir drop
+  e.preventDefault()
   isDragging.value = true
 }
 
-function handleDragLeave(e) {
+function handleDragLeave() {
   isDragging.value = false
 }
 
@@ -142,14 +140,16 @@ function handleDrop(e) {
         <div class="profile-header">
           <div class="edit">
             <p>Perfil</p>
-            <button @click="editing = !editing"><font-awesome-icon
-                :icon="editing ? ['fas', 'xmark'] : ['fas', 'pen-to-square']" />
+            <button @click="editing = !editing">
+              <font-awesome-icon :icon="editing ? ['fas', 'xmark'] : ['fas', 'pen-to-square']" />
             </button>
           </div>
 
           <div class="profile-main">
             <img v-if="profileAvatar" :src="profileAvatar" alt="avatar" class="avatar-img" />
-            <div v-else class="avatar-fallback" :style="{ background: avatarColor }"> {{ initials }}</div>
+            <div v-else class="avatar-fallback" :style="{ background: avatarColor }">
+              {{ initials }}
+            </div>
             <h2>{{ displayName }}</h2>
             <p v-if="user?.email" class="profile-email">{{ user.email }}</p>
             <p class="profile-pontos">{{ usuario.pontos || 0 }} pontos</p>
@@ -158,12 +158,24 @@ function handleDrop(e) {
         <transition name="grow" mode="out-in">
           <div v-if="editing" class="profile-edit">
             <div class="profile-form">
-              <div class="avatar-form" @click="$refs.avatarInput.click()" @dragover.prevent="handleDragOver"
-                @dragenter.prevent="handleDragOver" @dragleave="handleDragLeave" @drop="handleDrop"
-                :class="{ 'dragging': isDragging }">
+              <div
+                class="avatar-form"
+                @click="$refs.avatarInput.click()"
+                @dragover.prevent="handleDragOver"
+                @dragenter.prevent="handleDragOver"
+                @dragleave="handleDragLeave"
+                @drop="handleDrop"
+                :class="{ dragging: isDragging }"
+              >
                 <label for="avatar">Clique ou arraste sua foto aqui</label>
-                <input ref="avatarInput" id="avatar" type="file" accept="image/*" @change="onSelectAvatar"
-                  style="display: none" />
+                <input
+                  ref="avatarInput"
+                  id="avatar"
+                  type="file"
+                  accept="image/*"
+                  @change="onSelectAvatar"
+                  style="display: none"
+                />
               </div>
 
               <div>
@@ -173,8 +185,12 @@ function handleDrop(e) {
 
               <div>
                 <label for="bio">Biografia</label>
-                <textarea id="bio" v-model="profileBio" placeholder="Escreva uma biografia curta"
-                  class="textarea"></textarea>
+                <textarea
+                  id="bio"
+                  v-model="profileBio"
+                  placeholder="Escreva uma biografia curta"
+                  class="textarea"
+                ></textarea>
               </div>
             </div>
 
@@ -194,9 +210,16 @@ function handleDrop(e) {
       <!-- Conteúdo -->
       <div class="profile-content">
         <nav class="nav-perfil">
-          <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">Estatísticas</button>
+          <button :class="{ active: tab === 'stats' }" @click="selectTab('stats')">
+            Estatísticas
+          </button>
           <button :class="{ active: tab === 'saved' }" @click="selectTab('saved')">Salvos</button>
-          <button :class="{ active: tab === 'activity' }" @click="selectTab('activity')">Atividade</button>
+          <button :class="{ active: tab === 'activity' }" @click="selectTab('activity')">
+            Atividade
+          </button>
+          <button :class="{ active: tab === 'reward' }" @click="selectTab('reward')">
+            Recompensas
+          </button>
         </nav>
 
         <!-- Estatísticas -->
@@ -212,7 +235,7 @@ function handleDrop(e) {
 
             <div class="box-stats">
               <div class="stat-item">
-                <p id="verde" class="stat-value">{{ comunidadesCount || 0 }}</p>
+                <p id="verde" class="stat-value">{{ comunidadesEntradas.length }}</p>
                 <p class="stat-label">Comunidades</p>
               </div>
               <span class="mdi mdi-account-group-outline"></span>
@@ -228,10 +251,10 @@ function handleDrop(e) {
 
             <div id="laranja" class="box-stats">
               <div class="stat-item">
-                <p class="stat-value">{{ pontosGanhos }}</p>
-                <p class="stat-label">Pontos Ganhos</p>
+                <p class="stat-value">{{ savedPosts.length }}</p>
+                <p class="stat-label">Salvos</p>
               </div>
-              <span class="mdi mdi-gift-outline" id="gift"></span>
+              <span class="mdi mdi-star-outline" id="gift"></span>
             </div>
           </div>
         </transition>
@@ -239,7 +262,6 @@ function handleDrop(e) {
         <transition name="come" mode="in-out">
           <!-- Posts Salvos -->
           <div v-if="tab === 'saved'" class="saved">
-
             <div v-if="savedPosts.length" class="post">
               <PostComponentSaved v-for="p in savedPosts" :key="p.id || p._localUid" :post="p" />
             </div>
@@ -254,6 +276,21 @@ function handleDrop(e) {
               <PostActivity v-for="p in userPosts" :key="p.id || p._localUid" :post="p" />
             </div>
             <p v-else>Você ainda não fez nenhuma postagem.</p>
+          </div>
+        </transition>
+        <transition name="come" mode="in-out">
+          <div v-if="tab === 'reward'" class="box-reward">
+            <div v-if="recompensasResgatadas.length" class="reward">
+              <div v-for="(r, index) in recompensasResgatadas" :key="index" class="reward-card">
+                <div class="reward-info">
+                  <h3>{{ r.nome }}</h3>
+                  <p>{{ r.descricao }}</p>
+                  <p id="date">Resgatado em: {{ new Date(r.data).toLocaleDateString('pt-BR') }}</p>
+                </div>
+                <img :src="r.Qr" alt="Imagem recompensa" class="reward-img" />
+              </div>
+            </div>
+            <p v-else id="null">Você ainda não resgatou nenhuma recompensa.</p>
           </div>
         </transition>
       </div>
@@ -316,6 +353,7 @@ div .profile-container {
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  object-fit: cover;
 }
 
 .avatar-fallback {
@@ -450,15 +488,15 @@ div .profile-container {
 
 .profile-content nav {
   background: rgba(240, 239, 239, 0.5);
-  border-radius: 15px;
+  border-radius: 25px;
   display: flex;
   width: 100%;
   padding: 0.2vw;
 }
 
 .nav-perfil button {
-  font-weight: 500;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
   border-radius: 20px;
   flex: 1;
   display: flex;
@@ -545,17 +583,18 @@ nav.nav-perfil button:focus,
   background: rgba(177, 6, 177, 0.2);
 }
 
-.mdi-gift-outline,
+.mdi-star-outline,
 #laranja {
   color: rgba(255, 166, 0, 0.856);
 }
 
-.mdi-gift-outline {
+.mdi-star-outline {
   background: rgba(255, 166, 0, 0.2);
 }
 
 .activity,
-.saved {
+.saved,
+.box-reward {
   margin-top: 2vw;
   width: 100%;
   max-height: 28vw;
@@ -563,10 +602,45 @@ nav.nav-perfil button:focus,
 }
 
 .activity p,
-.saved p {
+.saved p,
+#null {
   color: rgb(103, 103, 104);
   text-align: center;
-  margin-top: 4vw;
+  margin-top: 3vw;
+}
+
+.reward {
+  background: white;
+  border: 3px solid rgb(201, 199, 199, 0.3);
+  border-radius: 20px;
+  padding: 1.2vw 1.5vw;
+}
+
+.reward-info h3 {
+  margin: 0;
+  color: #1a1f1a;
+}
+
+.reward-info p {
+  margin: 0.5vw 0 1vw 0;
+  color: rgb(103, 103, 104);
+  font-weight: 600;
+}
+
+#date {
+  font-size: 1rem;
+  margin: 3vw 0 0 0;
+  font-weight: 500;
+}
+
+.reward-card {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reward-img {
+  max-width: 10vw;
+  max-height: 10vw;
 }
 
 .grow-enter-active,
@@ -635,7 +709,6 @@ nav.nav-perfil button:focus,
     font-size: 0.8rem;
   }
 
-
   .profile-form div input,
   .profile-form div textarea {
     font-size: 0.8rem;
@@ -664,7 +737,15 @@ nav.nav-perfil button:focus,
   .stat-label {
     font-size: 1rem;
   }
+
+  p.profile-email {
+    word-break: break-all;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+  }
 }
+
 @media (max-width: 950px) {
   .edit button {
     font-size: 1rem;
@@ -724,4 +805,73 @@ nav.nav-perfil button:focus,
   }
 }
 
+@media (max-width: 500px) {
+  .profile-container {
+    flex-direction: column;
+    gap: 4vw;
+  }
+
+  .profile-card {
+    padding: 1vw 5vw 4vw 5vw;
+  }
+
+  .profile-main h2 {
+    width: 90%;
+  }
+
+  .profile-main img,
+  .profile-main .avatar-fallback {
+    width: 16vw;
+    height: 16vw;
+  }
+
+  .nav-perfil {
+    column-count: 2;
+  }
+
+  .nav-perfil button {
+    font-size: 1rem;
+  }
+
+  .profile-content nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stats {
+    display: block;
+    column-count: 1;
+  }
+
+  .box-stats {
+    width: 100%;
+    height: 22vw;
+  }
+
+  .box-stats span {
+    font-size: 1.7rem;
+    padding: 1vw 2.3vw;
+    border-radius: 50%;
+    margin-right: 2vw;
+  }
+
+  .reward-info h3 {
+    font-size: 1rem;
+  }
+
+  .reward-info p {
+    font-size: 0.9rem;
+  }
+
+  #date {
+    font-size: 0.8rem;
+  }
+
+  .reward-img {
+    max-width: 20vw;
+    max-height: 20vw;
+    align-items: center;
+  }
+}
 </style>

@@ -185,11 +185,13 @@ footer nav ul li {
     }
 
     .logo-footer img {
-    height: 5vw;
-}
-.social a.icon-social {
+        height: 5vw;
+    }
+
+    .social a.icon-social {
         padding: 5px 7px 5px 7px;
     }
+
     .social a {
         font-size: 0.8rem;
     }

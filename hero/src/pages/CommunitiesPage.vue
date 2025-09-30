@@ -4,18 +4,11 @@ import { comunidades, addCommunity, posts } from '../store/posts'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/auth'
 import { useCommunityState } from '../store/communities'
-import { usuario, profileName } from '../store/user'
+import { usuario } from '../store/user'
 
 const router = useRouter()
 const { user } = useAuth()
 const { adicionarComunidadeCriada } = useCommunityState()
-
-const userPosts = computed(() => {
-  const backendName = user.value?.nome || usuario.value.nome
-  const localName = profileName.value
-  return posts.value.filter((p) => p.usuario === backendName || p.usuario === localName)
-})
-const postsCount = computed(() => userPosts.value.length)
 
 const novaComunidade = ref({
   nome: '',
@@ -48,7 +41,6 @@ function criarComunidade() {
     return
   }
 
-  // 🔹 Correção: montar campo doacao
   const comunidade = {
     nome: novaComunidade.value.nome.trim(),
     descricao: novaComunidade.value.descricao.trim(),
@@ -56,9 +48,12 @@ function criarComunidade() {
     maxMembros: novaComunidade.value.maxMembros,
     contato: novaComunidade.value.contato.trim(),
     doacao: novaComunidade.value.tiposDoacoes
-      ? novaComunidade.value.tiposDoacoes.split(',').map((d) => d.trim()).join(', ')
+      ? novaComunidade.value.tiposDoacoes
+          .split(',')
+          .map((d) => d.trim())
+          .join(', ')
       : novaComunidade.value.doacoesInfo.trim(),
-    lider: user.value?.nome || usuario.value.nome || 'Anônimo', // ← aqui definimos o líder
+    lider: user.value?.nome || usuario.value.nome,
   }
 
   addCommunity(comunidade)
@@ -68,7 +63,6 @@ function criarComunidade() {
     user.value.comunidades.push(comunidade.nome)
   }
 
-  // 🔹 Correção: salvar objeto inteiro e não só o nome
   adicionarComunidadeCriada(comunidade)
 
   novaComunidade.value = {
@@ -91,9 +85,9 @@ const comunidadesFiltradas = computed(() => {
   return comunidades.value.filter((c) => c.nome.toLowerCase().includes(filtro.value.toLowerCase()))
 })
 
-// 🔹 Função para contar posts por comunidade
+// Função para contar posts por comunidade
 const contarPosts = (nomeComunidade) => {
-  return posts.value.filter(p => p.comunidade === nomeComunidade).length
+  return posts.value.filter((p) => p.comunidade === nomeComunidade).length
 }
 
 const itemSelecionado = ref(null)
@@ -120,21 +114,32 @@ const fecharModal = () => {
     </div>
     <div class="search">
       <label for="lupa"><span class="mdi mdi-magnify"></span></label>
-      <input type="text" v-model="filtro" placeholder="Buscar comunidades..." class="search-input" />
+      <input
+        type="text"
+        v-model="filtro"
+        placeholder="Buscar comunidades..."
+        class="search-input"
+      />
     </div>
     <div class="comunidades">
       <transition-group name="fade-slide" tag="ul">
-        <li v-for="c in comunidadesFiltradas" :key="c.nome"
-          @click="router.push({ name: 'comunidade', params: { nome: c.nome } })">
+        <li
+          v-for="c in comunidadesFiltradas"
+          :key="c.nome"
+          @click="router.push({ name: 'comunidade', params: { nome: c.nome } })"
+        >
           <h2>{{ c.nome }}</h2>
           <p class="desc">{{ c.descricao }}</p>
           <div class="max-posts">
             <p class="max-memb">Máx. membros: {{ c.maxMembros }}</p>
             <p class="posts">
-              <font-awesome-icon :icon="['far', 'heart']" class="heart-icon" /> {{ contarPosts(c.nome) }} posts
+              <font-awesome-icon :icon="['far', 'heart']" class="heart-icon" />
+              {{ contarPosts(c.nome) }} posts
             </p>
           </div>
-          <p class="lider"><span>Líder: {{ c.lider }}</span></p>
+          <p class="lider">
+            <span>Líder: {{ c.lider }}</span>
+          </p>
         </li>
       </transition-group>
     </div>
@@ -168,18 +173,29 @@ const fecharModal = () => {
 
           <div>
             <label for="contato">Informações de Contato</label>
-            <input v-model="novaComunidade.contato" type="text" placeholder="email@exemplo.com ou telefone" />
+            <input
+              v-model="novaComunidade.contato"
+              type="text"
+              placeholder="email@exemplo.com ou telefone"
+            />
           </div>
 
           <div>
             <label for="doações">Informações para Doação</label>
-            <input v-model="novaComunidade.doacoesInfo" type="text" placeholder="PIX, conta bancária, etc." />
+            <input
+              v-model="novaComunidade.doacoesInfo"
+              type="text"
+              placeholder="PIX, conta bancária, etc."
+            />
           </div>
 
           <div>
             <label for="tipos">Tipos de Doações aceitas</label>
-            <input v-model="novaComunidade.tiposDoacoes" type="text"
-              placeholder="Dinheiro, roupas, alimentos (separados por vírgula)" />
+            <input
+              v-model="novaComunidade.tiposDoacoes"
+              type="text"
+              placeholder="Dinheiro, roupas, alimentos (separados por vírgula)"
+            />
           </div>
 
           <p v-if="erro">{{ erro }}</p>
@@ -191,7 +207,6 @@ const fecharModal = () => {
     </div>
   </section>
 </template>
-
 
 <style scoped>
 section {
@@ -218,7 +233,6 @@ section {
 .box-text button {
   color: white;
   background: #1a1f1a;
-  ;
   cursor: pointer;
   font-weight: 600;
   font-size: 1rem;
@@ -312,6 +326,8 @@ span.mdi-magnify {
 .comunidades ul li {
   padding: 0 2vw;
   flex-direction: column;
+  display: flex;
+  justify-content: space-between;
   width: 24vw;
   border: 3px solid rgb(201, 199, 199, 0.3);
   box-shadow: 0 5px 10px 1px rgba(158, 157, 157, 0.1);
@@ -515,6 +531,48 @@ div.form-comunidade label {
 
   .form-comunidade button {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .box-text button {
+    font-size: 0.7rem;
+    padding: 20px 10px;
+    display: flex;
+  }
+
+  .box-text button span {
+    display: none;
+  }
+
+  .comunidades ul li {
+    width: 100%;
+  }
+
+  .modal {
+    height: 40%;
+    width: 30%;
+  }
+}
+
+@media (max-width: 500px) {
+  .box-text button {
+    font-size: 0.7rem;
+    padding: 20px 10px;
+    display: flex;
+  }
+
+  .box-text button span {
+    display: none;
+  }
+
+  .comunidades ul li {
+    width: 100%;
+  }
+
+  .modal {
+    height: 50%;
+    width: 70%;
   }
 }
 </style>

@@ -2,50 +2,46 @@
 import { useAuth } from '@/composables/auth'
 const { register } = useAuth()
 import { ref } from 'vue'
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router'
 
-
-const router = useRouter();
+const router = useRouter()
 
 const nome = ref(``)
 const email = ref(``)
 const password = ref(``)
 const biografia = ref(``)
 
+const alert = ref(true)
+
 const handleRegister = async () => {
   try {
     await register(nome.value, email.value, password.value, biografia.value)
-    alert(`registro realizado com sucesso!`)
-    router.push("/login");
-  }
-  catch (error) {
-    alert(`não foi possível realizar o registro.`)
+    alert.value = true
+    router.push('/login')
+  } catch {
+    alert.value = true
   }
 }
 
-const showPassword = ref(false);
+const showPassword = ref(false)
 </script>
 
 <template>
   <section>
     <div class="box1">
       <div class="logo">
-        <img src="/logo-branca.png" alt="logo">
+        <img src="/logo-branca.png" alt="logo" />
       </div>
       <h2>Seja o herói da sua comunidade!</h2>
-      <p>No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você encontra pessoas
-        que compartilham da mesma vontade de ajudar e recebe reconhecimento por cada contribuição. Juntos, podemos
-        provar que ser herói é um papel que cabe a todos nós!</p>
+      <p>
+        No HERO, acreditamos que todo ato de bondade tem poder para transformar o mundo. Aqui, você
+        encontra pessoas que compartilham da mesma vontade de ajudar e recebe reconhecimento por
+        cada contribuição. Juntos, podemos provar que ser herói é um papel que cabe a todos nós!
+      </p>
       <ul>
-        <li>
-          Crie uma comunidade
-        </li>
-        <li>
-          Ajude o mundo
-        </li>
-        <li>
-          Seja um herói
-        </li>
+        <li>Crie uma comunidade</li>
+        <li>Ajude o mundo</li>
+        <li>Seja um herói</li>
       </ul>
     </div>
     <div class="box2">
@@ -62,20 +58,31 @@ const showPassword = ref(false);
 
         <label>Senha</label>
         <div class="password-field">
-          <input id="password" :type="showPassword ? 'text' : 'password'" placeholder="password" v-model="password" />
-          <span class="mdi" :class="showPassword ? 'mdi-eye-off' : 'mdi-eye'" @click="showPassword = !showPassword">
+          <input
+            id="password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="password"
+            v-model="password"
+          />
+          <span
+            class="mdi"
+            :class="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            @click="showPassword = !showPassword"
+          >
           </span>
         </div>
         <button type="submit" class="submit">Registrar</button>
-
       </form>
       <div class="register">
-        <p>
-          Já possui uma conta?
-        </p>
-        <router-link to="/login">
-          entrar
-        </router-link>
+        <p>Já possui uma conta?</p>
+        <router-link to="/login"> entrar </router-link>
+      </div>
+    </div>
+    <!-- Modal de erro quando alert = false -->
+    <div v-if="alert === false" class="modal-backdrop">
+      <div class="modal">
+        <p>Não foi possível realizar o registro. Verifique seus dados e tente novamente.</p>
+        <button @click="alert = true">Fechar</button>
       </div>
     </div>
   </section>
@@ -84,6 +91,7 @@ const showPassword = ref(false);
 <style scoped>
 section {
   display: flex;
+  align-items: center;
   height: 100vh;
   padding: 0 8vw 0 8vw;
   color: #f5f5f5;
@@ -94,7 +102,6 @@ section {
 .box1,
 .box2 {
   flex: 1;
-  margin-top: 10vw;
 }
 
 .box1 {
@@ -155,8 +162,8 @@ section .box1 .logo img {
   height: 38vw;
 }
 
-.box2>*:not(.register) {
-  padding: 2vw 0 0 4vw;
+.box2 > *:not(.register) {
+  padding: 1vw 0 0 4vw;
 }
 
 form label,
@@ -169,7 +176,7 @@ form input {
 form label {
   font-weight: 600;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 form input {
@@ -178,10 +185,10 @@ form input {
   border-radius: 25px;
   border: 1px solid rgb(204, 198, 198);
   box-shadow: 0 0 10px rgba(150, 148, 148, 0.5);
-  padding: 10px;
+  padding: 15px;
   margin-bottom: 1.5vw;
   transition: 0.2s;
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 form input:focus,
@@ -258,6 +265,48 @@ form button.submit {
   color: #ffffff;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: rgb(248, 247, 247);
+  color: #333;
+  padding: 1vw;
+  border: 3px solid rgb(218, 215, 215);
+  border-radius: 10px;
+  width: 25vw;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal p {
+  color: #1a1f1a;
+  margin: 0 0 1vw 0;
+  font-size: 1rem;
+}
+
+.modal button {
+  background: rgba(168, 168, 168, 0.1);
+  border: 1px solid rgb(218, 215, 215, 0.5);
+  box-shadow: 0 1px 5px rgb(204, 202, 202, 0.2);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: #1a1f1a;
+  cursor: pointer;
+}
+
+.modal button:hover {
+  background: rgba(168, 168, 168, 0.4);
+}
+
 @media (max-width: 1400px) {
   section {
     padding: 0 5vw;
@@ -305,6 +354,84 @@ form button.submit {
   .register a {
     padding: 0.5vw 1.4vw;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 950px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 850px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 500px) {
+  .box1 {
+    display: none;
+  }
+
+  .box2 {
+    height: 70%;
+    max-width: 80%;
+  }
+
+  section {
+    display: flex;
+    justify-content: center;
+  }
+
+  .box2 label {
+    font-size: 1.3rem;
+  }
+
+  .box2 form {
+    margin: 5vw 0 0 0;
+  }
+
+  form input {
+    width: 85%;
+  }
+
+  .password-field input {
+    width: 120%;
+  }
+
+  .password-field .mdi {
+    right: -10vw;
+  }
+
+  form button.submit {
+    padding: 8px 0;
+    width: 90%;
+    font-size: 1rem;
+    margin: 2vw 0 4vw 0;
+  }
+
+  .register a {
+    padding: 1vw 4vw;
+    font-size: 1.1rem;
+  }
+
+  .register p {
+    font-size: 1.2rem;
+    margin-bottom: 3vw;
+  }
+
+  .modal {
+    width: 60%;
   }
 }
 </style>

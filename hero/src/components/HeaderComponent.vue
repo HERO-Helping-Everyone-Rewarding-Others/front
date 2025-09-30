@@ -1,15 +1,18 @@
 <script setup>
-import { onMounted } from "vue"
+import { onMounted, computed } from "vue"
 import { usuario } from "../store/user"
 import router from "@/router/"
 import { useAuth } from "@/composables/auth"
+import { profileName } from "../store/user"
+
+const displayName = computed(() => profileName.value || user.value?.nome || usuario.value.nome)
+
 
 const emit = defineEmits(['toggleMenu'])
 
 const { user, accessToken, fetchUser, logout } = useAuth()
 
 onMounted(() => {
-    // Se já tem token salvo mas o user ainda não foi buscado
     if (accessToken.value && !user.value) {
         fetchUser().catch(() => { })
     }
@@ -25,7 +28,7 @@ const handleLogout = () => {
 <template>
     <header>
         <nav>
-            <button @click="$emit('toggleMenu')" class="button-sidebar"><font-awesome-icon
+            <button @click="emit('toggleMenu')" class="button-sidebar"><font-awesome-icon
                     :icon="['fas', 'bars']" /></button>
             <h1>
                 <img src="/logo-branca-icon.png" alt="logo" @click="router.push('/')" />
@@ -39,7 +42,7 @@ const handleLogout = () => {
 
             <div class="user">
                 <div class="user-demo">
-                    <p id="user-negrito">{{ (user && (user.nome || user.username)) || "Visitante" }}</p>
+                    <p id="user-negrito">{{ displayName }}</p>
                     <p>{{ usuario.pontos }} pontos</p>
                 </div>
                 <router-link to="/profile" class="button-user">
@@ -86,11 +89,11 @@ header nav ul {
 }
 
 header nav ul li a {
-    padding: 1vw 1.5vw;
+    padding: 10px 15px;
     text-decoration: none;
     border-radius: 10px;
     text-align: center;
-    color: rgb(250, 249, 246);
+    color: rgb(238, 237, 236);
     transition: 0.2s;
     font-weight: 600;
 }
@@ -102,7 +105,7 @@ header nav ul li {
 nav ul li a:hover,
 nav ul li a:focus,
 li .router-link-exact-active {
-    color: #113b74;
+    color: rgb(255, 255, 255);
     background: rgb(250, 249, 246, 0.3);
 }
 
@@ -285,8 +288,9 @@ button.exit-button:hover {
 
 @media (max-width: 500px) {
     header {
-        padding: 6vw 0 0 0;
-        height: 12vw;
+        padding: 2vw 0 1vw 0;
+        height: 5vw;
+        display: flex;
     }
 
     header nav {
@@ -294,8 +298,20 @@ button.exit-button:hover {
     }
 
     header nav ul {
-        display: block;
-        text-align: center;
+        display: none;
+    }
+
+    header img {
+        width: 5vw;
+        height: 5vw;
+    }
+
+    button.exit-button {
+        padding: 2px 5px;
+        font-size: 0.8rem;
+        position: absolute;
+        right: 4vw;
+        border-radius: 5px;
     }
 }
 </style>

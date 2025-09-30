@@ -1,47 +1,55 @@
 <script setup>
-import { ref, computed, onMounted } from "vue"
-import { useAuth } from "../composables/auth"
-import { useRoute, useRouter } from "vue-router"
-import { addPost, posts } from "../store/posts"
-import { ganharPontos } from "../store/user"
-import { useCommunityState } from "../store/communities"
-import PostComponent from "../components/PostComponent.vue"
+import { ref, computed, onMounted, watch } from 'vue'
+import { useAuth } from '../composables/auth'
+import { useRoute, useRouter } from 'vue-router'
+import { addPost, posts } from '../store/posts'
+import { ganharPontos } from '../store/user'
+import { useCommunityState } from '../store/communities'
+import PostComponent from '../components/PostComponent.vue'
 
 const { user, accessToken, fetchUser } = useAuth()
 const route = useRoute()
 const router = useRouter()
 const { entrouNaComunidade, entrarNaComunidade, todasComunidades } = useCommunityState()
 
-const comunidadeNome = route.params.nome
-const conteudo = ref("")
-const imagemLink = ref("")
+const comunidadeNome = computed(() => route.params.nome)
+const conteudo = ref('')
+const imagemLink = ref('')
 const arquivoImagem = ref(null)
-const previewImagem = ref("")
-const usuarioLogado = computed(() => user.value?.nome || "")
+const previewImagem = ref('')
+const usuarioLogado = computed(() => user.value?.nome || '')
 const membro = ref(false)
+const mostrarMembro = ref(false)
 
-// 🔹 comunidade atual
-const comunidade = computed(() =>
-  todasComunidades.value.find(c => c.nome === comunidadeNome) || null
+const comunidade = computed(
+  () => todasComunidades.value.find((c) => c.nome === comunidadeNome.value) || null,
 )
 
 const postsDaComunidade = computed(() =>
-  posts.value.filter(p => p.comunidade === comunidadeNome)
+  posts.value.filter((p) => p.comunidade === comunidadeNome.value),
 )
 
 onMounted(async () => {
   if (accessToken.value && !user.value) await fetchUser()
   if (!user.value.comunidades) user.value.comunidades = []
-  membro.value = entrouNaComunidade(comunidadeNome)
+  membro.value = entrouNaComunidade(comunidadeNome.value)
 })
 
+watch(
+  () => route.params.nome,
+  async (novoNome) => {
+    membro.value = entrouNaComunidade(novoNome)
+  },
+)
+
 function entrar() {
-  entrarNaComunidade(comunidadeNome)
+  entrarNaComunidade(comunidadeNome.value)
   membro.value = true
-  alert(`Você entrou na comunidade ${comunidadeNome}! Agora você pode postar.`)
+  mostrarMembro.value = true
+  setTimeout(() => {
+    mostrarMembro.value = false
+  }, 3000)
 }
-
-
 
 function selecionarImagem(event) {
   const file = event.target.files[0]
@@ -51,20 +59,25 @@ function selecionarImagem(event) {
   }
 }
 
+const error = ref(null)
+
 async function postar() {
   if (!conteudo.value || !usuarioLogado.value) {
-    alert("Você precisa escrever algo para postar.")
+    error.value = 'Você precisa escrever algo para postar.'
     return
   }
 
   if (!membro.value) {
-    alert("Você precisa entrar na comunidade antes de postar.")
+    alert('Você precisa entrar na comunidade antes de postar.')
     return
   }
 
+  error.value = null
+
   addPost({
+    usuarioId: user.value?.id, // 🔹 id do usuário logado
     usuario: usuarioLogado.value,
-    comunidade: comunidadeNome,
+    comunidade: comunidadeNome.value,
     pontos: 10,
     verificado: false,
     tempo: new Date().toISOString(),
@@ -73,26 +86,53 @@ async function postar() {
     curtidas: 0,
     comentarios: 0,
     compartilhamentos: 0,
-    comentariosLista: []
+    comentariosLista: [],
   })
 
-  ganharPontos(20)
-  conteudo.value = ""
-  imagemLink.value = ""
+  ganharPontos(10)
+  conteudo.value = ''
+  imagemLink.value = ''
   arquivoImagem.value = null
-  previewImagem.value = ""
+  previewImagem.value = ''
 }
 
-const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 const mostrarModalDoacao = ref(false)
 
-const abrirModal = () => { mostrarModal.value = true }
-const fecharModal = () => { mostrarModal.value = false }
+const abrirModal = () => {
+  mostrarModal.value = true
+}
+const fecharModal = () => {
+  mostrarModal.value = false
+  conteudo.value = ''
+  imagemLink.value = ''
+  arquivoImagem.value = null
+  previewImagem.value = ''
+  error.value = null
+}
 
-const abrirModalDoacao = () => { mostrarModalDoacao.value = true }
-const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
+const abrirModalDoacao = () => {
+  mostrarModalDoacao.value = true
+}
+const fecharModalDoacao = () => {
+  mostrarModalDoacao.value = false
+}
 
+const mostrarConfirmar = ref(false)
+const postParaRemover = ref(null)
+
+function pedirConfirmacao(post) {
+  postParaRemover.value = post
+  mostrarConfirmar.value = true
+}
+
+function confirmarExclusao() {
+  const index = posts.value.findIndex(
+    (p) => p.usuario === postParaRemover.value.usuario && p.tempo === postParaRemover.value.tempo,
+  )
+  if (index !== -1) posts.value.splice(index, 1)
+  mostrarConfirmar.value = false
+}
 </script>
 
 <template>
@@ -104,7 +144,6 @@ const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
     </div>
 
     <div v-if="comunidade" class="box-user">
-
       <div class="info">
         <h2>{{ comunidade.nome }}</h2>
         <p class="desc">{{ comunidade.descricao }}</p>
@@ -114,33 +153,42 @@ const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
 
         <div class="numbers">
           <p>Membros: máx. {{ comunidade.maxMembros }}</p>
-          <p><font-awesome-icon :icon="['far', 'heart']" style="color: red;" /> {{ postsDaComunidade.length }} postagens
+          <p>
+            <font-awesome-icon :icon="['far', 'heart']" style="color: red" />
+            {{ postsDaComunidade.length }} postagens
           </p>
         </div>
       </div>
 
       <div class="buttons">
         <div v-if="!membro" class="in">
-          <button @click="abrirModalDoacao" class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
+          <button @click="abrirModalDoacao" class="doar">
+            <span class="mdi mdi-currency-usd"></span> Doar
+          </button>
           <button @click="entrar" class="postar">Entrar</button>
         </div>
         <div v-else>
           <div class="member">
             <p>Membro</p>
           </div>
-          <button @click="abrirModalDoacao" class="doar"><span class="mdi mdi-currency-usd"></span> Doar</button>
-          <button @click="abrirModal" class="postar"><span class="mdi mdi-plus"></span> Postar</button>
+          <button @click="abrirModalDoacao" class="doar">
+            <span class="mdi mdi-currency-usd"></span> Doar
+          </button>
+          <button @click="abrirModal" class="postar">
+            <span class="mdi mdi-plus"></span> Postar
+          </button>
         </div>
       </div>
     </div>
     <div v-if="mostrarModal" class="show-post" @click.self="fecharModal">
       <div class="new-post">
         <h2>Nova Postagem</h2>
-        <p>
-          Compartilhe suas atividades e contribuições para a comunidade.
-        </p>
-        <textarea v-model="conteudo"
-          placeholder="Compartilhe suas atividades e contribuições para a comunidade..."></textarea>
+        <p>Compartilhe suas atividades e contribuições para a comunidade.</p>
+        <textarea
+          v-model="conteudo"
+          placeholder="Compartilhe suas atividades e contribuições para a comunidade..."
+        ></textarea>
+        <div v-if="error" class="error">{{ error }}</div>
         <div class="img-post">
           <div class="image-upload">
             <label v-if="!previewImagem" class="upload-label">
@@ -160,13 +208,9 @@ const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
     <div v-if="mostrarModalDoacao" class="doação" @click.self="fecharModalDoacao">
       <div class="new-doação">
         <h2>Fazer Doação</h2>
-        <p>
-          Ajude a comunidade Horta Comunitária com sua doação e faça a diferença!
-        </p>
+        <p>Ajude a comunidade Horta Comunitária com sua doação e faça a diferença!</p>
         <div class="info-doação">
-          <h3>
-            Informações para doação:
-          </h3>
+          <h3>Informações para doação:</h3>
           <p>
             {{ comunidade.contato }}
           </p>
@@ -175,7 +219,7 @@ const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
           {{ comunidade.doacao }}
         </p>
         <div class="buttons-post">
-          <button class="postar" @click.self="fecharModalDoacao">Fechar</button>
+          <button @click.self="fecharModalDoacao" class="postar">Fechar</button>
         </div>
       </div>
     </div>
@@ -183,15 +227,83 @@ const fecharModalDoacao = () => { mostrarModalDoacao.value = false }
     <div v-if="postsDaComunidade.length">
       <div v-for="p in postsDaComunidade" :key="p.tempo + p.usuario" class="feed">
         <PostComponent :post="p" />
+        <div v-if="p.usuario === usuarioLogado" class="delete-button">
+          <button @click="pedirConfirmacao(p)">
+            <font-awesome-icon :icon="['fas', 'xmark']" />
+          </button>
+        </div>
       </div>
     </div>
-    <p v-else class="text-gray-500">Nenhum post nesta comunidade ainda.</p>
+    <p v-else>Nenhum post nesta comunidade ainda.</p>
+
+    <Transition name="slide">
+      <div v-if="mostrarMembro" class="modal-backdrop">
+        <div class="modal-membro">
+          <h2>Você entrou na comunidade {{ comunidade.nome }}!</h2>
+          <p>Agora pode fazer uma postagem.</p>
+        </div>
+      </div>
+    </Transition>
+
+    <div v-if="mostrarConfirmar" class="backdrop">
+      <div class="modal-delete">
+        <p>Deseja mesmo excluir esta postagem?</p>
+        <button @click="mostrarConfirmar = false" class="doar">Não</button>
+        <button @click="confirmarExclusao" class="postar">Sim</button>
+      </div>
+    </div>
   </section>
 </template>
 
 <style scoped>
 section {
   padding: 0 12vw;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-delete {
+  background: rgb(252, 250, 250);
+  padding: 0.5vw 2vw;
+  border: 2px solid rgb(218, 215, 215);
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(158, 158, 158, 0.2);
+}
+
+.modal-delete p {
+  font-size: 1rem;
+  color: #1a1f1a;
+  margin: 1vw 0 0 0;
+}
+
+.modal-delete button {
+  font-size: 1rem;
+  padding: 5px 15px;
+  margin: 1vw 0.5vw;
+  cursor: pointer;
+}
+
+.delete-button button {
+  background: none;
+  border: none;
+  color: grey;
+  font-size: 1.5rem;
+  position: absolute;
+  right: 13.5vw;
+  margin-top: 1.3vw;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.delete-button button:hover {
+  color: rgb(90, 89, 89);
 }
 
 .feed {
@@ -215,6 +327,11 @@ section {
   gap: 4vw;
 }
 
+.error {
+  color: rgb(100, 99, 99);
+  font-size: 1rem;
+  margin-top: 0.5vw;
+}
 
 .fechar {
   position: absolute;
@@ -250,6 +367,11 @@ section {
   color: #1a1f1a;
   margin: 4vw 0 1.5vw 0;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button-back button:hover {
+  background: rgba(99, 98, 98, 0.1);
 }
 
 .info {
@@ -302,6 +424,11 @@ section {
   border: 1px solid rgb(218, 215, 215, 0.5);
   border-radius: 10px;
   font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.doar:hover {
+  background: rgba(95, 94, 94, 0.1);
 }
 
 .postar {
@@ -310,6 +437,11 @@ section {
   border: 1px solid rgb(218, 215, 215, 0.5);
   border-radius: 10px;
   font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.postar:hover {
+  background: #2d2e2d;
 }
 
 .member {
@@ -345,7 +477,8 @@ section {
   background: rgba(27, 35, 83, 0.1);
 }
 
-.show-post, .doação {
+.show-post,
+.doação {
   background: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
@@ -357,23 +490,30 @@ section {
   align-items: center;
 }
 
+.show-post,
+.doação,
+.backdrop,
+.modal-backdrop {
+  z-index: 1000;
+}
 
 .new-post {
   background: white;
   border-radius: 15px;
   padding: 2vw 2vw;
   width: 35vw;
-  height: 22vw;
   z-index: 100;
   animation: popIn 0.3s ease forwards;
 }
 
-.new-post h2 {
+.new-post h2,
+.new-doação h2 {
   font-size: 1.5rem;
   margin: 0;
 }
 
-.new-post p {
+.new-post p,
+.new-doação p {
   font-size: 1.2rem;
   color: rgb(100, 99, 99);
   margin: 0.5vw 0 1vw 0;
@@ -381,20 +521,19 @@ section {
 
 .image-upload {
   gap: 0.8rem;
-  margin: 2vw 0;
+  margin: 1.5vw 0 0 0;
 }
 
-.upload-label input[type="file"] {
+.upload-label input[type='file'] {
   display: none;
 }
 
 .preview-image {
-  max-width: 20vw;
-  max-height: 8vw;
+  width: 12vw;
+  height: 12vw;
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid rgb(204, 204, 204, 0.5);
-  position: absolute;
 }
 
 textarea {
@@ -414,20 +553,20 @@ textarea::placeholder {
 
 .show-post label {
   border: 2px dashed #aaa;
-  padding: 15px;
+  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
   font-size: 0.9rem;
   color: #5e5e5e;
   font-weight: 600;
-  position: absolute;
 }
 
 .buttons-post {
-  display: flex;       
-  gap: 10px;         
+  display: flex;
+  gap: 10px;
   justify-content: flex-end;
+  margin-top: 2vw;
 }
 
 .buttons-post button {
@@ -450,22 +589,12 @@ textarea::placeholder {
   margin: 0;
 }
 
-.info-doação p {
-  margin: 0;
-}
-
 .new-doação {
   background: white;
   border-radius: 15px;
   padding: 2vw 2vw;
   width: 35vw;
-  height: 22vw;
-  z-index: 100;
   animation: popIn 0.3s ease forwards;
-}
-
-.new-doação h2 {
-  margin: 0;
 }
 
 .new-doação p {
@@ -473,153 +602,322 @@ textarea::placeholder {
   color: rgb(100, 99, 99);
 }
 
-@media (max-width: 1400px) {
-.member p {
-  font-size: 0.7rem;
+/* Transição inicial */
+.fade-slide-enter-active {
+  transition: transform 0.6s linear;
 }
 
-.new-post h2 {
-  font-size: 1.3rem;
+.fade-slide-leave-active {
+  transition: 0s;
 }
 
-.new-post p {
-  font-size: 0.9rem;
+.fade-slide-enter-active {
+  transition: transform 0.3s linear;
 }
 
-textarea {  
-  font-size: 0.8rem;
+.fade-slide-leave-active {
+  transition: 0s;
 }
 
-.buttons-post button {
-  font-size: 0.8rem;
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
 }
 
-.info-doação h3 {
-  font-size: 0.9rem;
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.new-doação h2 {
-  font-size: 1.2rem;
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.7s ease;
 }
 
-.new-doação p {
+/* estado inicial da entrada */
+.slide-enter-from {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* estado final da entrada */
+.slide-enter-to {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* estado inicial da saída */
+.slide-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* estado final da saída */
+.slide-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* para o backdrop ficar embaixo */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* modal no rodapé */
+  padding-bottom: 40px;
+  pointer-events: none;
+}
+
+.modal-membro {
+  background: rgb(252, 250, 250);
+  padding: 0.5vw 1vw;
+  border: 3px solid rgb(218, 215, 215);
+  border-radius: 10px;
+  width: 30vw;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(68, 68, 68, 0.2);
+}
+
+.modal-membro h2 {
+  color: #1a1f1a;
   font-size: 1rem;
-}
-.buttons button {
-  font-size: 0.8rem;
-  padding: 8px 12px;
+  margin: 0.5vw 0;
 }
 
-.info h2 {
-  font-size: 1.3rem;
+.modal-membro p {
+  color: #1a1f1a;
+  font-size: 1rem;
+  margin: 0 0 0.5vw 0;
+  padding: 0;
 }
 
-.desc {
-  font-size: 0.9rem;
-}
+@media (max-width: 1400px) {
+  .member p {
+    font-size: 0.7rem;
+  }
 
-.motiv {
-  font-size: 0.9rem;
-}
+  .new-post h2 {
+    font-size: 1.3rem;
+  }
 
-.infos {
-  font-size: 0.8rem;
-}
+  .new-post p {
+    font-size: 0.9rem;
+  }
 
-.numbers {
-  font-size: 0.9rem;
-}
+  textarea {
+    font-size: 0.8rem;
+  }
 
-.buttons button {
-  font-size: 0.8rem;
-}
+  .buttons-post button {
+    font-size: 0.8rem;
+  }
 
-.member p {
-  font-size: 0.7rem;
-}
- .button-back button {
-  font-size: 0.8rem;
-}
+  .info-doação h3 {
+    font-size: 0.9rem;
+  }
+
+  .new-doação h2 {
+    font-size: 1.2rem;
+  }
+
+  .new-doação p {
+    font-size: 1rem;
+  }
+
+  .buttons button {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+
+  .info h2 {
+    font-size: 1.3rem;
+  }
+
+  .desc {
+    font-size: 0.9rem;
+  }
+
+  .motiv {
+    font-size: 0.9rem;
+  }
+
+  .infos {
+    font-size: 0.8rem;
+  }
+
+  .numbers {
+    font-size: 0.9rem;
+  }
+
+  .buttons button {
+    font-size: 0.8rem;
+  }
+
+  .member p {
+    font-size: 0.7rem;
+  }
+
+  .button-back button {
+    font-size: 0.8rem;
+  }
+
+  .modal-delete {
+    width: 25vw;
+  }
+
+  .modal-membro {
+    width: 30vw;
+  }
+
+  .modal-delete p,
+  .modal-membro p {
+    font-size: 0.8rem;
+  }
+
+  .modal-delete h2,
+  .modal-membro h2 {
+    font-size: 0.8rem;
+  }
+
+  .modal-delete button {
+    font-size: 0.8rem;
+  }
+
+  .delete-button button {
+    font-size: 1.2rem;
+  }
 }
 
 @media (max-width: 950px) {
   .button-back button {
-  font-size: 0.9rem;
-  padding: 8px 23px;
+    font-size: 0.9rem;
+    padding: 8px 23px;
+  }
+
+  .info h2 {
+    font-size: 1.3rem;
+  }
+
+  .desc {
+    font-size: 0.9rem;
+  }
+
+  .motiv {
+    font-size: 0.9rem;
+  }
+
+  .infos {
+    font-size: 0.8rem;
+  }
+
+  .numbers {
+    font-size: 0.9rem;
+  }
+
+  .buttons button {
+    font-size: 0.8rem;
+  }
+
+  .member p {
+    font-size: 0.7rem;
+  }
+
+  .new-post h2 {
+    font-size: 1.3rem;
+  }
+
+  .new-post p {
+    font-size: 0.9rem;
+  }
+
+  textarea {
+    font-size: 0.8rem;
+  }
+
+  .buttons-post button {
+    font-size: 0.8rem;
+  }
+
+  .info-doação h3 {
+    font-size: 0.9rem;
+  }
+
+  .new-doação h2 {
+    font-size: 1.2rem;
+  }
+
+  .new-doação p {
+    font-size: 1rem;
+    color: rgb(100, 99, 99);
+  }
 }
 
-.info h2 {
-  font-size: 1.3rem;
-}
+@media (max-width: 500px) {
+  .box-user {
+    display: block;
+  }
 
-.desc {
-  font-size: 0.9rem;
-}
+  .member {
+    margin-right: 1vw;
+  }
 
-.motiv {
-  font-size: 0.9rem;
-}
+  .member p {
+    width: 10vw;
+  }
 
-.infos {
-  font-size: 0.8rem;
-}
+  .buttons {
+    margin-bottom: 3vw;
+  }
 
-.numbers {
-  font-size: 0.9rem;
-}
+  .modal-membro {
+    width: 60%;
+  }
 
-.buttons button {
-  font-size: 0.8rem;
-}
+  .new-post {
+    width: 80%;
+  }
 
-.member p {
-  font-size: 0.7rem;
-}
+  .new-post h2,
+  .new-doação h2 {
+    font-size: 1.2rem;
+  }
 
-.new-post h2 {
-  font-size: 1.3rem;
-}
+  .new-post p,
+  .new-doação p {
+    font-size: 1rem;
+  }
 
-.new-post p {
-  font-size: 0.9rem;
-}
+  .new-post .buttons-post {
+    margin-top: 20vw;
+  }
 
-textarea {  
-  font-size: 0.8rem;
-}
+  .show-post label {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
 
-.buttons-post button {
-  font-size: 0.8rem;
-}
+  .preview-image {
+    max-width: 20vw;
+    max-height: 20vw;
+    position: absolute;
+  }
 
-.info-doação h3 {
-  font-size: 0.9rem;
-}
+  .new-doação {
+    width: 80%;
+    padding: 2vw 4vw;
+  }
 
-.new-doação {
-  background: white;
-  border-radius: 15px;
-  padding: 2vw 2vw;
-  width: 35vw;
-  height: 22vw;
-  z-index: 100;
-  animation: popIn 0.3s ease forwards;
-}
+  .new-doação .buttons-post {
+    margin: 2vw 0;
+  }
 
-.new-doação h2 {
-  font-size: 1.2rem;
-}
-
-.new-doação p {
-  font-size: 1rem;
-  color: rgb(100, 99, 99);
-}
-
-.buttons button {
-  font-size: 0.8rem;
-  padding: 6px 9px;
-  margin-left: 0.5vw;
-  cursor: pointer;
-}
+  .delete-button button {
+    font-size: 1rem;
+    margin-top: 2vw;
+  }
 }
 </style>

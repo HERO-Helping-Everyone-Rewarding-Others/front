@@ -199,14 +199,16 @@ main.feed {
 
 @media (max-width: 500px) {
   .welcome ul {
-  display: block;
-  margin: 0 auto;
-  width: 50%;
-}
-.welcome ul li {
-  margin: 2vw 0;
-}
-.mdi-account-group-outline {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+  }
+
+  .welcome ul li {
+    margin: 2vw 0;
+  }
+
+  .mdi-account-group-outline {
     padding: 5px 8px;
   }
 
@@ -217,6 +219,7 @@ main.feed {
   .mdi-eye-outline {
     padding: 5px 8px;
   }
+
   .welcome li .number {
     font-size: 1.4rem;
   }
@@ -228,5 +231,7 @@ main.feed {
   .welcome li span {
     font-size: 1rem;
   }
+
+
 }
 </style>
