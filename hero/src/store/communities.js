@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref } from 'vue'
 
 const comunidadesEntradas = ref([])
 
@@ -26,7 +26,7 @@ const todasComunidades = ref([
     motivacao: 'Garantir alimentação digna para todos, principalmente em momentos de crise.',
     maxMembros: 500,
     contato: 'maossolidarias@email.com / (11) 98888-0000',
-    doacao: 'Alimentos, água, dinheiro, produtos de higiene'
+    doacao: 'Alimentos, água, dinheiro, produtos de higiene',
   },
   {
     nome: 'Educa Jovem',
@@ -64,10 +64,10 @@ export function useCommunityState() {
 
   // agora salva comunidade inteira
   function adicionarComunidadeCriada(comunidade) {
-    if (!todasComunidades.value.some(c => c.nome === comunidade.nome)) {
+    if (!todasComunidades.value.some((c) => c.nome === comunidade.nome)) {
       todasComunidades.value.push({
         ...comunidade,
-        id: Date.now()
+        id: Date.now(),
       })
     }
     if (!comunidadesEntradas.value.includes(comunidade.nome)) {
@@ -80,6 +80,6 @@ export function useCommunityState() {
     entrarNaComunidade,
     adicionarComunidadeCriada,
     comunidadesEntradas,
-    todasComunidades
+    todasComunidades,
   }
 }

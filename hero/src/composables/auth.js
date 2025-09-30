@@ -1,16 +1,14 @@
-// src/composables/auth.js
 import { ref } from "vue";
 import axios from "axios";
 import api from "@/services/axios";
 
 const API = "http://localhost:8000/";
 
-// === SINGLETONS (compartilhados por toda a app) ===
+
 const accessToken = ref(localStorage.getItem("access") || "");
 const refreshToken = ref(localStorage.getItem("refresh") || "");
 const user = ref(null);
 
-// === Ações ===
 const login = async (email, password) => {
   try {
     const res = await axios.post(`${API}token/`, { email, password });
@@ -37,7 +35,7 @@ const fetchUser = async () => {
     const res = await api.get("/UsuarioLogado/", {
       headers: { Authorization: `Bearer ${accessToken.value}` },
     });
-    user.value = res.data; // { id, nome/username, ... }
+    user.value = res.data; 
   } catch (error) {
     console.log("erro ao buscar usuário:", error.response?.data || error.message);
     user.value = null;

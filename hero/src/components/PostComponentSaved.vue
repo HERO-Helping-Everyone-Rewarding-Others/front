@@ -5,15 +5,7 @@ import { profileName, profileAvatar } from '../store/user'
 import { toggleSave, isSaved } from '../store/saved' // novo
 
 
-const imagemExpandida = ref(null)
 
-function abrirImagem(img) {
-  imagemExpandida.value = img
-}
-
-function fecharImagem() {
-  imagemExpandida.value = null
-}
 
 const props = defineProps({ post: Object })
 
@@ -21,17 +13,14 @@ const { user, accessToken, fetchUser } = useAuth()
 
 const postId = computed(() => {
   if (props.post.id) return props.post.id
-  if (props.post._localUid) return props.post._localUid
+  if (props.post._localId) return props.post._localId
 
   const newId = `${Date.now()}.${Math.random().toString(36).slice(2, 8)}`
-  props.post._localUid = newId
   return newId
 })
 
 const likes = ref(props.post.curtidas || 0)
 const liked = ref(false)
-
-const newComment = ref('')
 const comentarios = ref([])
 
 const likedKey = computed(() => `liked_post_${postId.value}`)
@@ -58,8 +47,6 @@ onMounted(async () => {
   }
 })
 
-const persistComments = () =>
-  localStorage.setItem(commentsKey.value, JSON.stringify(comentarios.value))
 
 const toggleLike = () => {
   liked.value ? likes.value-- : likes.value++
@@ -72,25 +59,6 @@ function handleSave() {
   toggleSave(props.post)
 }
 
-
-const addComment = () => {
-  if (!newComment.value.trim()) return
-
-  const usuarioNome = profileName.value || user.value?.nome || 'Usuário Anônimo'
-
-  comentarios.value.push({
-    id: Date.now(),
-    usuario: usuarioNome,
-    conteudo: newComment.value,
-    tempo: 'agora',
-    curtidas: 0,
-    liked: false,
-  })
-
-  newComment.value = ''
-  persistComments()
-}
-
 function getUserColor(name) {
   const colors = ['#E8BCE0', '#247063', '#05232B', '#040F45', '#88B0B8', '#E36BD1', '#b00000', '#6321d9', '#EDC01C']
   let hash = 0
@@ -99,6 +67,16 @@ function getUserColor(name) {
   }
   const index = Math.abs(hash) % colors.length
   return colors[index]
+}
+
+const link = ref(false)
+
+function copiarLink() {
+  const linkParaCopiar = 'https://anotepad.com/'; // O link que você quer copiar
+  navigator.clipboard.writeText(linkParaCopiar)
+    .then(() => {
+      link.value = true
+    })
 }
 </script>
 
@@ -151,11 +129,6 @@ function getUserColor(name) {
       <p>{{ post.conteudo }}</p>
     </div>
 
-    <div v-if="imagemExpandida" class="lightbox" @click.self="fecharImagem">
-      <img :src="imagemExpandida" class="lightbox-img" />
-      <button class="fechar" @click="fecharImagem">✕</button>
-    </div>
-
     <div class="social">
       <div class="likes">
         <a @click="toggleLike" class="like-btn">
@@ -166,7 +139,12 @@ function getUserColor(name) {
         <a>
           <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
         </a>
-        <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
+        <div class="share-link">
+          <a @click="copiarLink"><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
+          <div v-if="link == true">
+            <p>Link copiado!</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -243,66 +221,22 @@ div.pontos-info .pontos {
   margin-top: 3vw;
 }
 
-.post-img img {
-  width: 100%;
-  max-height: 25vw;
-  object-fit: cover;
-  border: 1px solid rgb(218, 215, 215, 0.5);
-  border-radius: 12px;
-  display: block;
-}
-
-.lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.lightbox-img {
-  max-width: 70vw;
-  max-height: 70vh;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  transform: scale(0.8);
-  animation: popIn 0.3s ease forwards;
-  cursor: zoom-out;
-}
-
-.fechar {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 2rem;
-  color: white;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-@keyframes popIn {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 .social {
   display: flex;
   justify-content: space-between;
   font-size: 1.3rem;
   color: grey;
   margin: 1vw 0;
+}
+
+.share-link {
+  display: flex;
+}
+
+.share-link p {
+  margin: 0 1vw;
+  font-size: 1.1rem;
+  color: rgb(118, 118, 119);
 }
 
 .likes {
@@ -349,65 +283,9 @@ div.pontos-info .pontos {
   color: rgba(243, 227, 6, 0.925);
 }
 
-.comment-user p.avatar {
-  width: 3vw;
-  height: 3vw;
-  border-radius: 100%;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: 700;
-  margin-right: 1vw;
-}
-
-.comment-user {
-  display: flex;
-  margin-top: 0;
-}
-
-.c-user {
-  margin: 1vw 0 0.2vw 0;
-}
-
-.comment-box {
-  margin: 1vw 0;
-  padding-bottom: 1vw;
-  border-bottom: 1px solid rgb(204, 196, 196, 0.5);
-  display: flex;
-  justify-content: space-between;
-
-}
-
-.comment-box input {
-  border: none;
-  width: 100%;
-  outline: none;
-  font-size: 1rem;
-  background: transparent;
-}
-
-.comment-box button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  color: rgb(101, 143, 235);
-}
-
 .avatar-img-small {
   width: 3.2vw;
   height: 3.2vw;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 1vw;
-}
-
-.comment-avatar-img {
-  width: 3vw;
-  height: 3vw;
   border-radius: 50%;
   object-fit: cover;
   margin-right: 1vw;
@@ -419,6 +297,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 1400px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.8rem;
@@ -442,6 +321,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 950px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.7rem;
@@ -465,4 +345,15 @@ div.pontos-info .pontos {
   }
 }
 
+@media (max-width: 500px) {
+  .post-img p {
+    margin: 10vw 0 0 0;
+  }
+
+  .perfil-user p {
+    width: 5vw;
+    height: 5vw;
+    font-size: 0.8rem;
+  }
+}
 </style>

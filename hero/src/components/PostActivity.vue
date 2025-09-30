@@ -2,18 +2,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useAuth } from '../composables/auth'
 import { profileName, profileAvatar } from '../store/user'
-import { toggleSave, isSaved } from '../store/saved' // novo
+import { toggleSave, isSaved } from '../store/saved'
 
-
-const imagemExpandida = ref(null)
-
-function abrirImagem(img) {
-  imagemExpandida.value = img
-}
-
-function fecharImagem() {
-  imagemExpandida.value = null
-}
 
 const props = defineProps({ post: Object })
 
@@ -21,17 +11,15 @@ const { user, accessToken, fetchUser } = useAuth()
 
 const postId = computed(() => {
   if (props.post.id) return props.post.id
-  if (props.post._localUid) return props.post._localUid
+  if (props.post._localId) return props.post._localId
 
   const newId = `${Date.now()}.${Math.random().toString(36).slice(2, 8)}`
-  props.post._localUid = newId
   return newId
 })
 
 const likes = ref(props.post.curtidas || 0)
 const liked = ref(false)
 
-const newComment = ref('')
 const comentarios = ref([])
 
 const likedKey = computed(() => `liked_post_${postId.value}`)
@@ -58,8 +46,6 @@ onMounted(async () => {
   }
 })
 
-const persistComments = () =>
-  localStorage.setItem(commentsKey.value, JSON.stringify(comentarios.value))
 
 const toggleLike = () => {
   liked.value ? likes.value-- : likes.value++
@@ -70,25 +56,6 @@ const toggleLike = () => {
 
 function handleSave() {
   toggleSave(props.post)
-}
-
-
-const addComment = () => {
-  if (!newComment.value.trim()) return
-
-  const usuarioNome = profileName.value || user.value?.nome || 'Usuário Anônimo'
-
-  comentarios.value.push({
-    id: Date.now(),
-    usuario: usuarioNome,
-    conteudo: newComment.value,
-    tempo: 'agora',
-    curtidas: 0,
-    liked: false,
-  })
-
-  newComment.value = ''
-  persistComments()
 }
 
 function getUserColor(name) {
@@ -161,16 +128,6 @@ function getUserColor(name) {
           <font-awesome-icon :icon="['far', 'comment']" class="comment" /> {{ comentarios.length }}
         </a>
         <a><span id="link" class="mdi mdi-share-variant-outline"></span> </a>
-      </div>
-    </div>
-
-    <div v-for="c in comentarios" :key="c.id" class="comment-user">
-      <div>
-        <template v-if="profileAvatar && (c.usuario === profileName || c.usuario === user?.nome)">
-          <img :src="profileAvatar" class="comment-avatar-img" />
-        </template>
-        <template v-else>
-        </template>
       </div>
     </div>
   </div>
@@ -343,7 +300,7 @@ div.pontos-info .pontos {
 .salvos {
   font-size: 1.5rem;
   cursor: pointer;
-   color: grey;
+  color: grey;
 }
 
 .bookmark:hover {
@@ -424,6 +381,7 @@ div.pontos-info .pontos {
 }
 
 @media (max-width: 1400px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.8rem;
@@ -445,7 +403,9 @@ div.pontos-info .pontos {
     font-size: 0.8rem;
   }
 }
+
 @media (max-width: 950px) {
+
   div.pontos-info .verificado,
   div.pontos-info .pontos {
     font-size: 0.7rem;
@@ -466,6 +426,18 @@ div.pontos-info .pontos {
 
   .comment-box button {
     font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .post-img p {
+    margin: 10vw 0 0 0;
+  }
+
+  .perfil-user p {
+    width: 5vw;
+    height: 5vw;
+    font-size: 0.8rem;
   }
 }
 </style>

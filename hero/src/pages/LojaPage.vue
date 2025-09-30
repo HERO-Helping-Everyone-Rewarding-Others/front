@@ -1,46 +1,128 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { usuario, gastarPontos } from '../store/user'
-import { TransitionGroup } from 'vue'
+import { usuario, gastarPontos, adicionarRecompensa } from '../store/user'
 
-// Itens disponíveis
 const itens = ref([
-  { id: 1, nome: 'Gift Card Amazon R$ 50', preco: 500, descricao: 'Vale-presente para compras na Amazon', disponivel: 280, img: '/amazon.png', categoria: 'gift' },
-  { id: 2, nome: 'Desconto 20% iFood', preco: 200, descricao: 'Cupom de desconto para pedidos no iFood', disponivel: 50, img: '/ifood.png', categoria: 'desconto' },
-  { id: 3, nome: 'PIX R$ 50', preco: 300, descricao: 'Tranferência PIX direto para sua conta', disponivel: 100, img: '/pix.png', categoria: 'dinheiro' },
-  { id: 4, nome: 'Doação para ONGs', preco: 100, descricao: 'Doe seus pontos para ONGs parceiras', disponivel: 999, img: '/ong.png', categoria: 'doacao' },
-  { id: 5, nome: 'Gift Card Spotify R$ 30', preco: 350, descricao: 'Assinatura premium do Spotify', disponivel: 15, img: '/spotify.png', categoria: 'gift' },
-  { id: 6, nome: 'Desconto 15% Uber', preco: 150, descricao: 'Cupom de desconto para corridas Uber', disponivel: 75, img: '/uber.png', categoria: 'desconto' },
-  { id: 7, nome: 'Gift Card Google Play R$ 30', preco: 300, descricao: 'Gift card de 30 reais na Google Play', disponivel: 40, img: '/play.png', categoria: 'gift' },
-  { id: 8, nome: 'Desconto 30% Starbucks', preco: 100, descricao: 'Cupom de desconto para pedidos no Starbuks', disponivel: 100, img: '/starbucks.png', categoria: 'desconto' }
+  {
+    id: 1,
+    nome: 'Gift Card Amazon R$ 50',
+    preco: 500,
+    descricao: 'Vale-presente para compras na Amazon',
+    disponivel: 280,
+    Qr: './QRcodes/amazon.png',
+    img: '/amazon.png',
+    categoria: 'gift',
+  },
+  {
+    id: 2,
+    nome: 'Desconto 20% iFood',
+    preco: 200,
+    descricao: 'Cupom de desconto para pedidos no iFood',
+    disponivel: 50,
+    Qr: '/QRcodes/ifood.png',
+    img: '/ifood.png',
+    categoria: 'desconto',
+  },
+  {
+    id: 3,
+    nome: 'PIX R$ 50',
+    preco: 300,
+    descricao: 'Tranferência PIX direto para sua conta',
+    disponivel: 100,
+    Qr: '/QRcodes/pix.png',
+    img: '/pix.png',
+    categoria: 'dinheiro',
+  },
+  {
+    id: 4,
+    nome: 'Doação para ONGs',
+    preco: 100,
+    descricao: 'Doe seus pontos para ONGs parceiras',
+    disponivel: 999,
+    img: '/ong.png',
+    categoria: 'doacao',
+  },
+  {
+    id: 5,
+    nome: 'Gift Card Spotify R$ 30',
+    preco: 350,
+    descricao: 'Assinatura premium do Spotify',
+    disponivel: 15,
+    Qr: '/QRcodes/spotify.png',
+    img: '/spotify.png',
+    categoria: 'gift',
+  },
+  {
+    id: 6,
+    nome: 'Desconto 15% Uber',
+    preco: 150,
+    descricao: 'Cupom de desconto para corridas Uber',
+    disponivel: 75,
+    Qr: '/QRcodes/uber.png',
+    img: '/uber.png',
+    categoria: 'desconto',
+  },
+  {
+    id: 7,
+    nome: 'Gift Card Google Play R$ 30',
+    preco: 300,
+    descricao: 'Gift card de 30 reais na Google Play',
+    disponivel: 40,
+    Qr: '/QRcodes/googlePlay.png',
+    img: '/play.png',
+    categoria: 'gift',
+  },
+  {
+    id: 8,
+    nome: 'Desconto 30% Starbucks',
+    preco: 100,
+    descricao: 'Cupom de desconto para pedidos no Starbuks',
+    disponivel: 100,
+    Qr: '/QRcodes/starbucks.png',
+    img: '/starbucks.png',
+    categoria: 'desconto',
+  },
 ])
 
 // Modal
 const itemSelecionado = ref(null)
 const mostrarModal = ref(false)
 
-// Categoria filtrada
+// Categoria
 const categoriaSelecionada = ref('todos')
 const itensFiltrados = computed(() => {
   if (categoriaSelecionada.value === 'todos') return itens.value
-  return itens.value.filter(item => item.categoria === categoriaSelecionada.value)
+  return itens.value.filter((item) => item.categoria === categoriaSelecionada.value)
 })
 
 // Modal
-const abrirModal = (item) => { itemSelecionado.value = item; mostrarModal.value = true }
-const fecharModal = () => { itemSelecionado.value = null; mostrarModal.value = false }
+const abrirModal = (item) => {
+  itemSelecionado.value = item
+  mostrarModal.value = true
+}
+const fecharModal = () => {
+  itemSelecionado.value = null
+  mostrarModal.value = false
+}
 
 // Comprar
+const mostrarSucesso = ref(false)
+
 const confirmarCompra = () => {
   if (gastarPontos(itemSelecionado.value.preco)) {
+    adicionarRecompensa(itemSelecionado.value)
     fecharModal()
+    mostrarSucesso.value = true
+    setTimeout(() => {
+      mostrarSucesso.value = false
+    }, 3000)
   } else {
     alert('Pontos insuficientes.')
   }
 }
 
 // Filtrar categoria
-const selecionarCategoria = (categoria) => categoriaSelecionada.value = categoria
+const selecionarCategoria = (categoria) => (categoriaSelecionada.value = categoria)
 </script>
 
 <template>
@@ -63,21 +145,36 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
 
     <div class="list">
       <ul>
-        <li><button @click="selecionarCategoria('todos')"><span class="mdi mdi-star-outline"></span>
+        <li>
+          <button @click="selecionarCategoria('todos')">
+            <span class="mdi mdi-star-outline"></span>
             <p>Todos</p>
-          </button></li>
-        <li><button @click="selecionarCategoria('gift')"><span class="mdi mdi-gift-outline"></span>
+          </button>
+        </li>
+        <li>
+          <button @click="selecionarCategoria('gift')">
+            <span class="mdi mdi-gift-outline"></span>
             <p>Gift Cards</p>
-          </button></li>
-        <li><button @click="selecionarCategoria('desconto')"><span class="mdi mdi-cart-outline"></span>
+          </button>
+        </li>
+        <li>
+          <button @click="selecionarCategoria('desconto')">
+            <span class="mdi mdi-cart-outline"></span>
             <p>Descontos</p>
-          </button></li>
-        <li><button @click="selecionarCategoria('dinheiro')"><span class="mdi mdi-currency-usd"></span>
+          </button>
+        </li>
+        <li>
+          <button @click="selecionarCategoria('dinheiro')">
+            <span class="mdi mdi-currency-usd"></span>
             <p>Dinheiro</p>
-          </button></li>
-        <li><button @click="selecionarCategoria('doacao')"><span class="mdi mdi-heart-outline"></span>
+          </button>
+        </li>
+        <li>
+          <button @click="selecionarCategoria('doacao')">
+            <span class="mdi mdi-heart-outline"></span>
             <p>Doações</p>
-          </button></li>
+          </button>
+        </li>
       </ul>
     </div>
 
@@ -101,17 +198,24 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
             <div class="text-progress">
               <p class="faltam">Progresso</p>
               <p class="faltam">
-                {{ usuario.pontos >= item.preco
-                  ? 'Pronto!'
-                  : `Faltam ${item.preco - usuario.pontos} pontos` }}
+                {{
+                  usuario.pontos >= item.preco
+                    ? 'Pronto!'
+                    : `Faltam ${item.preco - usuario.pontos} pontos`
+                }}
               </p>
             </div>
             <div class="progress-bar">
-              <div class="progress" :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }">
-              </div>
+              <div
+                class="progress"
+                :style="{ width: Math.min(100, (usuario.pontos / item.preco) * 100) + '%' }"
+              ></div>
             </div>
-            <button @click="abrirModal(item)"
-              :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'">
+            <button
+              :disabled="usuario.pontos < item.preco"
+              @click="abrirModal(item)"
+              :class="usuario.pontos >= item.preco ? 'btn-resgatar' : 'btn-insuficiente'"
+            >
               {{ usuario.pontos >= item.preco ? 'Resgatar' : 'Pontos insuficientes' }}
             </button>
           </div>
@@ -123,12 +227,12 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
       <div class="modal">
         <div class="info-modal">
           <h2>Confirmar Resgate</h2>
-          <p>
-            Você está prestes a resgatar uma recompensa. Confirme os detalhes abaixo.
-          </p>
-          <img :src="itemSelecionado?.img" :alt="itemSelecionado?.nome" class="modal-img">
+          <p>Você está prestes a resgatar uma recompensa. Confirme os detalhes abaixo.</p>
+          <img :src="itemSelecionado?.img" :alt="itemSelecionado?.nome" class="modal-img" />
           <div class="text-modal">
-            <h2><strong>{{ itemSelecionado?.nome }}</strong></h2>
+            <h2>
+              <strong>{{ itemSelecionado?.nome }}</strong>
+            </h2>
             <p>{{ itemSelecionado?.descricao }}</p>
           </div>
         </div>
@@ -137,15 +241,21 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
           <ul>
             <li>
               <p>Custo:</p>
-              <p><strong>{{ itemSelecionado?.preco }} pontos</strong></p>
+              <p>
+                <strong>{{ itemSelecionado?.preco }} pontos</strong>
+              </p>
             </li>
             <li>
               <p>Seus pontos:</p>
-              <p><strong>{{ usuario.pontos }} pontos</strong></p>
+              <p>
+                <strong>{{ usuario.pontos }} pontos</strong>
+              </p>
             </li>
             <li>
               <p><strong>Restantes:</strong></p>
-              <p id="text-green"><strong>{{ usuario.pontos - itemSelecionado?.preco }} pontos</strong></p>
+              <p id="text-green">
+                <strong>{{ usuario.pontos - itemSelecionado?.preco }} pontos</strong>
+              </p>
             </li>
           </ul>
         </div>
@@ -178,6 +288,14 @@ const selecionarCategoria = (categoria) => categoriaSelecionada.value = categori
         </li>
       </ul>
     </div>
+    <Transition name="slide">
+      <div v-if="mostrarSucesso" class="modal-backdrop">
+        <div class="modal-resgate">
+          <h2>Resgate realizado!</h2>
+          <p>Sua recompensa foi resgatada com sucesso.</p>
+        </div>
+      </div>
+    </Transition>
   </section>
 </template>
 
@@ -264,7 +382,6 @@ section {
   scale: 1.05;
 }
 
-
 .list button span {
   font-size: 1.3rem;
 }
@@ -292,7 +409,6 @@ section {
   overflow: hidden;
   background: white;
 }
-
 
 .itens img {
   height: 12vw;
@@ -605,106 +721,268 @@ p.faltam {
   transform: translateY(-5px);
 }
 
-
 .fade-slide-enter-to,
 .fade-slide-leave-from {
   opacity: 1;
   transform: translateY(0);
 }
 
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s ease;
+}
+
+/* estado inicial da entrada */
+.slide-enter-from {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* estado final da entrada */
+.slide-enter-to {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* estado inicial da saída */
+.slide-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* estado final da saída */
+.slide-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* para o backdrop ficar embaixo */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* modal no rodapé */
+  padding-bottom: 40px;
+  pointer-events: none;
+}
+
+.modal-resgate {
+  background: rgb(252, 250, 250);
+  padding: 0.5vw 1vw;
+  border: 3px solid rgb(218, 215, 215);
+  border-radius: 10px;
+  width: 25vw;
+  text-align: center;
+  box-shadow: 0 5px 10px rgba(68, 68, 68, 0.2);
+}
+
+.modal-resgate h2 {
+  color: #1a1f1a;
+  font-size: 1rem;
+  margin: 0.5vw 0;
+}
+
+.modal-resgate p {
+  color: #1a1f1a;
+  font-size: 1rem;
+  margin: 0 0 0.5vw 0;
+  padding: 0;
+}
+
 @media (max-width: 1400px) {
-.recom h2 {
-  font-size: 1.4rem;
+  .recom h2 {
+    font-size: 1.4rem;
+  }
+
+  .recom p,
+  .box1-pontos p.text-ponto {
+    font-size: 1rem;
+  }
+
+  .icon-line span {
+    font-size: 1.7rem;
+  }
+
+  .total-pontos {
+    font-size: 1.3rem;
+  }
+
+  .list button {
+    font-size: 0.7rem;
+  }
+
+  .list button span {
+    font-size: 1rem;
+  }
+
+  .itens h2 {
+    font-size: 0.9rem;
+  }
+
+  .box-description {
+    font-size: 0.8rem;
+  }
+
+  .box-info p {
+    font-size: 0.7rem;
+  }
+
+  .text p {
+    font-size: 0.8rem;
+  }
+
+  .box-info .star {
+    font-size: 0.8rem;
+  }
+
+  p.faltam {
+    font-size: 0.8rem;
+  }
+
+  .btn-insuficiente,
+  .btn-resgatar {
+    font-size: 0.8rem;
+  }
+
+  .box-win h2 {
+    font-size: 1.1rem;
+  }
+
+  .box-win ul li span#gift,
+  .box-win ul li span#star,
+  .box-win ul li span#heart {
+    font-size: 1.3rem;
+  }
+
+  .box-win li p {
+    font-size: 0.8rem;
+  }
+
+  .box-win li h3 {
+    font-size: 1rem;
+  }
+
+  .info-modal h2 {
+    font-size: 1rem;
+  }
+
+  .info-modal p {
+    font-size: 0.7rem;
+  }
+
+  .modal-pontos li p {
+    font-size: 0.8rem;
+  }
+
+  .buttons button {
+    font-size: 0.8rem;
+  }
+
+  .cancelar {
+    background: rgb(241, 241, 241, 0.5);
+  }
+
+  .modal-resgate {
+    width: 35vw;
+  }
 }
 
-.recom p,
-.box1-pontos p.text-ponto {
-  font-size: 1rem;
+@media (max-width: 850px) {
+  .list ul li button {
+    font-size: 0.8rem;
+  }
+
+  .list ul {
+    flex-wrap: wrap;
+  }
+
+  .list ul li button span {
+    display: none;
+  }
+
+  .itens {
+    width: 30%;
+  }
+
+  .itens img {
+    height: 15vw;
+  }
 }
 
-.icon-line span {
-  font-size: 1.7rem;
-}
+@media (max-width: 500px) {
+  .list ul li button {
+    font-size: 0.8rem;
+  }
 
-.total-pontos {
-  font-size: 1.3rem;
-}
+  .list ul {
+    flex-wrap: wrap;
+  }
 
+  .list ul li button span {
+    display: none;
+  }
 
-.list button {
-  font-size: 0.7rem;
-}
+  .itens {
+    width: 40%;
+  }
 
-.list button span {
-  font-size: 1rem;
-}
+  .itens img {
+    height: 20vw;
+  }
 
-.itens h2 {
-  font-size: 0.9rem;
-}
+  .text-progress p {
+    display: none;
+  }
 
-.box-description {
-  font-size: 0.8rem;
-}
+  .text-progress {
+    margin: 5vw 0;
+  }
 
-.box-info p {
-  font-size: 0.7rem;
-}
+  .btn-insuficiente,
+  .btn-resgatar {
+    padding: 10px 0;
+  }
 
-.text p {
-  font-size: 0.8rem;
-}
+  .box-win {
+    padding: 0 2vw;
+  }
 
-.box-info .star {
-  font-size: 0.8rem;
-}
+  .box-win h2 {
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: 600;
+  }
 
-p.faltam {
-  font-size: 0.8rem;
-}
+  .box-win ul {
+    margin: 5vw 10vw;
+    padding: 0;
+    display: block;
+    column-count: 1;
+  }
 
+  .box-win ul li span#gift,
+  .box-win ul li span#star,
+  .box-win ul li span#heart {
+    padding: 0.7vw 1.5vw;
+  }
 
-.btn-insuficiente,
-.btn-resgatar {
-  font-size: 0.8rem;
-}
+  .box-win li p {
+    font-size: 0.8rem;
+  }
 
-.box-win h2 {
-  font-size: 1.1rem;
-}
+  .box-win li h3 {
+    font-size: 0.9rem;
+  }
 
-.box-win ul li span#gift,
-.box-win ul li span#star,
-.box-win ul li span#heart {
-  font-size: 1.3rem;
-}
+  .modal {
+    width: 60%;
+    border-radius: 10px;
+  }
 
-.box-win li p {
-  font-size: 0.8rem;
-}
-
-.box-win li h3 {
-  font-size: 1rem;
-}
-
-.info-modal h2 {
-  font-size: 1rem;
-}
-
-.info-modal p {
-  font-size: 0.7rem;
-}
-
-.modal-pontos li p {
-  font-size: 0.8rem;
-}
-
-.buttons button {
-  font-size: 0.8rem;
-}
-
-.cancelar {
-  background: rgb(241, 241, 241, 0.5);
-}
+  .modal-resgate {
+    width: 60%;
+  }
 }
 </style>

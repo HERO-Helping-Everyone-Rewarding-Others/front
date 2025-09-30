@@ -17,7 +17,7 @@ const handleLogin = async () => {
   try {
     await login(email.value, password.value)
     router.push('/')
-  } catch (err) {
+  } catch (error) {
     error.value = "Email ou senha inválidos."
   }
 }
@@ -42,7 +42,7 @@ const handleLogin = async () => {
     </div>
 
     <div class="box2">
-      <form @submit.prevent="handleLogin">
+      <form @submit.prevent="handleLogin" class="formulario">
         <label for="user">E-mail</label>
         <input id="user" type="email" placeholder="seu e-mail" v-model="email" required />
 
@@ -70,6 +70,7 @@ const handleLogin = async () => {
 <style scoped>
 section {
   display: flex;
+  align-items: center;
   height: 100vh;
   padding: 0 8vw 0 8vw;
   color: #f5f5f5;
@@ -77,10 +78,13 @@ section {
   background: linear-gradient(to right, #1b2353 0%, #276394 55%, #1f9494 100%);
 }
 
+.error {
+  margin-bottom: 0.5vw;
+}
+
 .box1,
 .box2 {
   flex: 1;
-  margin-top: 5vw;
 }
 
 .box1 {
@@ -142,7 +146,7 @@ section .box1 .logo img {
 }
 
 .box2>*:not(.register) {
-  padding: 2vw 0 0 4vw;
+  padding: 1vw 0 0 4vw;
 }
 
 form label,
@@ -292,6 +296,80 @@ form button.submit {
   .register a {
     padding: 0.5vw 1.4vw;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 950px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 850px) {
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 500px) {
+  .box1 {
+    display: none;
+  }
+
+  .box2 {
+    height: 60%;
+    max-width: 80%;
+  }
+
+  section {
+    display: flex;
+    justify-content: center;
+  }
+
+  .box2 label {
+    font-size: 1.3rem;
+  }
+
+  .box2 form {
+    margin: 5vw 0 0 0;
+  }
+
+  form input {
+    width: 85%;
+  }
+
+  .password-field input {
+    width: 120%;
+  }
+
+  .password-field .mdi {
+    right: -10vw;
+  }
+
+  form button.submit {
+    padding: 8px 0;
+    width: 90%;
+    font-size: 1rem;
+    margin: 2vw 0;
+  }
+
+  .register a {
+    padding: 1vw 4vw;
+    font-size: 1.1rem;
+  }
+
+  .register p {
+    font-size: 1.2rem;
+    margin-bottom: 3vw;
   }
 }
 </style>

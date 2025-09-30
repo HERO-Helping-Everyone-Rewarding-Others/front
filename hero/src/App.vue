@@ -16,7 +16,6 @@ const scrollingUp = ref(false);
 let lastScrollY = 0;
 
 const handleScroll = () => {
-  // seu código original
   scrollY.value = window.scrollY;
   scrollingUp.value = scrollY.value < lastScrollY;
   lastScrollY = scrollY.value;
@@ -27,7 +26,7 @@ const handleScroll = () => {
       top.value = true
     }
   }
-  if (scrollingUp.value && window.scrollY==0) {
+  if (scrollingUp.value && window.scrollY == 0) {
     top.value = false
   }
 };
@@ -62,21 +61,11 @@ onUnmounted(() => {
 
 <template>
   <div ref="scrollContainer" @scroll="handleScroll">
-    <!-- adicionamos ref no HeaderComponent -->
-    <HeaderComponent
-      ref="headerRef"
-      v-if="route.name !== 'login' && route.name !== 'register'"
-      @toggleMenu="showMenu = !showMenu"
-    />
+    <HeaderComponent ref="headerRef" v-if="route.name !== 'login' && route.name !== 'register'"
+      @toggleMenu="showMenu = !showMenu" />
     <transition name="sidebar-transition">
-      <!-- adicionamos ref no aside -->
-      <aside
-        class="sidebar"
-        :class="top ? 'top' : ''"
-        v-if="showMenu"
-        ref="sidebarRef"
-      >
-        <SidebarCommunities @toggleMenu="showMenu = false"/>
+      <aside class="sidebar" :class="top ? 'top' : ''" v-if="showMenu" ref="sidebarRef">
+        <SidebarCommunities @toggleMenu="showMenu = false" />
       </aside>
     </transition>
 
@@ -93,9 +82,9 @@ onUnmounted(() => {
   left: 0;
   margin: 1vw 0 0 1vw;
   background: rgba(255, 255, 255);
-  border: 2px solid rgb(167, 164, 164, 0.3);  
+  border: 2px solid rgb(167, 164, 164, 0.3);
   box-shadow: 3px 3px 15px 1px rgba(121, 120, 120, 0.2);
-  border-radius: 15px;
+  border-radius: 10px;
   transition: top 0.5s ease;
 
 }
@@ -117,8 +106,20 @@ onUnmounted(() => {
 
 @media (max-width: 1400px) {
   .sidebar {
-  margin: 0 0 0 1vw;
+    margin: 0 0 0 1vw;
   }
 }
 
+@media (max-width: 500px) {
+
+  .sidebar-transition-enter-active,
+  .sidebar-transition-leave-active {
+    display: none;
+  }
+
+  .sidebar-transition-enter-from,
+  .sidebar-transition-leave-to {
+    display: none;
+  }
+}
 </style>
